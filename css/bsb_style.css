@@ -1,0 +1,288 @@
+/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project:        Backseat Buddy Prototype
+Version:        0.1
+Last change:    25-01-2018
+Author:         Cas Wognum
+-------------------------------------------------------------------*/
+
+@import "layout.css";
+@import "colors.css";
+@import "typography.css";
+@import "BinfoWindow.css";
+@import "slickSlider.css";
+@import "Game.css";
+
+.not-active {
+  pointer-events: none;
+  cursor: default;
+  text-decoration:none;
+  color: #ddd;
+}
+
+input[type=text], input[type=number] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: #e83273;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #b22557;
+}
+
+/** LOCATION BUTTON */
+
+#followMeSection {
+    width: 50px;
+    height: 50px;
+    text-align: right;
+    z-index: 1;
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    transition: 0.5s;
+}
+
+#toggleBtnMenu {
+    color: black;
+}
+
+#menuSection {
+    width: 50px;
+    height: 50px;
+    text-align: left;
+    z-index: 1;
+    position: absolute;
+    left: 30px;
+    top: 20px;
+    transition: 0.5s;
+    font-size: 30px;
+
+}
+
+.toggle_btn {
+  display: inline-block;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow:
+    0 8px 0 #1a74a1,
+    0 15px 20px rgba(0,0,0,.35);
+  -moz-box-shadow:
+    0 8px 0 #1a74a1,
+    0 15px 20px rgba(0,0,0,.35);
+  box-shadow:
+    0 8px 0 #1a74a1,
+    0 15px 20px rgba(0,0,0,.35);
+  -webkit-transition: -webkit-box-shadow .2s ease-in-out;
+  -moz-transition: -moz-box-shadow .2s ease-in-out;
+  -o-transition: -o-box-shadow .2s ease-in-out;
+  transition: box-shadow .2s ease-in-out;
+}
+
+.toggle_btn span {
+  display: inline-block;
+  padding: 6px  12px;
+  line-height: 1;
+  text-shadow: 0 -1px 1px rgba(19,65,88,.8);
+  background: #1d70b8;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3194c6), to(#5bacd6));
+  background: -moz-linear-gradient(#3194c6, #5bacd6);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,.15);
+  -moz-box-shadow: inset 0 -1px 1px rgba(255,255,255,.15);
+  box-shadow: inset 0 -1px 1px rgba(255,255,255,.15);
+  -webkit-transition: -webkit-transform .2s ease-in-out;
+  -moz-transition: -moz-transform .2s ease-in-out;
+  -o-transition: -o-transform .2s ease-in-out;
+  transition: transform .2s ease-in-out;
+}
+
+.active {
+  -webkit-box-shadow:
+    0 8px 0 #1a74a1,
+    0 12px 10px rgba(0,0,0,.3);
+  -moz-box-shadow:
+    0 8px 0 #1a74a1,
+    0 12px 10px rgba(0,0,0,.3);
+  box-shadow:
+    0 8px 0 #1a74a1,
+    0 12px 10px rgba(0,0,0,.3);
+}
+
+.active span {
+  -webkit-transform: translate(0, 4px);
+  -moz-transform: translate(0, 4px);
+  -o-transform: translate(0, 4px);
+  transform: translate(0, 4px);
+}
+
+.menubar {
+    width: 100%;
+    padding: 0px 6px;
+    background-color: #fefefe;
+    /*box-shadow: 0px 2px 7px #888;*/
+    z-index: 4;
+}
+
+.dashboard .container {
+    padding: 1% 5%;
+}
+
+.dashboard {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.divider {
+    width: 100%;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 100%;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+    padding: 2px 16px;
+}
+
+
+/** COINS DISPLAY INDEX */
+
+#coinDispContainerInd{
+  z-index: 1;
+  position: absolute;
+  right: 100px;
+  top: 28px;
+}
+#coinDispContainerInd a{
+  text-decoration: none;
+}
+#coinDispContainerInd img{
+  width:30px;
+  height:30px;
+  display:inline-block;
+  vertical-align: middle;
+}
+#coinBGInd{
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  text-shadow: 0 -1px 1px rgba(19,65,88,.8);
+  background: #1d70b8;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1d71b8), to(#2d2e83));
+  background: -moz-linear-gradient(#1d71b8, #2d2e83);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+
+  -webkit-box-shadow:
+    0 1px 4px #2d2e83,
+    0 1px 1px rgba(0,0,0,.35);
+  -moz-box-shadow:
+    0 1px 4px #2d2e83,
+    0 1px 1px rgba(0,0,0,.35);
+  box-shadow:
+    0 1px 4px #2d2e83,
+    0 1px 1px rgba(0,0,0,.35);
+
+  padding:5px 10px;
+
+  -webkit-transition: .5s;
+  -moz-transition: .5s;
+  -o-transition: .5s;
+  transition: .5s;
+}
+#coinBGInd:hover{
+  background: #1d70b8;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1d70b8), to(#1d70b8));
+  background: -moz-linear-gradient(#1d71b8, #2d2e83);
+}
+.coinAmountInd{
+  display:inline-block;
+  vertical-align: middle;
+}
+
+/** COINS & MAP DISPLAY NO-INDEX */
+
+.mapbtn {
+    font-size: 33px !important; /*override fontAwesome styling*/
+    z-index: 5;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+
+    display:inline-block;
+    vertical-align: middle;
+}
+
+#coinDispContainer{
+  z-index: 1;
+
+  display:inline-block;
+  vertical-align: middle;
+}
+
+#coinsAndMap{
+  float:right;
+  position: relative;
+  right: 20px;
+  top: 5px;
+}
+#coinDispContainer a{
+  text-decoration: none;
+}
+#coinDispContainer img{
+  width:30px;
+  height:30px;
+  display:inline-block;
+  vertical-align: middle;
+  margin-right:5px;
+}
+#coinBG{
+  color:black;
+  font-size:20px;
+  font-weight:500; /*only working <600*/
+
+  padding:5px 10px;
+
+  -webkit-transition: .5s;
+  -moz-transition: .5s;
+  -o-transition: .5s;
+  transition: .5s;
+}
+.coinAmount{
+  display:inline-block;
+  vertical-align: middle;
+}

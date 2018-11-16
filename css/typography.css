@@ -1,0 +1,47 @@
+/*------------------------------------------------------------------v
+[Typography Stylesheet]
+
+Project:        Backseat Buddy Prototype
+Version:        0.1
+Last change:    25-01-2018
+Author:         Cas Wognum
+Function:       Style everything that has to do with fonts
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[Table of contents]
+
+1. Body, HTML
+2. Navigation / #navbar
+
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[1. Body, HTML]
+*/
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*------------------------------------------------------------------
+[2. Navigation / #sidenav]
+*/
+
+.sidenav {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sidenav a {
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.sidenav .closebtn {
+    font-size: 48px;
+}
+
+.openbtn {
+    font-size: 36px;
+}

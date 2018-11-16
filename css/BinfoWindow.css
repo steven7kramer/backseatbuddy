@@ -1,0 +1,99 @@
+/* Google Maps API CSS*/
+
+
+/* BackseatBuddy CSS */
+
+#sideContent .nowrap {
+    width: 320px;
+}
+
+#sideContent .closebtn {
+    font-size: 48px;
+	position: absolute;
+    top: 0;
+    right: 25px;
+    margin-left: 50px;
+	color: #ededed;
+	text-decoration: none;
+}
+
+#sideContent .closebtn a:hover {
+    color: #fff;
+	text-decoration: none;
+}
+
+.BinfoWindow{
+	z-index: 10;
+	position: fixed;
+	width: 0;
+	height: 100%;
+	top: 0;
+	right: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	background-color:white;
+	font-family:Helvetica;
+	box-shadow: -2px 0px 7px #888888;
+	transition: 0.5s;
+}
+
+.sideContent .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    margin-left: 50px;
+}
+
+.BinfoHeader{
+	background-image: url("../images/banners/dekuip.jpg") no-repeat;
+	background-size: cover;
+    background-position: center;
+	padding:80px 40px 20px; /*top right bottom left*/ /*top right/left bottom*/
+	color:white;
+}
+.BinfoHeader h3{
+	font-size:17px;
+	margin-bottom:-10px;
+}
+
+.BinfoHeader img{
+	height:20px;
+
+}
+
+.BinfoText{
+	color:#808080;
+	line-height: 30px;
+	padding:30px 40px 0px; /*top right&left bottom*/
+}
+
+.BinfoText h4{
+	color:black;
+}
+
+.BinfoIcons{
+	padding:20px 40px 40px; /*top right&left bottom*/
+}
+
+.BinfoIcons img{
+	height:14px;
+	padding-right:20px;
+
+}
+
+.BinfoButton{
+	color:black;
+	font-weight:600;
+	border-radius:20px;
+	padding:0px 40px 40px; /*top right&left bottom*/
+}
+
+.BinfoButton a{
+	text-decoration:none;
+	color:black;
+}
+
+.BinfoButton a:hover{
+	text-decoration:none;
+	color:grey;
+}

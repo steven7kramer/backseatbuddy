@@ -1,0 +1,32 @@
+{
+  "name": "chewing-grid.css",
+  "version": "3.1.0",
+  "description": "A CSS Grid ideal for card listing design like tiles, videos or articles listing",
+  "main": "build/chewing-grid.css",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "sass-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tzi/chewing-grid.css.git"
+  },
+  "keywords": [
+    "css",
+    "sass",
+    "grid",
+    "card",
+    "flexbox",
+    "fluid"
+  ],
+  "author": "Thomas ZILLIOX",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tzi/chewing-grid.css/issues"
+  },
+  "dependencies": {
+    "sass-test.sh": "^1.0.0"
+  }
+}

@@ -1,0 +1,156 @@
+body{
+	font-family:Helvetica;
+}
+
+.feedback {
+    color:white;
+    width: 100%;
+    max-width:400px;
+    padding: 12px 20px;
+    margin: 8px auto;
+    display: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size:14px;
+    border-radius:20px;
+}
+
+.error {
+    background-color: #FF5454;
+}
+
+.success {
+    background-color: #bcdd7a;
+}
+
+.loginMain{
+	background-color:;
+	padding:30px 20px;
+	margin:0px;
+	border-radius:10px;
+}
+
+.loginTitel{
+	font-size:20px;
+	text-align:center;
+	margin-bottom:40;
+	text-transform:uppercase;
+}
+
+.verify_text {
+	padding-top: 12px;
+	text-align: center;
+	color: #222;
+    max-width:400px;
+	margin: auto;
+	text-transform: none;
+	font-size: 16px;
+}
+
+
+.loginHead img{
+	display:block;
+	margin:80 auto 60;
+	width:60%;
+	max-width:300px;
+}
+
+.wwForget{
+	text-align:center;
+	margin:20px 0px;
+}
+
+.wwForget a{
+	color:black;
+	text-decoration: none;
+}
+
+.wwForget a:hover{
+	color:grey;
+	text-decoration: underline;
+}
+
+input[type=text], input[type=password]{
+    width: 100%;
+    max-width:400px;
+    display:block;
+    padding: 12px 20px;
+    margin: 8px auto;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size:18px;
+    border-radius:50px;
+	padding-left:45px;
+}
+
+input[type=text]{
+	background: url(../images/icons/email.png) no-repeat scroll 13px 13px;
+}
+
+input.verify[type=text]{
+	background: url(../images/icons/password.png) no-repeat scroll 12px 13px;
+}
+
+input[type=password]{
+	background: url(../images/icons/password.png) no-repeat scroll 12px 13px;
+}
+.loginMain input{
+	display:block;
+}
+
+button {
+    background-color: #1d71b8;
+    max-width:400px;
+    display:block;
+    color: white;
+    padding: 14px 20px;
+    margin: 15px auto;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size:20px;
+    border-radius:50px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+    span.wachtwoord {
+        display: block;
+        float: none;
+    }
+    .cancelbtn {
+        width: 100%;
+    }
+
+/*@media only screen and (max-width:800px){
+    .loginTitel{
+        font-size:60px;
+        margin-bottom:80px;
+    }
+
+    input[type=text], input[type=password]{
+        height:150px;
+        font-size:40px;
+        font-weight:bolder;
+        padding-left:110px;
+        margin-bottom:20px;
+    }
+    input[type=text]{
+        background: url(../images/icons/email.png) no-repeat scroll 30px 55px;
+    }
+    input[type=password]{
+        background: url(../images/icons/password.png) no-repeat scroll 25px 55px;
+    }
+    button{
+        margin:50px 0px;
+        height:150px;
+        font-size:40px;
+        font-weight:bold;
+    }
+    .wwForget{
+        font-size:30px;
+    }
+}*/

@@ -1,0 +1,107 @@
+/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project:        Backseat Buddy Prototype
+Version:        0.1
+Last change:    25-01-2018
+Author:         Cas Wognum
+Function:       Style everything that has to do with the layout
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[Table of contents]
+
+1. Body, HTML
+2. Navigation / #navbar
+3. Warnings
+
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[1. Body, HTML]
+*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+hr {
+    width: 80%;
+}
+
+.width-100 {
+    width: 100%;
+}
+
+.height-100 {
+    height: 100%;
+}
+
+.backseat-form {
+    margin: auto;
+    margin-top: 7%;
+    width: 50%;
+}
+
+@media only screen and (orientation: portrait) {
+    .backseat-form {
+        margin: auto;
+        margin-top: 30%;
+        width: 80%;
+    }
+}
+
+#main {
+    transition: margin-left .5s;
+}
+
+/*------------------------------------------------------------------
+[2. Navigation / #sideNav]
+*/
+
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 10; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0; /* Stay at the left */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    overflow-y: scroll;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    margin-left: 50px;
+}
+
+.openbtn {
+    left: 25px;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.sidenav .logo {
+    display:block;
+    width: 300px;
+    overflow: hidden;
+    padding: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+}

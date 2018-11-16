@@ -1,0 +1,2 @@
+@import '../src/mixins/grid.mixin';
+@include chewing-grid($card-gutter: 2em);

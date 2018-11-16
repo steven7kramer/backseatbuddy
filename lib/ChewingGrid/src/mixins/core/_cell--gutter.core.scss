@@ -1,0 +1,5 @@
+@mixin chewing-grid__cell--gutter($card-gutter: 0)
+{
+  padding: ($card-gutter / 2);
+}
+

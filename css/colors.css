@@ -1,0 +1,62 @@
+/*------------------------------------------------------------------
+[Color Stylesheet]
+
+Project:        Backseat Buddy Prototype
+Version:        0.1
+Last change:    25-01-2018
+Author:         Cas Wognum
+Function:       Define all the colors used
+
+-------------------------------------------------------------------
+
+[Table of contents]
+
+1. Body, HTML
+2. Navigation / #navbar
+
+-------------------------------------------------------------------
+
+[Color codes]
+
+Backseat LBlue: #1d70b8
+Backseat DBlue: #2d2e83
+Backseat Pink:  #e83273
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[1. Body, HTML]
+*/
+
+body, html {
+    color: #2B2B2B;
+    background-color: #F6F6F6;
+}
+
+.pink {
+    color: #e83273;
+}
+
+.blue-light {
+    color: #1d70b8;
+}
+
+.blue-dark {
+    color: #2d2e83;
+}
+
+
+/*------------------------------------------------------------------
+[2. Navigation / #sidenav]
+*/
+
+.sidenav {
+    background-color: #fff;
+}
+
+.sidenav a {
+    color: #2b2b2b;
+}
+
+.sidenav a:hover {
+    color: #e83273;
+}

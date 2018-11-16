@@ -1,0 +1,51 @@
+body{
+	overflow:visible !important;
+	color: #2B2B2B;
+    background-color: #F6F6F6;
+    font-family:helvetica;
+}
+
+#tutClose a{
+	background-color:grey;
+	color:white;
+	float:right;
+	border-radius:20px;
+	padding:10px 30px 10px 20px;
+	margin:20px 20px 0px 0px;
+	text-decoration:none;
+	-webkit-transition: opacity .1s; /* Safari */
+    transition: opacity .1s;
+}
+#tutClose a:hover{
+	opacity:0.9;
+}
+#tutClose i{
+	color:white;
+	font-size:18px;
+	margin-right:20px;
+}
+#allTutContainer{
+	padding:70px 10px;
+	text-align:center;
+	margin:0 auto;
+	max-width:400px;
+}
+
+#allTutContainer img{
+	width:200px;
+	margin-bottom:30px;
+}
+
+#tutOne{
+	display:block;
+}
+#tutTwo{
+	display:none;
+}
+#tutThree{
+	display:none;
+}
+#tutBottomScroll{
+	margin-top:40px;
+	font-size:20px;
+}

@@ -1,0 +1,78 @@
+body{
+	overflow:visible !important;
+	color: #2B2B2B;
+    background-color: #F6F6F6;
+}
+
+#LocatieContainer{
+	font-family:helvetica;
+	text-align:center;
+	margin:0 auto;
+	max-width:400px;
+}
+
+#LocatieContainer h1{
+	font-size:20px;
+}
+
+#LocatieContainer p{
+	margin:20px 20px;
+}
+.locationText{
+	margin:40px 0px;
+}
+
+#LocatieContainer img{
+	max-width:80%;
+}
+
+.locatieButton a{
+	background-color:#e83273;
+	border-radius:10px;
+	margin:50 auto;
+	padding:20px;
+	width:150px;
+	color:white;
+	text-decoration: none;
+	display:block;
+}
+
+.locatieButton a:hover{
+	opacity:0.8;
+}
+
+.bottomBlock{
+	height:20px;
+	display:block;
+}
+
+#denyButtonContainer{
+	margin:20px auto;
+}
+.denyButton{
+	background-color:#e83273;
+	border-radius:10px;
+	margin:5px auto;
+	padding:10px;
+	width:100%;
+	max-width:250px;
+	color:white;
+	font-weight:600;
+	text-decoration: none;
+	display:inline-block;
+
+	transition: .2s;
+}
+.denyButton:hover{
+	background-color:#f06697;
+}
+.denyButton img{
+	width:35px;
+	display:inline-block;
+	vertical-align: middle;
+	margin-right:10px;
+}
+.denyButton span{
+	display:inline-block;
+	vertical-align: middle;
+}

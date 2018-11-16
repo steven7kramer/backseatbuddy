@@ -1,0 +1,13 @@
+@mixin chewing-grid__cell--column($column-max-count: auto)
+{
+  $width: $column-max-count;
+  @if ($column-max-count != auto) {
+    /* Max #{$column-max-count} columns */
+    $width: 100% / $column-max-count;
+  }
+
+  /* Flex & inline-block implementation */
+  /* [fix] IE `flex-basis` doesn't account for `box-sizing: border-box` */
+  width: $width;
+}
+
