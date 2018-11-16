@@ -1,4 +1,4 @@
-var getUrl = getURLParameter('id');
+var getUrl = getURLParameter('id2');
 
 function getURLParameter(sParam)
 {
