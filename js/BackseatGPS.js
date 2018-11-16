@@ -17,7 +17,7 @@
     2 = game
     3 = infoinfoWindow
     4 = quiz
-
+    5 = bestaat niet man, idioot
 -------------------------------------------------------------------
 
 */
