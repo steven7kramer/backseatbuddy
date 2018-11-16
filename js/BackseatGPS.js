@@ -17,7 +17,8 @@
     2 = game
     3 = infoinfoWindow
     4 = quiz
-    5 = bestaat niet man, idioot
+    6 = je mist 5
+    7 = je bent nogsteeds 5 kwijt
 -------------------------------------------------------------------
 
 */
