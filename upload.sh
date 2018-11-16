@@ -13,7 +13,7 @@ do
     curl -u 332540:CASftp001 "sftp://sftp.caswognum.nl/public/sites/www.caswognum.nl/" --upload-file "$FILE" -k
 done
 
-BRANCH_NAME = $(git branch | grep \* | cut -d ' ' -f2)
+BRANCH_NAME=$(git branch | grep \* | cut -d ' ' -f2)
 
 git commit -m "$COMMIT_MESSAGE"
 git push origin $BRANCH_NAME
