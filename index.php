@@ -8,12 +8,12 @@ URL:        N.A.
 Version:    0.1
 
 For the update logs, see the end of this document
+
+Dit is een comment van Cas
 -->
 
 <?php include("pages/includes/session.php"); ?>
 
-<?php $filename = basename(__FILE__, '.php'); ?>
-<!DOCTYPE html>
 <html lang="nl">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
