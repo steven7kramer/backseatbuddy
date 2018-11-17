@@ -207,7 +207,7 @@ function rotateIcon(targetRotation){
 
     let userRotation = userMarker.icon.rotation;
 
-    //userMarker.icon.rotation = targetRotation; // the default non-smooth option
+    userMarker.icon.rotation = targetRotation; // the default non-smooth option
 
     //set smooth rotation of the userMarker
     //for some reason, the code beneath does the same as the line above, it doesn't smooth the animation at all
