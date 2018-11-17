@@ -41,7 +41,6 @@ if(!($_SESSION["admin"])) {
 
         <!-- NAVIGATION -->
         <?php include("includes/menu.php") ?>
-
         <div id="main" class = "width-100 height-100">
             <form action="../php/BackseatDB.php" title="" method="post" class="backseat-form" id="backseatContentForm" enctype="multipart/form-data">
                 Title: <input type="text" id="pTitle" name="pTitle"><br>
@@ -49,7 +48,15 @@ if(!($_SESSION["admin"])) {
                 Lattitude: <input type="number" step="any"id="lat" name="lat"><br>
                 Longitude: <input type="number" step="any" id="lng" name="lng"><br>
                 Category: <input type="text" id="pCategory" name="pCategory"><br>
-                Types: <input type="text" id="pType" name="pType"><br>
+                Types:
+                <select id="pIcon" name="pIcon">
+                    <option value="0">Parkeerplaats</option>
+                    <option value="1">Viewpoint</option>
+                    <option value="2">Game</option>
+                    <option value="3">Info</option>
+                    <option value="4">Quiz</option>
+                </select><br>
+
                 File name: <input type="text" id="pImage" name="pImage"><br>
                 <input type="hidden" id="functionname" name="functionname" value="addToDatabase">
                 <input type="submit" value="Submit">
@@ -70,10 +77,11 @@ if(!($_SESSION["admin"])) {
                   var posting = $.post( url, {
                       pTitle: $('#pTitle').val(),
                       pDescr: $('#pDescr').val(),
-                      pType: $('#pType').val(),
+                      pIcon: $('#pIcon').val(),
                       pCategory: $('#pCategory').val(),
                       lat: $('#lat').val(),
                       lng: $('#lng').val(),
+                      pImage: $('#pImage').val(),
                       functionname: $('#functionname').val()
                   });
 

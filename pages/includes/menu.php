@@ -23,7 +23,11 @@
 
 </div>
 
-<?php if($filename == "index"): ?>
+<!--?php if($filename == "index"): ?>-->
+<?php
+$basename = substr(strtolower(basename($_SERVER['PHP_SELF'])),0,strlen(basename($_SERVER['PHP_SELF']))-4);
+if($basename == "index"):
+?>
     <!-- Stay on location -->
 
     <div id="menuSection" style="top:17px;">
@@ -54,7 +58,7 @@
 
                           success: function(obj, textstatus) {
                               if (!('error' in obj)) {
-                                  jQuery('#coinPlaceDiv').html(obj.coins);
+                                  jQuery('#coinPlaceDiv').html(obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
                               } else {
                                   console.error("Failed to add Coins to display" );
                               }

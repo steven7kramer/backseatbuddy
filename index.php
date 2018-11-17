@@ -9,7 +9,6 @@ Version:    0.1
 
 For the update logs, see the end of this document
 
-Dit is een comment van Cas
 -->
 
 <?php include("pages/includes/session.php"); ?>
@@ -74,7 +73,7 @@ Dit is een comment van Cas
 
                             success: function(obj, textstatus) {
                                 if (!('error' in obj)) {
-                                    jQuery('#coinPlaceDiv').html(obj.coins);
+                                    jQuery('#coinPlaceDiv').html(obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
                                 } else {
                                     console.error("Failed to add Coins to display" );
                                 }

@@ -205,9 +205,9 @@ function queryHighscores() {
 
 function queryAddToDatabase() {
 
-    $query = sprintf("INSERT INTO PointsOfInterest (pID, lng, lat, pTitle, pDescr, pCategory, pType, pImage)
+    $query = sprintf("INSERT INTO PointsOfInterest (pID, lng, lat, pTitle, pDescr, pCategory, pIcon, pImage)
               VALUES (NULL, '%f', '%f', '%s', '%s', '%s', '%s', '%s')",
-              $_POST['lng'], $_POST['lat'], $_POST['pTitle'], $_POST['pDescr'], $_POST['pCategory'], $_POST['pType'], $_POST['pImage']);
+              $_POST['lng'], $_POST['lat'], $_POST['pTitle'], $_POST['pDescr'], $_POST['pCategory'], $_POST['pIcon'], $_POST['pImage']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 

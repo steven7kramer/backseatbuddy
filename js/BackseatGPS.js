@@ -467,12 +467,12 @@ function openInfoWindow(data) {
             jQuery('#pSubtitle').text(data.pTitle.toUpperCase());
             jQuery('#pDescr').text(data.pDescr);
 
-            var types = data.pType.replace(" ", "").split(',');
+            var types = data.pIcon.replace(" ", "").split(',');
             var htmlString = "";
             //for (var i = 0; i < types.length; i++) {
               //  htmlString += '<img src="images/icons/' + types[i] + '.png" alt="' + types[i] + '">';
             //}
-            jQuery('#pType').html(htmlString);
+            jQuery('#pIcon').html(htmlString);
 
             loadLocation(data.lat, data.lng, data.pID, data.pTitle);
 
