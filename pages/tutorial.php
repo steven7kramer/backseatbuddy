@@ -22,10 +22,10 @@
 
   <div class="responsive contentHeight">
     <div class="slickContent">
-      <div class="tutBg">
+      <div class="slickBg">
         <img src="../images/tutorial/sofieTulp2.png" />
       </div>
-      <div class="tutText">
+      <div class="slickText">
       <h1>Hoi!</h1>
         <p>Superleuk dat je er bent! Ik ben Sofie Tulp, jouw persoonlijke Nederlandse Backseat Buddy! Swipe naar links om naar het volgende scherm te gaan.</p>
 
@@ -34,20 +34,20 @@
     </div>
 
     <div class="slickContent">
-      <div class="tutBg2">
+      <div class="slickBg2">
         <img src="../images/tutorial/tut2v2.png"/>
       </div>
-      <div class="tutText">
+      <div class="slickText">
       <h1>Iconen</h1>
         <p>Tijdens je reis zal je iconen tegenkomen. Zodra je in de buurt bent kan je hier op klikken en leuke dingen doen!</p>
     </div>
   </div>
     <div class="slickContent">
 
-      <div class="tutBg">
+      <div class="slickBg">
         <img src="../images/tutorial/tutIcons.png"/>
       </div>
-      <div class="tutText">
+      <div class="slickText">
       <h1>Onderweg</h1>
         <p>Dit zijn de verschillende iconen die je tegen gaat komen. </p>
       </div>
@@ -55,10 +55,10 @@
     </div>
     <div class="slickContent">
 
-      <div class="tutBg2">
+      <div class="slickBg2">
         <img src="../images/tutorial/tut3v2.png"/>
       </div>
-      <div class="tutText">
+      <div class="slickText">
       <h1>Terug naar Auto</h1>
         <p>Wanneer je op dit icoon klikt ga je terug naar waar jij zelf bent!</p>
 
@@ -68,10 +68,10 @@
     </div>
     <div class="slickContent">
 
-      <div class="tutBg">
+      <div class="slickBg">
         <img src="../images/tutorial/buddies.png"/>
       </div>
-      <div class="tutText">
+      <div class="slickText">
       <h1>Rijden maarrr!</h1>
         <p>Jij bent hier helemaal klaar voor. Veel plezier onderweg!</p>
 

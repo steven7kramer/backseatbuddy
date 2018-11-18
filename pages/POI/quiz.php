@@ -6,7 +6,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>Backseat Buddy - Prototype | Game</title>
+    <title>Backseat Buddy - Prototype | Quiz</title>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../../../css/quiz.css">
@@ -19,6 +19,7 @@
     <!-- Javascript -->
     <script src="../../../js/BackseatNAV.js"></script>
 		<!--<script src="../../../js/BackseatCheck.js"></script>-->
+		
 </head>
 
 <body>
