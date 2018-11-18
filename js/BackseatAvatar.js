@@ -26,16 +26,16 @@ function BackseatAvatar(id) {
     }
 
     // Retrieve properties
-    object.properties = retrieveAvatarsProperties(id);
+    object.properties = getPropertiesFromDatabase(id);
 
     // Draws the image to the screen
-    object.getImage = function(parent) {
+    object.display = function(parent) {
         if (object.svg === undefined) {
             object.svg = null;
         }
 
-        var htmlString = "<img />";
-        jQuery(parent).append(htmlString);
+        var htmlString = "<img src='https://www.w3schools.com/html/img_girl.jpg' alt='Girl in a jacket' style='width:500px;height:600px;'>";
+        return htmlString;
     }
 
     return object;

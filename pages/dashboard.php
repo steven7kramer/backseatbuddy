@@ -22,6 +22,7 @@
         <!-- Javascript -->
         <script src="../js/BackseatNAV.js"></script>
         <script src="../js/BackseatCollectibles.js"></script>
+        <script src="../js/BackseatAvatar.js"></script>
 
     </head>
 
@@ -31,6 +32,17 @@
         <?php include("includes/menu.php") ?>
 
         <div class="container">
+
+            <h2 class="no-margin-bottom">User information</h2>
+            <hr class="divider"/>
+
+            <div id="backseat-avatar">
+                <script>
+                    var avatar = new BackseatAvatar();
+                    jQuery("#backseat-avatar").append(avatar.display());
+                </script>
+            </div>
+
             <h2 class="no-margin-bottom">Highscores</h2>
             <hr class="divider"/>
 
