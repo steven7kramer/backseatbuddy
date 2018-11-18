@@ -17,6 +17,7 @@
 
         <!-- Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="../lib/SVG/svg.min.js"></script>
         <!--<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">-->
 
         <!-- Javascript -->
@@ -36,7 +37,8 @@
             <h2 class="no-margin-bottom">User information</h2>
             <hr class="divider"/>
 
-            <div id="backseat-avatar">
+            <!--  Draw an avatar -->
+            <div id="bsb-avatar-drawing">
                 <script>
                     var avatar = new BackseatAvatar();
                 </script>

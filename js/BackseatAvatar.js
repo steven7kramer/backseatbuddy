@@ -72,10 +72,10 @@ function getPropertiesFromDatabase(avatar) {
  * @return HTML element to add
  */
 function display(avatar) {
-    console.log("Reached the display for Avatar: ");
-    console.log(avatar);
-    // var el = document.getElementById('backseat-avatar');
-    // el.innerHTML = htmlString;
+
+    // SVG.js
+    var draw = SVG('bsb-avatar-drawing'),
+    rect = draw.rect(100, 100).fill('#f06');
 }
 
 /**
