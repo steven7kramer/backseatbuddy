@@ -73,9 +73,19 @@ function getPropertiesFromDatabase(avatar) {
  */
 function display(avatar) {
 
-    // SVG.js
-    var draw = SVG('bsb-avatar-drawing'),
-    rect = draw.rect(100, 100).fill('#f06');
+    // Documentation: https://svgjs.com/docs/2.7/getting-started/
+
+    // Create the canvas
+    var draw = SVG('bsb-avatar-drawing').size(100, 100);
+    // Add a background
+    var background = draw.rect(100, 100).fill('#f06');
+
+    // Add sunglasses
+    if (avatar.aGlasses != "none") {
+        draw.rect(30, 30).fill('#00').move(10, 20);
+        draw.rect(30, 30).fill('#00').move(60, 20);
+        draw.rect(100, 10).fill('#00').move(0, 30);
+    }
 }
 
 /**
