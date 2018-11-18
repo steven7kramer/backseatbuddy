@@ -39,7 +39,6 @@
             <div id="backseat-avatar">
                 <script>
                     var avatar = new BackseatAvatar();
-                    jQuery("#backseat-avatar").append(avatar.display());
                 </script>
             </div>
 

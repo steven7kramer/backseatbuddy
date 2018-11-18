@@ -13,41 +13,40 @@
  * @author Cas Wognum
  * @constructor
  */
-function BackseatAvatar(id) {
+function BackseatAvatar() {
 
     /**
      * Contains all data for this object
      */
     var object = {};
 
-    // If no ID is given, get the ID
-    if (id === undefined) {
-        id = getAvatarID();
-    }
+    /**
+     * The identifier of this Avatar object. Corresponds to the DB id
+     */
+    object.id;
 
-    // Retrieve properties
-    object.properties = getPropertiesFromDatabase(id);
+    /**
+     * Contains all properties of this Avatar object
+     */
+    object.properties;
 
-    // Draws the image to the screen
-    object.display = function(parent) {
-        if (object.svg === undefined) {
-            object.svg = null;
-        }
-
-        var htmlString = "<img src='https://www.w3schools.com/html/img_girl.jpg' alt='Girl in a jacket' style='width:500px;height:600px;'>";
-        return htmlString;
-    }
-
+    getAvatarID(this);
     return object;
 }
 
 /**
  * Retrieves the avatar ID based on the currently logged in user
- *
- * @return int the identifier of the user's avatar
  */
-function getAvatarID() {
-    return -1;
+function getAvatarID(avatar) {
+    var requestData = {functionname: "findAvatarID"};
+    var request = constructAJAXRequest(requestData, "BackseatDB.php");
+
+    request.success = function(response) {
+        avatar.id = response.aID;
+        getPropertiesFromDatabase(avatar);
+    }
+
+    jQuery.ajax(request);
 }
 
 /**
@@ -57,8 +56,26 @@ function getAvatarID() {
  * @param  int id Identifier of the Avatar in the Avatar Table in the database
  * @return JSON object with all the character's properties
  */
-function getPropertiesFromDatabase(id) {
-    return null;
+function getPropertiesFromDatabase(avatar) {
+    var requestData = { aID: avatar.id, functionname: "getAvatarProperties"};
+    var request = constructAJAXRequest(requestData, "BackseatDB.php");
+
+    request.success = function(response) {
+        display(response);
+    }
+
+    jQuery.ajax(request);
+}
+
+/**
+ * Displays an avatar
+ * @return HTML element to add
+ */
+function display(avatar) {
+    console.log("Reached the display for Avatar: ");
+    console.log(avatar);
+    // var el = document.getElementById('backseat-avatar');
+    // el.innerHTML = htmlString;
 }
 
 /**
@@ -67,8 +84,35 @@ function getPropertiesFromDatabase(id) {
  * @param JSON The data object to be send to the PHP file
  * @param String Name of the PHP file
  *
- * @return JSON Object with the response
+ * @return JSON Object with the response or false on failure
  */
-function sendAJAXRequest(data, phpFile) {
-    return null;
+function constructAJAXRequest(data, phpFile) {
+
+    if (phpFile === undefined || typeof(phpFile) !== "string") {
+        console.error("BackseatAvatar.sendAJAXRequest() failed: The PHP file was not properly defined");
+        return false;
+    }
+
+    if (data === undefined || typeof(data) !== "object") {
+        console.error("BackseatAvatar.sendAJAXRequest() failed: The data object was not properly defined");
+        return false;
+    }
+
+    if (phpFile.substring(phpFile.length - 4, phpFile.length) !== ".php") {
+        phpFile.concat(".php");
+    }
+
+    var response = {
+        type: "POST",
+        url: "../../php/" + phpFile,
+        datatype: 'json',
+        data: data,
+
+        fail: function(responseData, textstatus) {
+            console.error("BackseatAvatar.sendAJAXRequest() failed: Sending the AJAX request failed" +
+            " with the following status: " + textstatus);
+        }
+    };
+
+    return response;
 }

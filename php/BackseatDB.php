@@ -113,6 +113,21 @@ if (!isset($result['error'])) {
                 tutorialEndButton();
             }
             break;
+        case 'findAvatarID':
+            if (isset($_POST['aID'])) {
+                return $_POST['aID'];
+            }
+            else {
+                if (connect()) {
+                    findAvatarID();
+                }
+            }
+            break;
+        case 'getAvatarProperties':
+            if (connect()) {
+                getAvatarProperties();
+            }
+            break;
         default:
             $result['error'] = 'Specified function not found';
             break;
@@ -489,5 +504,40 @@ function tutorialEndButton(){
   }
 
   $GLOBALS["result"]["tutorialDoneCheck"] = $result->fetch_assoc()['tutorialDone'];
+}
+
+function getAvatarProperties() {
+    $query = sprintf("SELECT * FROM Avatars
+              WHERE aID = %d",
+              $_POST['aID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_array($result);
+        $GLOBALS["result"] = $row;
+    }
+}
+
+function findAvatarID() {
+    $query = sprintf("SELECT aID FROM Users
+              WHERE uID = %d",
+              $_SESSION['uID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+
+    $GLOBALS["result"]["aID"] = $result->fetch_assoc()['aID'];
 }
 ?>
