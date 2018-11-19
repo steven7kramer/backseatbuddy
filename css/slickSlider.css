@@ -18,24 +18,19 @@
 	width:50px;
 	margin:0 auto;
 }
-.slickBg{
-	background-color:#1d71b8;
-	background-image: url('../images/slickorial/doodlebg.png');
+.slickBg, .slickBg2{
 	padding:30 40 0;
 	max-height:80%;
+	background-image: url('../images/tutorial/doodlebg.png');
 }
-.slickBg img{
-	max-width:100%;
-	margin:0 auto;
-	padding:50px 0px 0px 0px;
+
+.slickBg{
+	background-color:#1d71b8;
 }
 .slickBg2{
 	background-color:#e83273;
-	background-image: url('../images/slickorial/doodlebg.png');
-	padding:30 40 0;
-	max-height:80%;
 }
-.slickBg2 img{
+.slickBg img, .slickBg2 img{
 	max-width:100%;
 	margin:0 auto;
 	padding:50px 0px 0px 0px;
