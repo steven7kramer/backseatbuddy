@@ -549,11 +549,11 @@ function findAvatarID() {
 }
 
 function infoPointLoader(){
-  $table1 = "InfoPoints IP";
-  $table2 = "InfoSlides SL";
-  $table3 = "InfoRelation";
+  $table1 = "InfoRelation IR";
+  $table2 = "InfoPoints";
+  $table3 = "InfoSlides";
 
-  $query = sprintf("SELECT * FROM %s, %s WHERE (%d, SL.isID) IN (SELECT * FROM %s)", $table1, $table2, $_POST['isID'], $table3);
+  $query = sprintf("SELECT * FROM %s NATURAL JOIN %s NATURAL JOIN %s WHERE IR.ipID = %d", $table1, $table2, $table3, $_POST['ipID']);
   $result = mysqli_query($GLOBALS['link'], $query);
 
   if (!$result) {
@@ -565,7 +565,6 @@ function infoPointLoader(){
   while ($row = $result -> fetch_assoc()) {
       array_push($GLOBALS['infoPoints'], $row);
   }
-
 
   mysqli_free_result($result);
 }
