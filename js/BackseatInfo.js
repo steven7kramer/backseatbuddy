@@ -1,5 +1,3 @@
-var getUrl = getURLParameter('id');
-
 function getURLParameter(sParam)
 {
     var sPageURL = window.location.search.substring(1);
@@ -16,37 +14,27 @@ function getURLParameter(sParam)
     return -1;
 }
 
-var infoUrlLoader = ['valkenburg','brittenburg'];
-var infoHeaderBG = ['landen.jpg','brittenburg.jpg'];
-var titleArray = [
-['Hoi!','Tweede Wereldoorlog','Toch proberen te landen...','Omleiding','Wat is er nu?'],
-['Hoi!','De Limes','Onderzoek','De Restanten'],
-];
+jQuery(document).ready(function(){
+  var contentID = getURLParameter('id');
 
-var imageArray = [
-['sofieTulp2.png','wo2.jpg','landen2.jpg','vliegtuigen.jpg','soldaatoranje.jpg'],
-['sofieTulp2.png','limes.png','tekening.jpg','resten.jpg'],
-];
+  jQuery.ajax({
+      type: "POST",
+      url: "../../php/BackseatDB.php",
+      datatype: 'json',
+      data: {functionname: 'infoPointLoader', ipID:contentID},
 
-var descrArray = [
-['Welkom bij Vliegveld Valkenburg. Dit kleine tweebaans vliegveld kent een bijzondere geschiedenis na de bouw in 1939. Swipe naar links om deze te ontdekken!','Tijdens de Tweede Wereldoorlog is dit vliegveld in handen gevallen van de Duitsers. Dit vliegveld was alleen helemaal nog niet voltooid! Hier waren de Duitsers niet van op de hoogte en gingen dit vliegveld alsnog gebruiken voor transport van mensen en materialen...','Het landen van de zware vliegtuigen op de nog onvoltooide landingsbaan ging niet volgens plan. Doordat de grond te zacht was strandde het eerste vliegtuig al halverwege de landingsbaan. Het tweede vliegtuig volgde door een druk tijdschema al snel, zonder te weten dat er nog een vliegtuig vast stond op de landingsbaan. Deze botsten dus op grote snelheid, evenals een aantal van de volgende vliegtuigen. Dit ging niet helemaal lekker dus!','Toen de Duitsers er eindelijk achterkwamen dat de landingsbaan nog niet geschikt was om op te landen, besloten ze de missie nog niet af te lasten. Het was namelijk erg belangrijk voor ze om snel het kabinet in Den Haag gevangen te nemen om zo de belangrijkste invloeden binnen Nederland onschadelijk te maken. Daarom maakten de aankomende vliegtuigen een noodlanding op het strand van Scheveningen.','Het vliegveld is tijdens en na de oorlog veelvuldig gebruikt. Momenteel zijn de landingsbanen al sinds 2010 buiten gebruik en wordt een hangar gebruikt voor een musical. Vanaf 2020 zal dit vliegveld verdwijnen en zullen er woonwijken voor in de plaats komen.'],
-['Welkom bij Brittenburg, de Romeinse ruïne van een limesvesting. Swipe naar links om hier meer over te weten te komen!','De limes (Latijn voor "grens") is de aanduiding van de grens en verdedigingszone van het Romeinse Rijk, hoofdzakelijk gebouwd in de periode 40 na Chr - ca 250 na Chr. Deze liep van de atlantische kust in Noord- Engeland via de Noordzee langs de toenmalige hoofdstroom van de Rijn en Donau naar de Zwarte Zee.','Recent archeologisch onderzoek op de plaats waar de Brittenburg volgens recente gegevens kan liggen heeft niets opgeleverd. Wel zijn in 1982 bij het uitgraven van de huidige Uitwateringssluizen duidelijke aanwijzingen gevonden voor een Romeinse nederzetting, die mogelijk verband houdt met Lugdunum Batavorum.','De resten van dit castellum liggen tegenwoordig, door het terugwijken van de kustlijn, in zee. Nog tot in de twintigste eeuw zouden er bij extreem laag water resten van dit castellum (vanaf de zestiende eeuw de Brittenburg genoemd) te zien zijn geweest. De zee heeft waarschijnlijk de laatste resten weggespoeld, en wie tegenwoordig over het strand van Noordwijk naar de uitwatering bij Katwijk loopt zal zich moeilijk kunnen voorstellen dat daar ergens in zee ooit het eindpunt lag van de Romeinse limes, het imposante castellum Lugdunum.'],
-];
+      success: function(data) {
+          if (!('error' in data)) {
+              showInfo(data);
+              console.log(data);
+          }
+      }
+  });
+});
 
 var infoContainer = document.getElementById('infoContainer');
 
-const infoToLoad = infoUrlLoader.findIndex(infoNumber => {
-	return infoNumber === getUrl;
-});
-
-//controle wanneer geen van de infoUrlLoader gelijk is aan getUrl
-if(infoToLoad == -1){
-    infoContainer.innerHTML = 'Er is iets misgegaan met het inladen van dit infowindow. <a href="https://caswognum.nl/">Ga terug naar de map</a> en probeer het nog een keer!';
-}else{
-    showInfo();
-}
-
-function showInfo(){
+function showInfo(data){
 		// we'll need a place to store all separate elements and the eventual output
 		var output = [];
     var headerImg = [];
@@ -54,36 +42,36 @@ function showInfo(){
     var pDescr = [];
 
     //add right image per page
-		for(let i=0; i<imageArray[infoToLoad].length; i++){
+		for(let i=0; i<data.infoPoints.length; i++){
 			headerImg.push(
-				imageArray[infoToLoad][i]
+				data.infoPoints[i].isImg
 			);
 		}
 
     //add right title per page
-		for(let j=0; j<titleArray[infoToLoad].length; j++){
+		for(let j=0; j<data.infoPoints.length; j++){
 			h1Title.push(
-				titleArray[infoToLoad][j]
+				data.infoPoints[j].isTitle
 			);
 		}
 
     //add right description per page
-		for(let k=0; k<descrArray[infoToLoad].length; k++){
+		for(let k=0; k<data.infoPoints.length; k++){
 			pDescr.push(
-				descrArray[infoToLoad][k]
+				data.infoPoints[k].isDescr
 			);
 		}
 
 			// add this question and its answers to the output
       // titleArray is used, but it could have been any array, it's only the length that matters
       output.push('<div class="responsive contentHeight">');
-      var imageUrl = "'../../images/POI/infowindow" + (infoToLoad + 1) + '/' + infoHeaderBG[infoToLoad] + "'";
+      var imageUrl = "'../../images/POI/infowindow" + (data.infoPoints[0].ipID) + '/' + (data.infoPoints[0].ipBgImg) + "'";
 
-      for(let l=0; l<titleArray[infoToLoad].length; l++){
+      for(let l=0; l<data.infoPoints.length; l++){
         output.push(
           '<div class="slickContent">'
           +  '<div class="slickBgInfo" style="background-image:url(' + imageUrl + ')">'
-          +    '<img src="../../images/POI/infowindow' + (infoToLoad + 1) + '/' + headerImg[l] + '" />'
+          +    '<img src="../../images/POI/infowindow' + (data.infoPoints[0].ipID) + '/' + headerImg[l] + '" />'
           +  '</div>'
           +  '<div class="slickText">'
           +    '<h1>' + h1Title[l] + '</h1>'
@@ -92,7 +80,7 @@ function showInfo(){
         if(l==0){//voeg swipeImage toe op eerste pagina
           output.push('<img src="../../images/tutorial/swipeLeft.png" class="swipeImg" />');
         }
-        if(l==(titleArray[infoToLoad].length-1)){ //voeg naar kaart button toe op laatste pagina
+        if(l==(data.infoPoints.length-1)){ //voeg naar kaart button toe op laatste pagina
           output.push('<div id="slickEnd"><a href="../../index.php"><i class="fa fa-map-o"></i>Terug naar de kaart</a></div>');
         }
         output.push(
@@ -105,8 +93,19 @@ function showInfo(){
   output.push('</div>');
   // finally combine our output list into one string of html and put it on the page
   infoContainer.innerHTML = output.join('');
-  console.log("reached A");
+
+//load slick.js
+    console.log("Reached b");
+  $('.responsive').slick({
+      dots: true,
+      infinite: false,
+      speed: 300,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      });
 }
+
+
 
 function saveCoins(coins){
 	jQuery.ajax({
@@ -124,5 +123,3 @@ function saveCoins(coins){
 		        }
 		    });
 }
-
-var checkIfLoaded = true;

@@ -27,24 +27,8 @@
 
     <div id="infoContainer"></div>
 
+    <script type="text/javascript" src="../../lib/Slick/slick/slick.min.js"></script>
     <script type="text/javascript" src="../../js/BackseatInfo.js"></script>
-
-
-  <script type="text/javascript" src="../../lib/Slick/slick/slick.min.js"></script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-
-console.log("Reached b");
-    $('.responsive').slick({
-        dots: true,
-        infinite: false,
-        speed: 300,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        });
-    });
-  </script>
 
   </body>
 </html>

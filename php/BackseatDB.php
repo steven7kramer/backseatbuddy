@@ -8,6 +8,7 @@ $result = array();
 $points = array();
 $collectibles = array();
 $highscores = array();
+$infoPoints = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -126,6 +127,12 @@ if (!isset($result['error'])) {
         case 'getAvatarProperties':
             if (connect()) {
                 getAvatarProperties();
+            }
+            break;
+        case 'infoPointLoader':
+            if (connect()) {
+                infoPointLoader();
+                $result['infoPoints'] = $GLOBALS['infoPoints'];
             }
             break;
         default:
@@ -539,5 +546,26 @@ function findAvatarID() {
     }
 
     $GLOBALS["result"]["aID"] = $result->fetch_assoc()['aID'];
+}
+
+function infoPointLoader(){
+  $table1 = "InfoRelation IR";
+  $table2 = "InfoPoints";
+  $table3 = "InfoSlides";
+
+  $query = sprintf("SELECT * FROM %s NATURAL JOIN %s NATURAL JOIN %s WHERE IR.ipID = %d", $table1, $table2, $table3, $_POST['ipID']);
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['infoPoints'], $row);
+  }
+
+  mysqli_free_result($result);
 }
 ?>
