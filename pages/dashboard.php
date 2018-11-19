@@ -17,11 +17,14 @@
 
         <!-- Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="../lib/SVG/svg.min.js"></script>
         <!--<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">-->
 
         <!-- Javascript -->
         <script src="../js/BackseatNAV.js"></script>
         <script src="../js/BackseatCollectibles.js"></script>
+        <script src="../js/Avatar/BackseatAvatar.js"></script>
+        <script src="../js/Avatar/BackseatPainter.js"></script>
 
     </head>
 
@@ -31,6 +34,17 @@
         <?php include("includes/menu.php") ?>
 
         <div class="container">
+
+            <h2 class="no-margin-bottom">User information</h2>
+            <hr class="divider"/>
+
+            <!--  Draw an avatar -->
+            <div id="bsb-avatar-drawing">
+                <script>
+                    var avatar = new BackseatAvatar(150, "bsb-avatar-drawing");
+                </script>
+            </div>
+
             <h2 class="no-margin-bottom">Highscores</h2>
             <hr class="divider"/>
 
