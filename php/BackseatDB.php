@@ -8,6 +8,7 @@ $result = array();
 $points = array();
 $collectibles = array();
 $highscores = array();
+$infoPoints = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -126,6 +127,12 @@ if (!isset($result['error'])) {
         case 'getAvatarProperties':
             if (connect()) {
                 getAvatarProperties();
+            }
+            break;
+        case 'infoPointLoader':
+            if (connect()) {
+                infoPointLoader();
+                $result['infoPoints'] = $GLOBALS['infoPoints'];
             }
             break;
         default:
@@ -539,5 +546,27 @@ function findAvatarID() {
     }
 
     $GLOBALS["result"]["aID"] = $result->fetch_assoc()['aID'];
+}
+
+function infoPointLoader(){
+  $table1 = "InfoPoints IP";
+  $table2 = "InfoSlides SL";
+  $table3 = "InfoRelation";
+
+  $query = sprintf("SELECT * FROM %s, %s WHERE (%d, SL.isID) IN (SELECT * FROM %s)", $table1, $table2, $_POST['isID'], $table3);
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['infoPoints'], $row);
+  }
+
+
+  mysqli_free_result($result);
 }
 ?>

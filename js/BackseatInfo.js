@@ -24,8 +24,9 @@ jQuery(document).ready(function(){
       data: {functionname: 'infoPointLoader', isID:contentID},
 
       success: function(data) {
-          if !('error' in data) {
-              showInfo(data);
+          if (!('error' in data)) {
+              //showInfo(data);
+              console.log(data);
           }
       }
   });
