@@ -67,14 +67,7 @@
 
 /*InfoWindow edit */
 .slickBgInfo{
-	background-image: url('../images/POI/infowindow1/landen.jpg');
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-size: cover;
-	padding:20 40 20;
-}
-.slickBgInfo2{
-	background-image: url('../images/POI/infowindow2/opbouw.jpg');
+	/*background-image: url('../images/POI/infowindow1/landen.jpg');*/
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-size: cover;
