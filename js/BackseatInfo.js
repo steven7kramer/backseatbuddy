@@ -25,7 +25,7 @@ jQuery(document).ready(function(){
 
       success: function(data) {
           if (!('error' in data)) {
-              //showInfo(data);
+              showInfo(data);
               console.log(data);
           }
       }
@@ -62,36 +62,36 @@ function showInfo(data){
     var pDescr = [];
 
     //add right image per page
-		for(let i=0; i<imageArray[infoToLoad].length; i++){
+		for(let i=0; i<data.infoPoints.length; i++){
 			headerImg.push(
-				imageArray[infoToLoad][i]
+				data.infoPoints[i].isImg
 			);
 		}
 
     //add right title per page
-		for(let j=0; j<titleArray[infoToLoad].length; j++){
+		for(let j=0; j<data.infoPoints.length; j++){
 			h1Title.push(
-				titleArray[infoToLoad][j]
+				data.infoPoints[j].isTitle
 			);
 		}
 
     //add right description per page
-		for(let k=0; k<descrArray[infoToLoad].length; k++){
+		for(let k=0; k<data.infoPoints.length; k++){
 			pDescr.push(
-				descrArray[infoToLoad][k]
+				data.infoPoints[k].isDescr
 			);
 		}
 
 			// add this question and its answers to the output
       // titleArray is used, but it could have been any array, it's only the length that matters
       output.push('<div class="responsive contentHeight">');
-      var imageUrl = "'../../images/POI/infowindow" + (infoToLoad + 1) + '/' + infoHeaderBG[infoToLoad] + "'";
+      var imageUrl = "'../../images/POI/infowindow" + (data.infoPoints[0].ipID) + '/' + (data.infoPoints[0].ipBgImg) + "'";
 
-      for(let l=0; l<titleArray[infoToLoad].length; l++){
+      for(let l=0; l<data.infoPoints.length; l++){
         output.push(
           '<div class="slickContent">'
           +  '<div class="slickBgInfo" style="background-image:url(' + imageUrl + ')">'
-          +    '<img src="../../images/POI/infowindow' + (infoToLoad + 1) + '/' + headerImg[l] + '" />'
+          +    '<img src="../../images/POI/infowindow' + (data.infoPoints[0].ipID) + '/' + headerImg[l] + '" />'
           +  '</div>'
           +  '<div class="slickText">'
           +    '<h1>' + h1Title[l] + '</h1>'
@@ -100,7 +100,7 @@ function showInfo(data){
         if(l==0){//voeg swipeImage toe op eerste pagina
           output.push('<img src="../../images/tutorial/swipeLeft.png" class="swipeImg" />');
         }
-        if(l==(titleArray[infoToLoad].length-1)){ //voeg naar kaart button toe op laatste pagina
+        if(l==(data.infoPoints.length-1)){ //voeg naar kaart button toe op laatste pagina
           output.push('<div id="slickEnd"><a href="../../index.php"><i class="fa fa-map-o"></i>Terug naar de kaart</a></div>');
         }
         output.push(
@@ -113,8 +113,19 @@ function showInfo(data){
   output.push('</div>');
   // finally combine our output list into one string of html and put it on the page
   infoContainer.innerHTML = output.join('');
-  console.log("reached A");
+
+//load slick.js
+    console.log("Reached b");
+  $('.responsive').slick({
+      dots: true,
+      infinite: false,
+      speed: 300,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      });
 }
+
+
 
 function saveCoins(coins){
 	jQuery.ajax({
@@ -132,5 +143,3 @@ function saveCoins(coins){
 		        }
 		    });
 }
-
-var checkIfLoaded = true;
