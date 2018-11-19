@@ -557,9 +557,9 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
                 if(pIcon == 2){
                     jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_') + '.php');
                 }else if(pIcon == 3){
-                    jQuery('#pButton').attr('href', '/pages/POI/info.php' + '?id=' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_'));
+                    jQuery('#pButton').attr('href', '/pages/POI/info.php' + '?id=' + loadLocationArray.contentID);
                 }else if(pIcon == 4){
-                    jQuery('#pButton').attr('href', '/pages/POI/quiz.php' + '?id=' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_'));
+                    jQuery('#pButton').attr('href', '/pages/POI/quiz.php' + '?id=' + loadLocationArray.contentID);
                 }
                 jQuery('#pButton').html('GA NAAR ' + loadLocationArray.pTitle.toUpperCase() + ' &#8594;');
                 jQuery('#pButton').removeClass('not-active');
