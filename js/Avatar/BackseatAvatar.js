@@ -13,12 +13,25 @@
  * @author Cas Wognum
  * @constructor
  */
-function BackseatAvatar() {
+function BackseatAvatar(size, container) {
 
     /**
      * Contains all data for this object
      */
     var object = {};
+
+    // Robustness tests:
+    // Check whether the size variable is properly defined
+    if (typeof(size) !== "number" || size <= 0) {
+        console.error("BackseatAvatar() failed: " + size + " is not a valid size.");
+        return false;
+    }
+
+    // Check whether the container variable is properly defined
+    if (typeof(container) !== "string") {
+        console.error("BackseatAvatar() failed: " + container + " is not a valid container name.");
+        return false;
+    }
 
     /**
      * The identifier of this Avatar object. Corresponds to the DB id
@@ -26,11 +39,20 @@ function BackseatAvatar() {
     object.id;
 
     /**
+     * Stores the location in HTML of where to draw
+     */
+    object.container = container;
+
+    /**
+     * Stores the size of the SVG
+     */
+    object.size = size;
+
+    /**
      * Contains all properties of this Avatar object
      */
     object.properties;
-
-    getAvatarID(this);
+    getAvatarID(object);
     return object;
 }
 
@@ -61,7 +83,8 @@ function getPropertiesFromDatabase(avatar) {
     var request = constructAJAXRequest(requestData, "BackseatDB.php");
 
     request.success = function(response) {
-        display(response);
+        avatar.properties = { aID:response.aID, aGlasses:response.aGlasses};
+        display(avatar);
     }
 
     jQuery.ajax(request);
@@ -72,20 +95,10 @@ function getPropertiesFromDatabase(avatar) {
  * @return HTML element to add
  */
 function display(avatar) {
-
-    // Documentation: https://svgjs.com/docs/2.7/getting-started/
-
-    // Create the canvas
-    var draw = SVG('bsb-avatar-drawing').size(100, 100);
-    // Add a background
-    var background = draw.rect(100, 100).fill('#f06');
-
-    // Add sunglasses
-    if (avatar.aGlasses != "none") {
-        draw.rect(30, 30).fill('#00').move(10, 20);
-        draw.rect(30, 30).fill('#00').move(60, 20);
-        draw.rect(100, 10).fill('#00').move(0, 30);
-    }
+    var painter = new BackseatPainter(avatar.size, avatar.container);
+    painter.drawFace();
+    console.log(avatar);
+    painter.drawGlasses(avatar.properties.aGlasses);
 }
 
 /**

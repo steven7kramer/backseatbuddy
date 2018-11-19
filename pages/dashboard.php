@@ -23,7 +23,8 @@
         <!-- Javascript -->
         <script src="../js/BackseatNAV.js"></script>
         <script src="../js/BackseatCollectibles.js"></script>
-        <script src="../js/BackseatAvatar.js"></script>
+        <script src="../js/Avatar/BackseatAvatar.js"></script>
+        <script src="../js/Avatar/BackseatPainter.js"></script>
 
     </head>
 
@@ -40,7 +41,7 @@
             <!--  Draw an avatar -->
             <div id="bsb-avatar-drawing">
                 <script>
-                    var avatar = new BackseatAvatar();
+                    var avatar = new BackseatAvatar(150, "bsb-avatar-drawing");
                 </script>
             </div>
 
