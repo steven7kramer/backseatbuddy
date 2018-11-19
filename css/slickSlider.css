@@ -18,35 +18,30 @@
 	width:50px;
 	margin:0 auto;
 }
-.tutBg{
+.slickBg, .slickBg2{
+	padding:30 40 0;
+	max-height:80%;
+	background-image: url('../images/tutorial/doodlebg.png');
+}
+
+.slickBg{
 	background-color:#1d71b8;
-	background-image: url('../images/tutorial/doodlebg.png');
-	padding:30 40 0;
-	max-height:80%;
 }
-.tutBg img{
-	max-width:100%;
-	margin:0 auto;
-	padding:50px 0px 0px 0px;
-}
-.tutBg2{
+.slickBg2{
 	background-color:#e83273;
-	background-image: url('../images/tutorial/doodlebg.png');
-	padding:30 40 0;
-	max-height:80%;
 }
-.tutBg2 img{
+.slickBg img, .slickBg2 img{
 	max-width:100%;
 	margin:0 auto;
 	padding:50px 0px 0px 0px;
 }
-.tutText{
+.slickText{
 	margin:0 0 40 0;
 }
-#tutEnd{
+#slickEnd{
 	margin:40px 0px 0px 0px;
 }
-#tutEnd a{
+#slickEnd a{
 	background-color:#1d71b8;
 	color:white;
 	border-radius:20px;
@@ -56,31 +51,24 @@
 	-webkit-transition: opacity .1s; /* Safari */
     transition: opacity .1s;
 }
-#tutEnd a:hover{
+#slickEnd a:hover{
 	opacity:0.75;
 }
-#tutEnd i{
+#slickEnd i{
 	color:white;
 	font-size:24px;
 	margin-right:20px;
 }
 
 /*InfoWindow edit */
-.tutBgInfo1{
-	background-image: url('../images/POI/infowindow1/landen.jpg');
+.slickBgInfo{
+	/*background-image: url('../images/POI/infowindow1/landen.jpg');*/
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-size: cover;
 	padding:20 40 20;
 }
-.tutBgInfo2{
-	background-image: url('../images/POI/infowindow2/opbouw.jpg');
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-size: cover;
-	padding:20 40 20;
-}
-.tutBgInfo1 img, .tutBgInfo2 img{
+.slickBgInfo img, .slickBgInfo2 img{
 	max-width:100%;
 	max-height:350px;
 	margin:0 auto;

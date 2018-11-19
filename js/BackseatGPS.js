@@ -17,8 +17,7 @@
     2 = game
     3 = infoinfoWindow
     4 = quiz
-    6 = je mist 5
-    7 = je bent nogsteeds 5 kwijt
+
 -------------------------------------------------------------------
 
 */
@@ -555,10 +554,11 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
 
             if (pIcon != 0 && pIcon != 1){
                 addThirtyMinutesToDatabase(loadLocationArray.pID);
-                if(pIcon != 4){
+                if(pIcon == 2){
                     jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_') + '.php');
-                }else{
-                    //jQuery('#pButton').attr('href', '/pages/POI/quiz/' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_') + '.php');
+                }else if(pIcon == 3){
+                    jQuery('#pButton').attr('href', '/pages/POI/info.php' + '?id=' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_'));
+                }else if(pIcon == 4){
                     jQuery('#pButton').attr('href', '/pages/POI/quiz.php' + '?id=' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_'));
                 }
                 jQuery('#pButton').html('GA NAAR ' + loadLocationArray.pTitle.toUpperCase() + ' &#8594;');
