@@ -87,12 +87,19 @@ function showInfo(){
           +  '<div class="slickText">'
           +    '<h1>' + h1Title[l] + '</h1>'
           +    '<p>' + pDescr[l] + '</p>'
-          +  '</div>'
-          +'</div>'
   			);
+        if(l==0){//voeg swipeImage toe op eerste pagina
+          output.push('<img src="../../images/tutorial/swipeLeft.png" class="swipeImg" />');
+        }
+        if(l==(titleArray[infoToLoad].length-1)){ //voeg naar kaart button toe op laatste pagina
+          output.push('<div id="slickEnd"><a href="../../index.php"><i class="fa fa-map-o"></i>Terug naar de kaart</a></div>');
+        }
+        output.push(
+        '</div>'
+        +'</div>'
+        )
 
-
-	}
+      }
 
   output.push('</div>');
   // finally combine our output list into one string of html and put it on the page

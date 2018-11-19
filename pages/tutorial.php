@@ -75,7 +75,7 @@
       <h1>Rijden maarrr!</h1>
         <p>Jij bent hier helemaal klaar voor. Veel plezier onderweg!</p>
 
-          <div id="tutEnd">
+          <div id="slickEnd">
             <a onClick="tutorialEndButton()"><i class="fa fa-car"></i> Zin in!</a>
 
 
