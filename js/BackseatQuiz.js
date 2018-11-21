@@ -15,15 +15,61 @@ function getURLParameter(sParam)
 
     return -1;
 }
+/*
+function getURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
 
-var questionUrlLoader = ['kruispunt_zoeterwoude','universiteit_rotterdam','nhh_bergen'];
-var questionArray = ['Tussen welke wegen wissel je op deze plek?','Langs welke universiteit rijd je nu?','Hoe heet Universiteit NHH in het Noors?'];
-var answerArray = [
-['A4 en N206','A1 en N207','N11 en A3','E3 en N201'],
-['Universiteit van Eindhoven','Technische Universiteit','Erasmus Universiteit','Universiteit van Rotterdam'],
-['Bedriftsadministrasjon','Norges Handels Høyskolen','Universitøt']
+    return -1;
+}
+
+jQuery(document).ready(function(){
+  var contentID = getURLParameter('id');
+
+  jQuery.ajax({
+      type: "POST",
+      url: "../../php/BackseatDB.php",
+      datatype: 'json',
+      data: {functionname: 'infoPointLoader', ipID:contentID},
+
+      success: function(data) {
+          if (!('error' in data)) {
+              showInfo(data);
+              console.log(data);
+          }
+      }
+  });
+});
+*/
+
+
+var questionUrlLoader = ['0','1','2'];
+var questionArray = [
+  ['Tussen welke wegen wissel je op deze plek?', 'Hoe voel je je daar bij?'],
+  ['Langs welke universiteit rijd je nu?'],
+  ['Hoe heet Universiteit NHH in het Noors?']
 ];
-var rightAnswersArray = [0,2,1];
+var answerArray = [
+  [['A4 en N206','A1 en N207','N11 en A3','E3 en N201'],['Best fijn','Matig','Bemoei je met je eigen gevoel joh']],
+  ['Universiteit van Eindhoven','Technische Universiteit','Erasmus Universiteit','Universiteit van Rotterdam'],
+  ['Bedriftsadministrasjon','Norges Handels Høyskolen','Universitøt']
+];
+
+var rightAnswersArray = [
+  [0,2],
+  [2],
+  [1]
+];
+
 
 var quizContainer = document.getElementById('quiz');
 var resultsContainer = document.getElementById('results');
@@ -44,70 +90,109 @@ function generateQuiz(getUrl, questionUrlLoader, questionArray, answerArray, rig
 	if(questionToLoad == -1){
 			quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. <a href="https://caswognum.nl/">Ga terug naar de map</a> en probeer het nog een keer!';
 			submitButton.parentNode.removeChild(submitButton);
-	}else{
+	}/*else{
 		if(quizesPlayed.includes(questionToLoad)){//controle of de vraag die geladen wordt niet al een keer gespeeld is
 			quizContainer.innerHTML = 'Deze quiz heb je al gespeeld. <a href="https://caswognum.nl/">Ga terug naar de map</a> en probeer het nog een keer!';
 			submitButton.parentNode.removeChild(submitButton);
-		}else{
+		}*/else{
 			showQuestions(questionArray,quizContainer, questionToLoad);
 		}
-	}
 
 	function showQuestions(questionArray, quizContainer){
 		// we'll need a place to store the output and the answer choices
 		var output = [];
-		var question = questionArray[questionToLoad];
+		var question = [];
 		var answers = [];
 
-		for(let j=0; j<answerArray[questionToLoad].length; j++){
-			answers.push(
-				'<div id="quizAnswer">'
-					+ '<label>'
-					+ '<input type="radio" name="answer">'
-					+  answerArray[questionToLoad][j]
-					+ '</label>'
-					+ '</div>'
-			);
+    // load right questions into the questionarray
+    for(let i=0; i<questionArray[questionToLoad].length; i++){
+      question.push(questionArray[questionToLoad][i]);
+    }
+
+    // load right answer into the answerarray
+		for(let i=0; i<answerArray[questionToLoad].length; i++){
+
+      //add array in the array to store the answers in
+      answers.push([]);
+
+      for(let j=0; j<answerArray[questionToLoad][i].length;j++){
+        answers[i].push(
+  				'<div id="quizAnswer">'
+  					+ '<label>'
+  					+ '<input class="answerinput" type="radio" name="question' + i + '" value="' + j + '">'
+  					+  answerArray[questionToLoad][i][j]
+  					+ '</label>'
+  					+ '</div>'
+  			);
+      }
 		}
 
-			// add this question and its answers to the output
-			output.push(
-				'<div class="question">' + question + '</div>'
-				+ '<div class="answers">' + answers.join("") + '</div>'
-			);
+		// add this question and its answers to the output
+    for(let i=0; i<questionArray[questionToLoad].length; i++){
+
+      output.push('<div class="question">' + question[i] + '</div>');
+
+      for(let j=0; j<answerArray[questionToLoad][i].length; j++){
+        output.push('<div class="answers">' + answers[i][j] + '</div>');
+      }
+    }
 
 		// finally combine our output list into one string of html and put it on the page
 		quizContainer.innerHTML = output.join('');
 	}
 
 	submitButton.onclick = function(){
-		showResults(answerArray, rightAnswersArray, quizContainer, resultsContainer);
+      showResults(answerArray, rightAnswersArray, quizContainer, resultsContainer);
 	}
 
 	function showResults(answerArray, rightAnswersArray, quizContainer, resultsContainer){
-		var userAnswer = document.getElementsByName('answer');
-		var pickedRight = undefined;
 
-		resultsContainer.innerHTML = 'Kies één van de opties!';
+    //make a variable to store all possible answers
+    var answerInputList = [];
 
-		for (var i = 0, length = userAnswer.length; i < length; i++) {
-    		if (userAnswer[i].checked) {
-        		if(i == rightAnswersArray[questionToLoad]){
-					pickedRight = true;
+    //find and store all possible answers
+    for(let i=0; i<questionArray[questionToLoad].length; i++){
+      answerInputList.push(document.getElementsByName('question' + i));
+    }
 
-				}else{
-					pickedRight = false;
-				}
-				designResultWindow(pickedRight);
-        		break;
-    		}
-		}
+    //make a variable to store the given answer values
+    var answerInput = [];
 
+    //find and store the given answer values
+    for(let i=0; i<answerInputList.length;i++){
+      for (let j = 0; j<answerInputList[i].length; j++){
+         if (answerInputList[i][j].checked){
+          answerInput.push(answerInputList[i][j].value);
 
+          //there can only be one answer per question, break out of the for loop if found
+          break;
+         }
+      }
+    }
+
+    // check if all questions are answered, if yes, call resultpage
+    // if there are not as many inputs as questions, a question is not answered
+    if(answerInput.length!=questionArray[questionToLoad].length){
+      resultsContainer.innerHTML = 'Je hebt nog niet op alle vragen antwoord gegeven!';
+    }else{
+      getResults(answerInput);
+    }
 	}
 }
 
-function designResultWindow(pickedRight){
+function getResults(answerInput){
+  let rightAnswers = 0;
+
+  for(let i=0; i<answerInput.length;i++){
+    if(answerInput[i]==rightAnswersArray[questionToLoad][i]){
+      rightAnswers++;
+    }
+  }
+
+  resultsContainer.innerHTML = 'Je hebt ' + rightAnswers + ' van de ' + answerInput.length + ' vragen goed beantwoord!';
+}
+
+function designResultWindow(){
 		quizContainer.innerHTML = '';
 		submitButton.parentNode.removeChild(submitButton);
 
