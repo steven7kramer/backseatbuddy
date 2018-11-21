@@ -46,25 +46,11 @@ function showInfo(data){
     var h1Title = [];
     var pDescr = [];
 
-    //add right image per page
+    //add right image, title and description per page
 		for(let i=0; i<data.infoPoints.length; i++){
-			headerImg.push(
-				data.infoPoints[i].isImg
-			);
-		}
-
-    //add right title per page
-		for(let j=0; j<data.infoPoints.length; j++){
-			h1Title.push(
-				data.infoPoints[j].isTitle
-			);
-		}
-
-    //add right description per page
-		for(let k=0; k<data.infoPoints.length; k++){
-			pDescr.push(
-				data.infoPoints[k].isDescr
-			);
+			headerImg.push(data.infoPoints[i].isImg);
+      h1Title.push(data.infoPoints[i].isTitle);
+      pDescr.push(data.infoPoints[i].isDescr);
 		}
 
 			// add this question and its answers to the output
