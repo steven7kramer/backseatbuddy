@@ -9,6 +9,7 @@ $points = array();
 $collectibles = array();
 $highscores = array();
 $infoPoints = array();
+$quizQuestion = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -135,6 +136,12 @@ if (!isset($result['error'])) {
                 $result['infoPoints'] = $GLOBALS['infoPoints'];
             }
             break;
+      case 'quizLoader':
+          if (connect()) {
+              quizLoader();
+              $result['quizQuestion'] = $GLOBALS['quizQuestion'];
+          }
+          break;
         default:
             $result['error'] = 'Specified function not found';
             break;
@@ -564,6 +571,30 @@ function infoPointLoader(){
 
   while ($row = $result -> fetch_assoc()) {
       array_push($GLOBALS['infoPoints'], $row);
+  }
+
+  mysqli_free_result($result);
+}
+
+function quizLoader(){
+  $table1 = "QuizContainer QC";
+  $table2 = "QuizQuestions QQ";
+  $table3 = "QuizAnswers QA";
+  $table4 = "QuizRelQuestions QRQ";
+  $table5 = "QuizRelAnswers QRA";
+
+  $query = sprintf("SELECT * FROM %s NATURAL JOIN %s NATURAL JOIN %s NATURAL JOIN %s NATURAL JOIN %s WHERE QC.qID = %d", $table1, $table2, $table3, $table4, $table5, $_POST['qID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['quizQuestion'], $row);
   }
 
   mysqli_free_result($result);

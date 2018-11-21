@@ -1,5 +1,3 @@
-var getUrl = 1;
-
 function getURLParameter(sParam)
 {
     var sPageURL = window.location.search.substring(1);

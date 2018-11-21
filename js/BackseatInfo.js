@@ -25,8 +25,12 @@ jQuery(document).ready(function(){
 
       success: function(data) {
           if (!('error' in data)) {
+            if(data.length == undefined){
+              infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Er is iets misgegaan met het inladen van de inhoud. Ga terug naar de map en probeer het nog een keer!</div> <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div></div>';
+            }else{
               showInfo(data);
               console.log(data);
+            }
           }
       }
   });
@@ -35,7 +39,8 @@ jQuery(document).ready(function(){
 var infoContainer = document.getElementById('infoContainer');
 
 function showInfo(data){
-		// we'll need a place to store all separate elements and the eventual output
+
+    // we'll need a place to store all separate elements and the eventual output
 		var output = [];
     var headerImg = [];
     var h1Title = [];
