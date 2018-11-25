@@ -41,13 +41,17 @@ jQuery(document).ready(function(){
 
 function generateQuiz(data, quizContainer, resultsContainer, submitButton){
 
-  let totalQuestions = 0;
+  //make array to store all question ID's
+  var totalQuestionArray = [];
+
+  //fill array with all question ID's
   for(let i=0;i<data.quizQuestion.length;i++){
-    //set totalQuestions to last found question number
-    totalQuestions = data.quizQuestion[i].questionID;
+    totalQuestionArray.push(data.quizQuestion[i].questionID);
   }
-  //since it will be used in a for loop, set it 1 higher than the questionID highest
-  totalQuestions++;
+
+  //find the length of the array when it only contains unique VALUES
+  //in other words; find the total amount of questions
+  var totalQuestions = totalQuestionArray.unique().length;
 
 	showQuestions(data, quizContainer);
 
@@ -103,12 +107,10 @@ function generateQuiz(data, quizContainer, resultsContainer, submitButton){
 
     //make a variable to store all possible answers
     var answerInputList = [];
-
     //find and store all possible answers
     for(let i=0; i<totalQuestions; i++){
-        answerInputList.push(document.getElementsByName('question' + i));
+        answerInputList.push(document.getElementsByName('question' + totalQuestionArray[i]));
     }
-
     //make a variable to store the given answer values
     var answerInput = [];
 
@@ -167,6 +169,23 @@ function designResultWindow(data, rightAnswers, totalAnswers){
 		resultHtml += '<div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>'
 
 		resultsContainer.innerHTML = resultHtml;
+}
+
+Array.prototype.contains = function(v) {
+    for(var i = 0; i < this.length; i++) {
+        if(this[i] === v) return true;
+    }
+    return false;
+};
+
+Array.prototype.unique = function() {
+    var arr = [];
+    for(var i = 0; i < this.length; i++) {
+        if(!arr.includes(this[i])) {
+            arr.push(this[i]);
+        }
+    }
+    return arr;
 }
 
 function saveCoins(coins){
