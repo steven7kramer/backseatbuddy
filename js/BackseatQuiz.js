@@ -39,8 +39,15 @@ jQuery(document).ready(function(){
   });
 });
 
-
 function generateQuiz(data, quizContainer, resultsContainer, submitButton){
+
+  let totalQuestions = 0;
+  for(let i=0;i<data.quizQuestion.length;i++){
+    //set totalQuestions to last found question number
+    totalQuestions = data.quizQuestion[i].questionID;
+  }
+  //since it will be used in a for loop, set it 1 higher than the questionID highest
+  totalQuestions++;
 
 	showQuestions(data, quizContainer);
 
@@ -67,7 +74,7 @@ function generateQuiz(data, quizContainer, resultsContainer, submitButton){
         answers.push(
   				'<div id="quizAnswer">'
   					+ '<label>'
-  					+ '<input class="answerinput" type="radio" name="question' + questionNo + '">'
+  					+ '<input class="answerinput" type="radio" name="question' + questionNo + '" value="'+ data.quizQuestion[i].rightAnswer + '">'
   					+  data.quizQuestion[i].answer
   					+ '</label>'
   					+ '</div>'
@@ -89,7 +96,7 @@ function generateQuiz(data, quizContainer, resultsContainer, submitButton){
 	}
 
 	submitButton.onclick = function(){
-      showResults(data, quizContainer, resultsContainer);
+      showResults(data, quizContainer, resultsContainer, totalQuestions);
 	}
 
 	function showResults(data, quizContainer, resultsContainer){
@@ -98,83 +105,68 @@ function generateQuiz(data, quizContainer, resultsContainer, submitButton){
     var answerInputList = [];
 
     //find and store all possible answers
-    for(let i=0; i<data.quizQuestion.length; i++){
-      answerInputList.push(document.getElementsByName('question' + i));
+    for(let i=0; i<totalQuestions; i++){
+        answerInputList.push(document.getElementsByName('question' + i));
     }
 
     //make a variable to store the given answer values
     var answerInput = [];
 
     //find and store the given answer values
-    for(let i=0; i<answerInputList.length;i++){
+    for(let i=0; i<totalQuestions;i++){
       for (let j = 0; j<answerInputList[i].length; j++){
          if(answerInputList[i][j].checked){
           answerInput.push(answerInputList[i][j].value);
-
-          //there can only be one answer per question, break out of the for loop if found
-          break;
          }
       }
     }
 
-    // check if all questions are answered, if yes, call resultpage
-    // if there are not as many inputs as questions, a question is not answered
-    if(data.quizQuestion.rightAnswer == 1){
-      //resultsContainer.innerHTML = 'Je hebt nog niet op alle vragen antwoord gegeven!';
-      //getResults(answerInput);
+    if(answerInput.length < totalQuestions){
+      resultsContainer.innerHTML = 'Je hebt nog niet alle vragen beantwoord!';
     }else{
-      
+      getResults(data, answerInput);
     }
 	}
 }
 
-function getResults(answerInput){
+function getResults(data, answerInput){
   let rightAnswers = 0;
   let totalAnswers = answerInput.length;
 
   for(let i=0; i<answerInput.length;i++){
-    if(answerInput[i]==rightAnswersArray[questionToLoad][i]){
+    if(answerInput[i]==1){
       rightAnswers++;
     }
   }
 
-  resultsContainer.innerHTML = 'Je hebt ' + rightAnswers + ' van de ' + totalAnswers + ' vragen goed beantwoord!';
-  //designResultWindow(rightAnswers, totalAnswers);
+  designResultWindow(data, rightAnswers, totalAnswers);
 
 }
 
-function designResultWindow(rightAnswers, totalAnswers){
+function designResultWindow(data, rightAnswers, totalAnswers){
 		quizContainer.innerHTML = '';
 		submitButton.parentNode.removeChild(submitButton);
 
     //make var to store the resulting text
 		let resultHtml = '';
+    let coinAmount = (rightAnswers*data.quizQuestion[0].coinAmount);
 
-		if(pickedRight){
-			resultHtml += '<h3>Dat is het juiste antwoord!</h3>';
-			resultHtml += '<p>Hiermee heb je 200 BackseatCoins bij elkaar gespeeld</p>'
-			resultHtml += '<img src="../../images/other/bsbCoin200.png" style="width:100px;">'
-
-			saveCoins(200);
+		if(rightAnswers){
+			resultHtml += '<h3>Heel goed gedaan!</h3>';
+      resultHtml += 'Je hebt ' + rightAnswers + ' van de ' + totalAnswers + ' vragen goed beantwoord!';
+			resultHtml += '<p>Hiermee heb je ' + coinAmount + ' BackseatCoins bij elkaar gespeeld</p>'
+      resultHtml += '<div id="coinDisplayContainer"><div id="coinDisplay"><img src="../../images/other/bsbCoin.png"></div> + ' + coinAmount + '</div>';
+			saveCoins(coinAmount);
 		}else{
-			resultHtml += '<h3>Dat is helaas niet juist</h3>';
+			resultHtml += '<h3>Helaas!</h3>';
+      resultHtml += 'Je hebt geen van de vragen juist beantwoord, en dus geen munten verdiend!';
 		}
 
-		if(questionToLoad == 0){
-			resultHtml += '<p> Je wisselt hier tussen de A4 en de N206. Je had dit kunnen weten door buiten op de groene bordjes langs de weg te kijken, door op de blauwe borden te kijken boven de weg, of door op de kaart te kijken van Backseat Buddy!</p>'
-			resultHtml += '<img src="../../images/POI/quiz/afslagResult.jpg" style="width:300px; margin:0 auto;">'
-		}else if(questionToLoad == 1){
-			resultHtml += '<p> Hier staat de prestigieuze Erasmus Universiteit! Je had dit kunnen zien op het gebouw in de onderstaande afbeelding, of op de blauwe borden boven de weg.</p>'
-			resultHtml += '<img src="../../images/POI/quiz/uniRotResult.jpg" style="width:300px; margin:0 auto;">'
-		}else if(questionToLoad == 2){
-			resultHtml += '<p> De letters NHH staan voor de eerste letters van Norges Handels Høyskolen, wat "Noorse hogeschool voor de handel" betekend.</p>'
-			resultHtml += '<img src="../../images/POI/quiz/uniBergenResult.jpg" style="width:300px; margin:0 auto;">'
-		}
-
+    resultHtml += '<p>' + data.quizQuestion[0].resultText + '</p>';
+    resultHtml += '<img class="resultImg" src="../../images/POI/quiz/' + data.quizQuestion[0].resultImage + '">';
 		resultHtml += '<div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>'
 
 		resultsContainer.innerHTML = resultHtml;
-
 }
 
 function saveCoins(coins){

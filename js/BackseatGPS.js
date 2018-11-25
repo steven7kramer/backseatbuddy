@@ -26,7 +26,7 @@ var map;
 var geocoder;
 
 // CONSTANTS
-var maxDistPOI = 10; //km
+var maxDistPOI = 1000; //km
 var POS_UPDATE_DELAY = 10; // ms
 var POS_UPDATE_NUMDELTAS = 100; // ms
 
