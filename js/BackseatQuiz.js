@@ -28,7 +28,7 @@ jQuery(document).ready(function(){
       data: {functionname: 'quizLoader', qID:contentID},
 
       success: function(data) {
-          if (!('error' in data)) {
+          if (!('error' in data) && data.quizQuestion.length != 0) {
               generateQuiz(data, quizContainer, resultsContainer, submitButton);
               console.log(data);
           }else{
