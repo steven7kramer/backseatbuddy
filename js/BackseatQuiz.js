@@ -156,7 +156,7 @@ function designResultWindow(data, rightAnswers, totalAnswers){
 			resultHtml += '<h3>Heel goed gedaan!</h3>';
       resultHtml += 'Je hebt ' + rightAnswers + ' van de ' + totalAnswers + ' vragen goed beantwoord!';
 			resultHtml += '<p>Hiermee heb je ' + coinAmount + ' BackseatCoins bij elkaar gespeeld</p>'
-      resultHtml += '<div id="coinDisplayContainer"><div id="coinDisplay"><img src="../../images/other/bsbCoin.png"></div> + ' + coinAmount + '</div>';
+      resultHtml += '<div id="coinDisplayContainer"><div id="coinDisplay"><img src="../../images/other/bsbCoin.png" style="width:50px;"></div> + ' + coinAmount + '</div>';
 			saveCoins(coinAmount);
 		}else{
 			resultHtml += '<h3>Helaas!</h3>';
