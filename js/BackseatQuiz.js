@@ -109,7 +109,7 @@ function generateQuiz(data, quizContainer, resultsContainer, submitButton){
     var answerInputList = [];
     //find and store all possible answers
     for(let i=0; i<totalQuestions; i++){
-        answerInputList.push(document.getElementsByName('question' + totalQuestionArray[i]));
+        answerInputList.push(document.getElementsByName('question' + (Number(data.quizQuestion[i].questionID) + i)));
     }
     //make a variable to store the given answer values
     var answerInput = [];
@@ -122,7 +122,6 @@ function generateQuiz(data, quizContainer, resultsContainer, submitButton){
          }
       }
     }
-
     if(answerInput.length < totalQuestions){
       resultsContainer.innerHTML = 'Je hebt nog niet alle vragen beantwoord!';
     }else{
