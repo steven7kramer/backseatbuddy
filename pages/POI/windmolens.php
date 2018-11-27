@@ -18,7 +18,7 @@
         <script type="text/javascript" src="../../../lib/TouchEvents/src/jquery.mobile-events.min.js"></script>
 
         <!-- Javascript -->
-        <script src="../../../js/BackseatGame.js"></script>
+        <script src="../../../js/BackseatWindmills.js"></script>
         <script src="../../../js/BackseatNAV.js"></script>
     <body>
         <!-- NAVIGATION -->
@@ -42,6 +42,14 @@
         <div id="ScoreText">
             <p>Hoeveelheid energie: <b class='score'>0</b> kWh</p>
         </div>
+        <div id="TimeText">
+            <p>Tijd over: <b class='timeLeft'>20</b> seconde</p>
+        </div>
+
+        <!-- Swipe Image -->
+          <div id="swipeImage">
+            <img src="../../images/game/swipeDown.png">
+          </div>
 
         <div id="GameButtons">
             <!-- Start game -->

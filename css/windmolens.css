@@ -86,12 +86,26 @@
     bottom: 10px;
 }
 
-#ScoreText {
+#ScoreText, #TimeText{
     width: 100%;
     text-align: center;
     position: absolute;
-    text-align: center;
-    top: 60px;
+}
+#ScoreText{top:60px;}
+#TimeText{top:80px;}
+
+#swipeImage{
+	position: absolute;
+}
+
+#swipeImage img{
+	width:100px;
+	user-drag: none;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 /* Google Maps API CSS*/

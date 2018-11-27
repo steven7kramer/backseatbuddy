@@ -4,6 +4,7 @@ var gameIsActive = false;
 var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
+var gameTimer = 20000;
 
 jQuery(document).ready(function() {
     startGame();
@@ -11,8 +12,9 @@ jQuery(document).ready(function() {
 
 function startGame() {
     myGameArea.start();
+    tutorialAnimation(gameIsActive);
     windMillHead = new component(477, 447, "../../../images/game/windmill_head.png", window.innerWidth / 2, 300, true);
-    windMillPost = new component(477, 371, "../../../images/game/windmill_post.png", window.innerWidth / 2, 480, false);
+    windMillPost = new component(400, 400, "../../../images/game/windmill_post.png", (window.innerWidth / 2) - 5, 480, false);
 
     jQuery('#gameCanvas').swipedown(function(e, touch) {
         var swipeSpeed = Math.min(5, touch.yAmount / touch.duration); // Gives speed in pixels/millisecond
@@ -23,17 +25,34 @@ function startGame() {
         if (windowOpen) {
             closeHighScores();
         }
+        jQuery('#swipeImage').fadeOut();
         jQuery('#GameButtons').fadeOut();
         gameIsActive = true;
+        tutorialAnimation(gameIsActive);
         startAngle = windMillHead.angle;
 
+        countDownTimer();
         setTimeout(function() {
             jQuery('#GameButtons').fadeIn();
             gameIsActive = false;
             saveHighscore(Math.round(windMillHead.angle - startAngle));
             windMillHead.angle = 0;
-        }, 20000);
+        }, gameTimer);
     });
+}
+
+function countDownTimer(){
+  var n = gameTimer/1000;
+  setTimeout(countDown,1000);
+  jQuery('.timeLeft').text(n);
+
+  function countDown(){
+     n--;
+     if(n > 0){
+        setTimeout(countDown,1000);
+     }
+     jQuery('.timeLeft').text(n);
+  }
 }
 
 var myGameArea = {
@@ -93,6 +112,7 @@ function updateGameArea() {
     windMillHead.update();
     if (gameIsActive) {
         jQuery('.score').text(Math.round(windMillHead.angle - startAngle));
+        jQuery('.timeLeft').text();
     }
 }
 
@@ -161,4 +181,26 @@ function getHighscoresFromDB() {
 function closeHighScores() {
     windowOpen = false;
     $('#sideContent').css({'width': '0', 'box-shadow': 'none'});
+}
+
+function tutorialAnimation(gameIsActive){
+  var elem = document.getElementById("swipeImage");
+  const startPos = 200;
+
+  elem.style.left = (window.innerWidth / 2) + 100 + 'px';
+  elem.style.top = startPos + 'px';
+  var pos = startPos;
+  var id = setInterval(frame, 10);
+    function frame() {
+      if (pos == startPos + 100) {
+        if(gameIsActive == false){
+          setTimeout(function(){ pos = startPos; }, 1000);
+        }else{
+          clearInterval(id);
+        }
+      } else {
+        pos++;
+        elem.style.top = pos + 'px';
+      }
+    }
 }

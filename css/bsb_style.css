@@ -12,7 +12,7 @@ Author:         Cas Wognum
 @import "typography.css";
 @import "BinfoWindow.css";
 @import "slickSlider.css";
-@import "Game.css";
+@import "windmolens.css";
 
 .not-active {
   pointer-events: none;
