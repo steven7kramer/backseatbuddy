@@ -2,6 +2,9 @@
 	width:400px;
 	font-family:Helvetica;
 }
+.inGame{
+	display:none;
+}
 
 .BHighscoreWrapper h1{
 	padding:20px;
@@ -55,13 +58,20 @@
 /* start da css for da buttons */
 .btn {
   border-radius: 5px;
-  padding: 15px 20px;
+  padding: 10px 20px;
   font-size: 22px;
   text-decoration: none;
-  margin: 10px;
+  margin: 7px;
   color: #fff;
   position: relative;
   display: inline-block;
+	min-width: 150px;
+
+	/* make the text not selectable while dragging */
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
 }
 
 .btn:active {
@@ -79,19 +89,37 @@
   background-color: #48E68B;
 }
 
-#GameButtons {
+.blue {
+  background-color: #55acee;
+  box-shadow: 0px 5px 0px 0px #3C93D5;
+}
+
+.blue:hover {
+  background-color: #6FC6FF;
+}
+
+.pink {
+  background-color: #e83273;
+  box-shadow: 0px 5px 0px 0px #c01653;
+}
+
+.pink:hover {
+  background-color: #f17ea7;
+}
+
+#GameButtons, #inGameBoxes {
     width: 100%;
     text-align: center;
     position: absolute;
     bottom: 10px;
 }
 
-#ScoreText, #TimeText{
+#LastScore, #TimeText{
     width: 100%;
     text-align: center;
     position: absolute;
 }
-#ScoreText{top:60px;}
+#LastScore{top:60px;}
 #TimeText{top:80px;}
 
 #swipeImage{
@@ -106,6 +134,15 @@
 	-webkit-user-drag: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
+}
+
+#exitGame{
+	position: absolute;
+	left:20px;
+	top:20px;
+}
+#exitGame i{
+	color:white;
 }
 
 /* Google Maps API CSS*/
@@ -130,15 +167,6 @@
 #sideContent .closebtn a:hover {
     color: #fff;
 	text-decoration: none;
-}
-
-.blue {
-  background-color: #55acee;
-  box-shadow: 0px 5px 0px 0px #3C93D5;
-}
-
-.blue:hover {
-  background-color: #6FC6FF;
 }
 
 .highScoresWindow{

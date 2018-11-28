@@ -39,26 +39,38 @@
     	</div>
 
         <!-- Show score -->
-        <div id="ScoreText">
-            <p>Hoeveelheid energie: <b class='score'>0</b> kWh</p>
-        </div>
-        <div id="TimeText">
-            <p>Tijd over: <b class='timeLeft'>20</b> seconde</p>
+      <div id="inGameContainer">
+        <div id="exitGame" class="inGame">
+          <a href="#" class=""><i class="fas fa-arrow-alt-circle-left"></i></a>
         </div>
 
+        <div id="inGameBoxes" class="inGame">
+          <div id="ScoreText" class="">
+              <p>Energie: <b class='score'>0</b> kWh</p>
+          </div>
+          <div id="TimeText"  class="">
+              <p>Tijd: <b class='timeLeft'>20</b></p>
+          </div>
+        </div>
+      </div>
+
         <!-- Swipe Image -->
-          <div id="swipeImage">
+          <div id="swipeImage" class="swipeTutorial outGame">
             <img src="../../images/game/swipeDown.png">
           </div>
 
-        <div id="GameButtons">
+        <div id="GameButtons" class="outGame">
             <!-- Start game -->
             <div id="StartButton">
-                <a href="#" class="startbtn btn green">Bring it on!</a>
+                <a href="#" class="startbtn btn green">Start</a>
             </div>
-            <!-- Start game -->
+            <!-- Highscores -->
             <div id="HighScoreButton">
-                <a onclick="openHighscores()" class="hsbtn btn blue">Highscores</a>
+                <a onclick="openHighscores()" class="btn blue">Highscores</a>
+            </div>
+            <!-- Tutorial Button -->
+            <div id="TutorialButton">
+                <a onclick="openTutorial()" class="btn pink">Tutorial</a>
             </div>
         </div>
 

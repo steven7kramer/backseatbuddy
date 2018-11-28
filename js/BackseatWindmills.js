@@ -5,35 +5,41 @@ var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
 var gameTimer = 20000;
+var firstSwipe = true;
 
 jQuery(document).ready(function() {
     startGame();
 });
 
 function startGame() {
+    tutorialAnimation();
     myGameArea.start();
-    tutorialAnimation(gameIsActive);
     windMillHead = new component(477, 447, "../../../images/game/windmill_head.png", window.innerWidth / 2, 300, true);
     windMillPost = new component(400, 400, "../../../images/game/windmill_post.png", (window.innerWidth / 2) - 5, 480, false);
 
     jQuery('#gameCanvas').swipedown(function(e, touch) {
         var swipeSpeed = Math.min(5, touch.yAmount / touch.duration); // Gives speed in pixels/millisecond
         windMillHead.rotateVelocity = swipeSpeed;
+        if(firstSwipe == true){
+          jQuery('.swipeTutorial').fadeOut();
+          firstSwipe = false;
+        }
     });
 
     jQuery('.startbtn').click(function() {
         if (windowOpen) {
             closeHighScores();
         }
-        jQuery('#swipeImage').fadeOut();
-        jQuery('#GameButtons').fadeOut();
+        jQuery('.inGame').fadeIn();
+        jQuery('.outGame').fadeOut();
         gameIsActive = true;
-        tutorialAnimation(gameIsActive);
+        tutorialAnimation();
         startAngle = windMillHead.angle;
 
         countDownTimer();
         setTimeout(function() {
-            jQuery('#GameButtons').fadeIn();
+            jQuery('.outGame').fadeIn();
+            jQuery('.inGame').fadeOut();
             gameIsActive = false;
             saveHighscore(Math.round(windMillHead.angle - startAngle));
             windMillHead.angle = 0;
@@ -183,24 +189,31 @@ function closeHighScores() {
     $('#sideContent').css({'width': '0', 'box-shadow': 'none'});
 }
 
-function tutorialAnimation(gameIsActive){
+function tutorialAnimation(){
+  //get the div with the image
   var elem = document.getElementById("swipeImage");
-  const startPos = 200;
 
+  //placing the div
+  const startPos = 200;
   elem.style.left = (window.innerWidth / 2) + 100 + 'px';
   elem.style.top = startPos + 'px';
+
+  //animate the div
   var pos = startPos;
   var id = setInterval(frame, 10);
+  var n = 0;
+
     function frame() {
-      if (pos == startPos + 100) {
-        if(gameIsActive == false){
-          setTimeout(function(){ pos = startPos; }, 1000);
+        if(n < 400){
+          if(pos == startPos + 100) {
+              setTimeout(function(){ pos = startPos; n+=1;}, 1000);
+          }else{
+              pos++;
+              elem.style.top = pos + 'px';
+          }
         }else{
+          jQuery('.swipeTutorial').fadeOut();
           clearInterval(id);
         }
-      } else {
-        pos++;
-        elem.style.top = pos + 'px';
-      }
     }
 }
