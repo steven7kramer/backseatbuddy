@@ -25,7 +25,7 @@
 
         <!-- Info window -->
         <div id="sideContent" class="sideWindow">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeInfoWindow()">&times;</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeSideWindow()">&times;</a>
             <div class="sideWindowWrapper">
                 <h1 class="nowrap headerText">  </h1>
 
@@ -42,7 +42,7 @@
     	</div>
         <!-- Show score -->
       <div id="inGameContainer">
-          <a onclick="exitGame()" class="exitGame fa fa-times fa-3x nonSelectable"></a>
+          <a onclick="exitGame()" class="inGame exitGame fa fa-times fa-3x nonSelectable"></a>
 
         <div id="inGameBoxes" class="inGame">
           <div id="ScoreText" class="box nonSelectable">
@@ -55,7 +55,7 @@
       </div>
 
         <!-- Swipe Image -->
-          <div id="swipeImage" class="swipeTutorial outGame">
+          <div id="swipeImage" class="swipeTutorial">
             <img src="../../images/game/swipeDown.png">
           </div>
 
@@ -66,11 +66,11 @@
             </div>
             <!-- Highscores -->
             <div id="HighScoreButton">
-                <a onclick="openHighscores()" class="btn blue nonSelectable">Highscores</a>
+                <a onclick="openSideWindow('highscores')" class="btn blue nonSelectable">Highscores</a>
             </div>
             <!-- Tutorial Button -->
             <div id="TutorialButton">
-                <a onclick="openTutorial()" class="btn pink nonSelectable">Tutorial</a>
+                <a onclick="openSideWindow('tutorial')" class="btn pink nonSelectable">Tutorial</a>
             </div>
         </div>
 
