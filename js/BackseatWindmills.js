@@ -4,11 +4,12 @@ var gameIsActive = false;
 var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
-var gameTimer = 20000;
+var gameTimer = 2000000;
 var firstSwipe = true;
 
 jQuery(document).ready(function() {
     startGame();
+    jQuery('.exitGame').hide();
 });
 
 function startGame() {
@@ -141,11 +142,12 @@ function saveHighscore(score) {
 
 function openHighscores() {
     if (windowOpen) {
-        closeHighScores();
+        closeInfoWindow();
     } else {
         windowOpen = true;
         var width = $( document ).width();
         var height = $( document ).height();
+        jQuery('.headerText').text('Top 10');
         getHighscoresFromDB();
 
         if (width >= height) {
@@ -184,9 +186,32 @@ function getHighscoresFromDB() {
     });
 }
 
-function closeHighScores() {
+function openTutorial(){
+  if (windowOpen) {
+      closeInfoWindow();
+  } else {
+      windowOpen = true;
+      var width = $( document ).width();
+      var height = $( document ).height();
+      jQuery('.headerText').text('Tutorial');
+      jQuery('#tutorialContent').text('wek zoveel mogelijk energie op binnen 20 seconde door de windmolen zo hard mogelijk te laten draaien. Dit doe je door naar beneden te swipen. Als je er klaar voor bent, druk dan op Start! In het spel kan je de opgewekte energie zien, en hoeveel tijd je nog over hebt.');
+      jQuery('#sideWindowImg').append('<img src="../../images/sofieCircle.png" class="sofieCircle">');
+
+      if (width >= height) {
+          $('.nowrap').css('width', 400 * 0.8 + "px");
+          $('#sideContent').css({'width': '400px', 'box-shadow': '5px 0px 8px #2b2b2b77'});
+      } else {
+          $('.nowrap').css('width', width * 0.8 + "px");
+          $('#sideContent').css('width', '100%');
+      }
+  }
+}
+function closeInfoWindow() {
     windowOpen = false;
     $('#sideContent').css({'width': '0', 'box-shadow': 'none'});
+    jQuery('#scoresTabel').empty();
+    jQuery('#tutorialContent').empty();
+    jQuery('#sideWindowImg').empty();
 }
 
 function tutorialAnimation(){
