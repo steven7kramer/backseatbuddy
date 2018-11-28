@@ -54,6 +54,21 @@
   text-align: center;
 }
 
+#lastScore p{
+	margin:10px auto;
+	background-color: #1d71b8;
+	border-radius: 5px;
+	max-width: 200px;
+	color: #fff;
+	text-align: center;
+	padding: 5px;
+	line-height: 25px;
+}
+#lastScore{
+	position: absolute;
+	width: 100%;
+}
+
 /* start da css for da buttons */
 .btn {
   border-radius: 5px;
@@ -118,16 +133,18 @@
 	position: relative;
 	display: block;
 	width: 250px;
+}
 
-	-webkit-box-shadow:
-    0 1px 4px #2d2e83,
-    0 1px 1px rgba(0,0,0,.35);
-  -moz-box-shadow:
-    0 1px 4px #2d2e83,
-    0 1px 1px rgba(0,0,0,.35);
-  box-shadow:
-    0 1px 4px #2d2e83,
-    0 1px 1px rgba(0,0,0,.35);
+.boxShadow{
+		-webkit-box-shadow:
+	    0 1px 4px #2d2e83,
+	    0 1px 1px rgba(0,0,0,.35);
+	  -moz-box-shadow:
+	    0 1px 4px #2d2e83,
+	    0 1px 1px rgba(0,0,0,.35);
+	  box-shadow:
+	    0 1px 4px #2d2e83,
+	    0 1px 1px rgba(0,0,0,.35);
 }
 
 .nonSelectable{

@@ -40,15 +40,23 @@
                 </div>
             </div>
     	</div>
+
+      <!-- Show last score after playing -->
+      <div id="lastScore" class="hideOnStart outGame">
+          <p class="boxShadow">
+            Laatste score: <b class='lastScore boxShadow'></b> kWh <br />
+            Higscore plek: <b class='lastHighScore boxShadow'></b>
+          </p>
+      </div>
         <!-- Show score -->
       <div id="inGameContainer">
-          <a onclick="exitGame()" class="inGame exitGame fa fa-times fa-3x nonSelectable"></a>
+          <a onclick="exitGame('during')" class="inGame hideOnStart exitGame fa fa-times fa-3x nonSelectable"></a>
 
         <div id="inGameBoxes" class="inGame">
-          <div id="ScoreText" class="box nonSelectable">
+          <div id="ScoreText" class="box boxShadow nonSelectable">
               <p>Energie: <b class='score'>0</b> kWh</p>
           </div>
-          <div id="TimeText"  class="box nonSelectable">
+          <div id="TimeText"  class="box boxShadow nonSelectable">
               <p>Tijd: <b class='timeLeft'>20</b></p>
           </div>
         </div>

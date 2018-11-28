@@ -4,13 +4,14 @@ var gameIsActive = false;
 var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
+var gameTimerVar;
 var gameTimer = 20000;
 var firstSwipe = true;
 var currentWindow = '';
 
 jQuery(document).ready(function() {
+    jQuery('.hideOnStart').hide();
     startGame();
-    jQuery('.exitGame').hide();
 });
 
 function startGame() {
@@ -40,9 +41,11 @@ function startGame() {
         startAngle = windMillHead.angle;
 
         countDownTimer();
-        setTimeout(function() {
-            exitGame();
-            saveHighscore(Math.round(windMillHead.angle - startAngle));
+        gameTimerVar = setTimeout(function() {
+            exitGame('after');
+            var score = Math.round(windMillHead.angle - startAngle);
+            showLastScore(score);
+            saveHighscore(score);
         }, gameTimer);
     });
 }
@@ -231,8 +234,20 @@ function tutorialAnimation(){
     }
 }
 
-function exitGame(){
-  jQuery('.outGame').fadeIn();
+function showLastScore(score){
+  jQuery('.lastScore').text(score);
+  jQuery('.lastHighScore').text('abc'); //replace # with actual high score in DB
+  jQuery('#lastScore').fadeIn();
+}
+
+function exitGame(moment){
+  if(moment == 'after'){
+    jQuery('.outGame').fadeIn();
+  }else if(moment == 'during'){
+    jQuery('.outGame').fadeIn();
+    jQuery('#lastScore').hide();
+  }
   jQuery('.inGame').fadeOut();
+  clearTimeout(gameTimerVar);
   gameIsActive = false;
 }
