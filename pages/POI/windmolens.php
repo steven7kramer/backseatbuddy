@@ -45,7 +45,7 @@
       <div id="lastScore" class="hideOnStart outGame">
           <p class="boxShadow">
             Laatste score: <b class='lastScore boxShadow'></b> kWh <br />
-            Higscore plek: <b class='lastHighScore boxShadow'></b>
+            <a onclick="openSideWindow('highscores')">Higscore plek: <b class='lastHighScore boxShadow'></b></a>
           </p>
       </div>
         <!-- Show score -->

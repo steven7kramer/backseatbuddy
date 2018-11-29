@@ -8,6 +8,8 @@ var gameTimerVar;
 var gameTimer = 20000;
 var firstSwipe = true;
 var currentWindow = '';
+var score;
+var savedHighscore;
 
 jQuery(document).ready(function() {
     jQuery('.hideOnStart').hide();
@@ -43,8 +45,7 @@ function startGame() {
         countDownTimer();
         gameTimerVar = setTimeout(function() {
             exitGame('after');
-            var score = Math.round(windMillHead.angle - startAngle);
-            showLastScore(score);
+            score = Math.round(windMillHead.angle - startAngle);
             saveHighscore(score);
         }, gameTimer);
     });
@@ -126,6 +127,7 @@ function updateGameArea() {
 }
 
 function saveHighscore(score) {
+    savedHighscore = false;
     jQuery.ajax({
         type: "POST",
         url: "../../php/BackseatDB.php",
@@ -135,6 +137,7 @@ function saveHighscore(score) {
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
                 console.log("Saved highscore " + score + " in the database" );
+                savedHighscore = true;
             } else {
                 console.error("Failed to save highscore " + score + " in the database" );
             }
@@ -154,7 +157,7 @@ function openSideWindow(toLoad) {
         if(toLoad == 'highscores'){
           currentWindow = 'highscores';
           jQuery('.headerText').text('Top 10');
-          getHighscoresFromDB();
+          getHighscoresFromDB('loadTop10');
         }else if(toLoad == 'tutorial'){
           currentWindow = 'tutorial';
           jQuery('.headerText').text('Tutorial');
@@ -172,7 +175,7 @@ function openSideWindow(toLoad) {
     }
 }
 
-function getHighscoresFromDB() {
+function getHighscoresFromDB(moment) {
     jQuery.ajax({
         type: "POST",
         url: "../../php/BackseatDB.php",
@@ -181,17 +184,35 @@ function getHighscoresFromDB() {
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
-                jQuery('#scoresTabel').empty();
-                jQuery('#scoresTabel').append("<tr><th>#</th><th>Naam</th><th>Score</th><tr>)");
-                jQuery.each(obj.highscores, function(index, value) {
-                    if (index + 1 > 3) {
-                        var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uEmail + "</td><td>" + value.score + "</td></tr>";
-                    } else {
-                        var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs_no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uEmail + "</td><td>" + value.score + "</td></tr>";
+              if(moment == 'loadTop10'){
+                  jQuery('#scoresTabel').empty();
+                  jQuery('#scoresTabel').append("<tr><th>#</th><th>Naam</th><th>Score</th><tr>)");
+                  jQuery.each(obj.highscores, function(index, value) {
+                      if (index + 1 > 3) {
+                          var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uEmail + "</td><td>" + value.score + "</td></tr>";
+                      } else {
+                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uEmail + "</td><td>" + value.score + "</td></tr>";
+                      }
+                      jQuery('#scoresTabel').append(HTMLString);
+                  });
+              }else if(moment == 'lastHighscorePlace'){
+
+                    for(i=0;i<obj.highscores.length;i++){
+                      //if the score appears in the top 10, return that data into showLastScore()
+                      console.log('score = ' + score);
+                      console.log(obj.highscores[i].score);
+
+                      if(score == obj.highscores[i].score){
+                        showLastScore(score, (i+1));
+                        break;
+                      }
+                      if(i == (obj.highscores.length - 1)){
+                      //if at the end of the for loop, the score hasn't been found, it's not in top 10
+                        showLastScore(score, 'Geen top 10');
                     }
-                    jQuery('#scoresTabel').append(HTMLString);
-                });
-            } else {
+                  };
+                }
+              } else {
                 console.error("Failed to retrieve highscores from the database" );
             }
         }
@@ -234,15 +255,31 @@ function tutorialAnimation(){
     }
 }
 
-function showLastScore(score){
+function showLastScore(score, lastHighscorePlace){
   jQuery('.lastScore').text(score);
-  jQuery('.lastHighScore').text('abc'); //replace # with actual high score in DB
+  jQuery('.lastHighScore').text(lastHighscorePlace);
+  if(lastHighscorePlace < 4){
+    $('.lastHighScore').prepend('<img id="trophyImg" src="../../images/game/hs-no' + lastHighscorePlace + '.png" style="width: 35px;"/>');
+  }
   jQuery('#lastScore').fadeIn();
 }
 
 function exitGame(moment){
   if(moment == 'after'){
     jQuery('.outGame').fadeIn();
+
+    jQuery('.lastHighScore').text('');
+    $('.lastHighScore').prepend('<i class="fa fa-spinner fa-spin"></i>');
+
+    waitForIt();
+    function waitForIt(){
+        if (!savedHighscore) {
+            setTimeout(function(){waitForIt()},100);
+        } else {
+          getHighscoresFromDB('lastHighscorePlace');
+        }
+    }
+
   }else if(moment == 'during'){
     jQuery('.outGame').fadeIn();
     jQuery('#lastScore').hide();
