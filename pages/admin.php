@@ -25,6 +25,7 @@ if(!($_SESSION["admin"])) {
 
         <!-- CSS -->
         <link rel="stylesheet" href="../css/bsb_style.css">
+        <link rel="stylesheet" href="../css/admin.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -43,24 +44,109 @@ if(!($_SESSION["admin"])) {
         <?php include("includes/menu.php") ?>
         <div id="main" class = "width-100 height-100">
             <form action="../php/BackseatDB.php" title="" method="post" class="backseat-form" id="backseatContentForm" enctype="multipart/form-data">
-                Title: <input type="text" id="pTitle" name="pTitle"><br>
-                Description: <input type="text" id="pDescr" name="pDescr"><br>
-                Lattitude: <input type="number" step="any"id="lat" name="lat"><br>
-                Longitude: <input type="number" step="any" id="lng" name="lng"><br>
-                Category: <input type="text" id="pCategory" name="pCategory"><br>
-                Types:
-                <select id="pIcon" name="pIcon">
-                    <option value="0">Parkeerplaats</option>
-                    <option value="1">Viewpoint</option>
-                    <option value="2">Game</option>
-                    <option value="3">Info</option>
-                    <option value="4">Quiz</option>
-                </select><br>
+                <h1> Insert POI into DB </h1>
 
-                File name: <input type="text" id="pImage" name="pImage"><br>
+                Type*:
+                <div class="custom-select">
+                    <select id="pIcon" name="pIcon" required />
+                        <option value="0">Parkeerplaats</option>
+                        <option value="1">Viewpoint</option>
+                        <option value="2">Game</option>
+                        <option value="3">Info</option>
+                        <option value="4">Quiz</option>
+                    </select><br>
+                </div>
+                Title*: <input type="text" id="pTitle" name="pTitle" required /><br>
+                Description*: <input type="text" id="pDescr" name="pDescr" required /><br>
+                <div id="explainBoxOuter"><u>Lattitude</u>*:
+                  <div id="explainBox">
+                    Eenvoudig via <a href="http://www.mapcoordinates.net/en" target="_blank">deze website</a>
+                  </div>
+                </div> <input type="number" step="any"id="lat" name="lat" required /><br>
+                Longitude*: <input type="number" step="any" id="lng" name="lng" required /><br>
+                Category: <input type="text" id="pCategory" name="pCategory"><br>
+                Image: <input type="text" id="pImage" name="pImage" value="default.jpg"><br>
                 <input type="hidden" id="functionname" name="functionname" value="addToDatabase">
                 <input type="submit" value="Submit">
+
+            * = required
+
             </form>
+
+            <script>//for changing the dropdown menu to a custom one
+              var x, i, j, selElmnt, a, b, c;
+              /*look for any elements with the class "custom-select":*/
+              x = document.getElementsByClassName("custom-select");
+              for (i = 0; i < x.length; i++) {
+                selElmnt = x[i].getElementsByTagName("select")[0];
+                /*for each element, create a new DIV that will act as the selected item:*/
+                a = document.createElement("DIV");
+                a.setAttribute("class", "select-selected");
+                a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+                x[i].appendChild(a);
+                /*for each element, create a new DIV that will contain the option list:*/
+                b = document.createElement("DIV");
+                b.setAttribute("class", "select-items select-hide");
+                for (j = 0; j < selElmnt.length; j++) {
+                  /*for each option in the original select element,
+                  create a new DIV that will act as an option item:*/
+                  c = document.createElement("DIV");
+                  c.innerHTML = selElmnt.options[j].innerHTML;
+                  c.addEventListener("click", function(e) {
+                      /*when an item is clicked, update the original select box,
+                      and the selected item:*/
+                      var y, i, k, s, h;
+                      s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                      h = this.parentNode.previousSibling;
+                      for (i = 0; i < s.length; i++) {
+                        if (s.options[i].innerHTML == this.innerHTML) {
+                          s.selectedIndex = i;
+                          h.innerHTML = this.innerHTML;
+                          y = this.parentNode.getElementsByClassName("same-as-selected");
+                          for (k = 0; k < y.length; k++) {
+                            y[k].removeAttribute("class");
+                          }
+                          this.setAttribute("class", "same-as-selected");
+                          break;
+                        }
+                      }
+                      h.click();
+                  });
+                  b.appendChild(c);
+                }
+                x[i].appendChild(b);
+                a.addEventListener("click", function(e) {
+                    /*when the select box is clicked, close any other select boxes,
+                    and open/close the current select box:*/
+                    e.stopPropagation();
+                    closeAllSelect(this);
+                    this.nextSibling.classList.toggle("select-hide");
+                    this.classList.toggle("select-arrow-active");
+                  });
+              }
+              function closeAllSelect(elmnt) {
+                /*a function that will close all select boxes in the document,
+                except the current select box:*/
+                var x, y, i, arrNo = [];
+                x = document.getElementsByClassName("select-items");
+                y = document.getElementsByClassName("select-selected");
+                for (i = 0; i < y.length; i++) {
+                  if (elmnt == y[i]) {
+                    arrNo.push(i)
+                  } else {
+                    y[i].classList.remove("select-arrow-active");
+                  }
+                }
+                for (i = 0; i < x.length; i++) {
+                  if (arrNo.indexOf(i)) {
+                    x[i].classList.add("select-hide");
+                  }
+                }
+              }
+              /*if the user clicks anywhere outside the select box,
+              then close all select boxes:*/
+              document.addEventListener("click", closeAllSelect);
+              </script>
 
             <script type='text/javascript'>
                 /* attach a submit handler to the form */
