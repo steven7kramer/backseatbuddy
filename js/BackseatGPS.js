@@ -157,8 +157,8 @@ function setPosition(position) {
         });
 
         map.setCenter(userMarkerLocation);
-        //map.setZoom(16);
-        map.setZoom(9); //for testing purposes
+        map.setZoom(16);
+        //map.setZoom(9); //for testing purposes
 
 
         if (!(jQuery('#toggleBtnLocation').hasClass("active"))) {
