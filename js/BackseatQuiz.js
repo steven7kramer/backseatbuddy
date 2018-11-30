@@ -28,9 +28,16 @@ jQuery(document).ready(function(){
       data: {functionname: 'quizLoader', qID:contentID},
 
       success: function(data) {
-          if (!('error' in data) && data.quizQuestion.length != 0) {
+          if (!('error' in data)) {
+            if(data.quizQuestion.length != 0){
               generateQuiz(data, quizContainer, resultsContainer, submitButton);
               console.log(data);
+            }else{
+              console.log(data);
+              console.log('data.quizQuestion.length is 0');
+              quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
+        			submitButton.parentNode.removeChild(submitButton);
+            }
           }else{
             quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
       			submitButton.parentNode.removeChild(submitButton);
