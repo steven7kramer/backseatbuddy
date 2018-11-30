@@ -286,3 +286,24 @@ input[type=submit]:hover {
   display:inline-block;
   vertical-align: middle;
 }
+#backToMap{
+    margin:40px 0px;
+}
+#backToMap a{
+    background-color:#1d71b8;
+    color:white;
+    border-radius:20px;
+    font-size:21px;
+    padding:15px 30px;
+    text-decoration:none;
+    -webkit-transition: opacity .1s; /* Safari */
+    transition: opacity .1s;
+}
+#backToMap a:hover{
+    opacity:0.75;
+}
+#backToMap i{
+    color:white;
+    font-size:21px;
+    margin-right:20px;
+}

@@ -25,8 +25,12 @@ jQuery(document).ready(function(){
 
       success: function(data) {
           if (!('error' in data)) {
+            if(data.length == undefined){
+              infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Er is iets misgegaan met het inladen van de inhoud. Ga terug naar de map en probeer het nog een keer!</div> <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div></div>';
+            }else{
               showInfo(data);
               console.log(data);
+            }
           }
       }
   });
@@ -35,31 +39,18 @@ jQuery(document).ready(function(){
 var infoContainer = document.getElementById('infoContainer');
 
 function showInfo(data){
-		// we'll need a place to store all separate elements and the eventual output
+
+    // we'll need a place to store all separate elements and the eventual output
 		var output = [];
     var headerImg = [];
     var h1Title = [];
     var pDescr = [];
 
-    //add right image per page
+    //add right image, title and description per page
 		for(let i=0; i<data.infoPoints.length; i++){
-			headerImg.push(
-				data.infoPoints[i].isImg
-			);
-		}
-
-    //add right title per page
-		for(let j=0; j<data.infoPoints.length; j++){
-			h1Title.push(
-				data.infoPoints[j].isTitle
-			);
-		}
-
-    //add right description per page
-		for(let k=0; k<data.infoPoints.length; k++){
-			pDescr.push(
-				data.infoPoints[k].isDescr
-			);
+			headerImg.push(data.infoPoints[i].isImg);
+      h1Title.push(data.infoPoints[i].isTitle);
+      pDescr.push(data.infoPoints[i].isDescr);
 		}
 
 			// add this question and its answers to the output
