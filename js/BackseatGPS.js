@@ -15,7 +15,7 @@
     0 = parking
     1 = viewPoint
     2 = game
-    3 = infoinfoWindow
+    3 = infoPoint
     4 = quiz
 
 -------------------------------------------------------------------
@@ -26,9 +26,20 @@ var map;
 var geocoder;
 
 // CONSTANTS
-var maxDistPOI = 1000; //km
 var POS_UPDATE_DELAY = 10; // ms
 var POS_UPDATE_NUMDELTAS = 100; // ms
+
+// Set the unlocking distance for each individual pIcon in km
+// 0 and 3, parking and infoPoint,  will stay at the default distance of 5
+var maxDistPOI = function(pIcon){
+  /*switch(pIcon) {
+    case '1': return 1; break;
+    case '2': return 10; break;
+    case '4': return 7; break;
+    default: return 5;
+  };*/
+  return 1000; //for development
+}
 
 // For the users current position
 var userLocation;
@@ -527,9 +538,9 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
     let buttonState = false; //false means button is not-active, either because the user is too far or GPS not detected
     let buttonString = '';
 
-    if (distanceCheck < maxDistPOI && distanceCheck != false) {
+    if (distanceCheck < maxDistPOI(pIcon) && distanceCheck != false) {
         buttonState = true;
-    }else if(distanceCheck > maxDistPOI){
+    }else if(distanceCheck > maxDistPOI(pIcon)){
         buttonState = false;
     }else if(distanceCheck == false){
         buttonState = false;
@@ -577,7 +588,10 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
         }
 
     function distanceString(){
-        distanceNumber = distanceCheck-maxDistPOI;
+        distanceNumber = distanceCheck-maxDistPOI(pIcon);
+
+        console.log('pIcon = ' + pIcon);
+        console.log('maxDistPOI(pIcon) = ' + maxDistPOI(pIcon));
 
         if(distanceNumber > 1){
             return Math.round(distanceNumber) + ' KM';
