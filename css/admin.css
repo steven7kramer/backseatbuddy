@@ -68,10 +68,10 @@ input[type=submit] {
 }
 
 #explainBox a{
-  color:#1d71b8;
+  color:#aed3f2;
 }
 #explainBox a:hover{
-  color:#3993e0;
+  color:#82bbeb;
 }
 
 #explainBox:after{

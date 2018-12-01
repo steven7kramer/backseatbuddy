@@ -305,3 +305,12 @@ input[type=submit]:hover {
     font-size:21px;
     margin-right:20px;
 }
+
+#p404{
+  max-width:400px;
+  min-width:300px;
+  width:70%;
+  text-align:center;
+  margin:20px auto;
+  font-size:20px;
+}
