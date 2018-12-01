@@ -215,7 +215,7 @@ function queryHighscores() {
     $table1 = "Highscores H";
     $table2 = "Users U";
 
-    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID ORDER BY H.score DESC LIMIT 10", $table1, $table2);
+    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID AND H.pID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['pID']);
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {

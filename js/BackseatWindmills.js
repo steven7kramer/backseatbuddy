@@ -1,3 +1,25 @@
+
+var highScoreData;
+
+/* Start Retrieving the gameID from the URL */
+function getURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+
+    return -1;
+}
+/* End Retrieving the gameID from the URL */
+
+var contentID = getURLParameter('id');
 var windMillHead;
 var startAngle;
 var gameIsActive = false;
@@ -5,18 +27,18 @@ var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
 var gameTimerVar;
-var gameTimer = 20000;
+var gameTimer = 2000;
 var firstSwipe = true;
 var currentWindow = '';
 var score;
 var savedHighscore;
 
-jQuery(document).ready(function() {
-    jQuery('.hideOnStart').hide();
-    startGame();
+jQuery(document).ready(function(){
+  jQuery('.hideOnStart').hide();
+  startGame();
 });
 
-function startGame() {
+function startGame(data) {
     tutorialAnimation();
     myGameArea.start();
     windMillHead = new component(477, 447, "../../../images/game/windmill_head.png", window.innerWidth / 2, 300, true);
@@ -132,7 +154,7 @@ function saveHighscore(score) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'saveHighscore', pID: 1, score: score},
+        data: {functionname: 'saveHighscore', pID: contentID, score: score},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
@@ -180,7 +202,7 @@ function getHighscoresFromDB(moment) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'getHighscores'},
+        data: {functionname: 'getHighscores', pID: contentID},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
@@ -199,9 +221,6 @@ function getHighscoresFromDB(moment) {
 
                     for(i=0;i<obj.highscores.length;i++){
                       //if the score appears in the top 10, return that data into showLastScore()
-                      console.log('score = ' + score);
-                      console.log(obj.highscores[i].score);
-
                       if(score == obj.highscores[i].score){
                         showLastScore(score, (i+1));
                         break;

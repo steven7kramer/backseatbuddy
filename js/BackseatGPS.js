@@ -157,8 +157,8 @@ function setPosition(position) {
         });
 
         map.setCenter(userMarkerLocation);
-        map.setZoom(16);
-        //map.setZoom(9); //for testing purposes
+        //map.setZoom(16);
+        map.setZoom(6); //for testing purposes
 
 
         if (!(jQuery('#toggleBtnLocation').hasClass("active"))) {
@@ -566,11 +566,11 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
             if (pIcon != 0 && pIcon != 1){
                 addThirtyMinutesToDatabase(loadLocationArray.pID);
                 if(pIcon == 2){
-                    jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pTitle.toLowerCase().split(' ').join('_') + '.php');
+                    jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.pID);
                 }else if(pIcon == 3){
-                    jQuery('#pButton').attr('href', '/pages/POI/info.php' + '?id=' + loadLocationArray.contentID);
+                    jQuery('#pButton').attr('href', '/pages/POI/info.php?id=' + loadLocationArray.contentID);
                 }else if(pIcon == 4){
-                    jQuery('#pButton').attr('href', '/pages/POI/quiz.php' + '?id=' + loadLocationArray.contentID);
+                    jQuery('#pButton').attr('href', '/pages/POI/quiz.php?id=' + loadLocationArray.contentID);
                 }
                 jQuery('#pButton').html('GA NAAR ' + loadLocationArray.pTitle.toUpperCase() + ' &#8594;');
                 jQuery('#pButton').removeClass('not-active');
