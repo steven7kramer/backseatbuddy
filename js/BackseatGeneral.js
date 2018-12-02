@@ -23,8 +23,6 @@ function animateCoinsWon(coins){
   $('#coinsWon').text(' + ' + coins);
 
   $('#coinsWonContainer').fadeIn(function () {
-
-    $('#coinsWonContainer').animate({'opacity': 'show', 'paddingTop': 0}, 1000);
     window.setTimeout( fadeOut, 5000 );
     function fadeOut(){
         $('#coinsWonContainer').fadeOut();

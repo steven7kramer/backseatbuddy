@@ -255,9 +255,11 @@ function queryAddToDatabase() {
 }
 
 function addScoreToDB() {
-    $query = sprintf("INSERT INTO Highscores (pID, uID, score)
-              VALUES ('%d', '%d', '%d')",
-              $_POST['pID'], $_SESSION['uID'], $_POST['score']);
+    $timestamp = date("Y-m-d H:i:s", strtotime("+30 minutes"));
+
+    $query = sprintf("INSERT INTO Highscores (pID, uID, score, date)
+              VALUES ('%d', '%d', '%d', '%s')",
+              $_POST['pID'], $_SESSION['uID'], $_POST['score'], $timestamp);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
