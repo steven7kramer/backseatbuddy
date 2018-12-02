@@ -57,7 +57,7 @@ var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
 var gameTimerVar;
-var gameTimer = 4000;
+var gameTimer = 20000;
 var firstSwipe = true;
 var currentWindow = '';
 var score;
@@ -211,7 +211,10 @@ function saveCoins(lastHighscorePlace){
 		        success: function(obj, textstatus) {
 		            if (!('error' in obj)) {
 		                console.log("Saved " + coins + " coins in the database" );
-                    $.getScript("/js/BackseatGeneral.js",function(){ updateCoins(); });
+                    $.getScript("/js/BackseatGeneral.js",function(){
+                      updateCoins();
+                      animateCoinsWon(coins);
+                    });
 		            } else {
 		                console.error("Failed to save " + coins + " coins in the database" );
 		            }

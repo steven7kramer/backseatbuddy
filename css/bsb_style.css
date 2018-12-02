@@ -284,6 +284,15 @@ input[type=submit]:hover {
   display:inline-block;
   vertical-align: middle;
 }
+#coinsWonContainer{
+  text-align: center;
+  display: none;
+  padding-top: 5px;
+}
+#coinsWonContainer img, #coinsWon{
+  display: inline-block;
+  vertical-align: middle;
+}
 #backToMap{
     margin:40px 0px;
 }

@@ -48,6 +48,11 @@
             Laatste score: <b class='lastScore boxShadow'></b> kWh <br />
             <a onclick="openSideWindow('highscores')">Higscore plek: <b class='lastHighScore boxShadow'></b></a>
           </p>
+          <div id="coinsWonContainer">
+            <img src="/images/other/bsbCoin.png" style="width:20px;" />
+            <div id="coinsWon">
+            </div>
+          </div>
       </div>
         <!-- Show score -->
       <div id="inGameContainer">
