@@ -1,7 +1,6 @@
+jQuery('#abortGameContainer').hide();
 
-var highScoreData;
-
-/* Start Retrieving the gameID from the URL */
+/* Start Retrieving the gameID from URL and checking if there is windMill category attached to it */
 function getURLParameter(sParam)
 {
     var sPageURL = window.location.search.substring(1);
@@ -17,9 +16,40 @@ function getURLParameter(sParam)
 
     return -1;
 }
-/* End Retrieving the gameID from the URL */
 
 var contentID = getURLParameter('id');
+
+jQuery(document).ready(function(){
+  jQuery('.hideOnStart').hide();
+
+      jQuery.ajax({
+          type: "POST",
+          url: "../../php/BackseatDB.php",
+          datatype: 'json',
+          data: {functionname: 'gameChecker', category: "Windmolens"},
+
+          success: function(data) {
+              if (!('error' in data)) {
+                  console.log(data);
+                  for(let i=0;i<data.gameChecker.length;i++){
+                    if(data.gameChecker[i].pID == contentID){
+                        jQuery('#abortGameContainer').show();
+                        startGame();
+                        console.log('Game Started');
+                        break;
+                    }else if(i == (data.gameChecker.length-1)){
+                        console.error('no matching pID found in array');
+                        abortGame();
+                    }
+                  }
+              } else {
+                  console.error("error in data");
+              }
+          }
+      });
+});
+/* End Retrieving gameID and checking validity */
+
 var windMillHead;
 var startAngle;
 var gameIsActive = false;
@@ -27,16 +57,11 @@ var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
 var gameTimerVar;
-var gameTimer = 2000;
+var gameTimer = 20000;
 var firstSwipe = true;
 var currentWindow = '';
 var score;
 var savedHighscore;
-
-jQuery(document).ready(function(){
-  jQuery('.hideOnStart').hide();
-  startGame();
-});
 
 function startGame(data) {
     tutorialAnimation();
@@ -306,4 +331,11 @@ function exitGame(moment){
   jQuery('.inGame').fadeOut();
   clearTimeout(gameTimerVar);
   gameIsActive = false;
+}
+
+//abortGame is triggered when there is no matching pID in the gameChecker array
+function abortGame(){
+  jQuery('#abortGameContainer').hide();
+  jQuery('#abortGame').show();
+
 }

@@ -10,6 +10,7 @@ $collectibles = array();
 $highscores = array();
 $infoPoints = array();
 $quizQuestion = array();
+$gameChecker = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -140,6 +141,12 @@ if (!isset($result['error'])) {
           if (connect()) {
               quizLoader();
               $result['quizQuestion'] = $GLOBALS['quizQuestion'];
+          }
+          break;
+      case 'gameChecker':
+          if (connect()) {
+              gameChecker();
+              $result['gameChecker'] = $GLOBALS['gameChecker'];
           }
           break;
         default:
@@ -595,6 +602,27 @@ function quizLoader(){
 
   while ($row = $result -> fetch_assoc()) {
       array_push($GLOBALS['quizQuestion'], $row);
+  }
+
+  mysqli_free_result($result);
+}
+
+function gameChecker(){
+  $table1 = "PointsOfInterest";
+
+  //$query = sprintf("SELECT pID FROM %s WHERE pCategory = %d", $table1, $_POST['category']);
+  $query = sprintf("SELECT pID FROM %s WHERE pCategory = '%s'", $table1, $_POST['category']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['gameChecker'], $row);
   }
 
   mysqli_free_result($result);

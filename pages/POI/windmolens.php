@@ -41,7 +41,7 @@
                 </div>
             </div>
     	</div>
-
+    <div id="abortGameContainer">
       <!-- Show last score after playing -->
       <div id="lastScore" class="hideOnStart outGame">
           <p class="boxShadow">
@@ -82,6 +82,15 @@
                 <a onclick="openSideWindow('tutorial')" class="btn pink nonSelectable">Tutorial</a>
             </div>
         </div>
-
+    </div>
+    <div id="abortGame" class="hideOnStart nonSelectable notAvailable">
+      Er is iets misgegaan met het inladen van deze minigame!
+      <div id="backToMap">
+        <a href="https://caswognum.nl/">
+          <i class="fa fa-map-o"></i>
+          Terug naar de map
+        </a>
+      </div>
+    </div>
     </body>
 </html>
