@@ -57,7 +57,7 @@ var MINIMUM_SPEED = 0.005;
 var windowOpen = false;
 var userLocation;
 var gameTimerVar;
-var gameTimer = 20000;
+var gameTimer = 4000;
 var firstSwipe = true;
 var currentWindow = '';
 var score;
@@ -192,6 +192,33 @@ function saveHighscore(score) {
     });
 }
 
+function saveCoins(lastHighscorePlace){
+  let coins;
+  if(lastHighscorePlace > 3){
+    //the higher the place, the higher the reward
+    coins = (11-lastHighscorePlace) * 100;
+  }else{
+    //top 3 gets a higher reward
+    coins = ((11-lastHighscorePlace) * 100)+((4-lastHighscorePlace) * 200);
+  }
+
+  jQuery.ajax({
+		        type: "POST",
+		        url: "../../php/BackseatDB.php",
+		        datatype: 'json',
+		        data: {functionname: 'addCoins', coins:coins},
+
+		        success: function(obj, textstatus) {
+		            if (!('error' in obj)) {
+		                console.log("Saved " + coins + " coins in the database" );
+                    $.getScript("/js/BackseatGeneral.js",function(){ updateCoins(); });
+		            } else {
+		                console.error("Failed to save " + coins + " coins in the database" );
+		            }
+		        }
+		    });
+}
+
 function openSideWindow(toLoad) {
     if (windowOpen && currentWindow==toLoad) {
         closeSideWindow();
@@ -248,6 +275,7 @@ function getHighscoresFromDB(moment) {
                       //if the score appears in the top 10, return that data into showLastScore()
                       if(score == obj.highscores[i].score){
                         showLastScore(score, (i+1));
+                        saveCoins(i+1)
                         break;
                       }
                       if(i == (obj.highscores.length - 1)){
