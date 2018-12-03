@@ -26,12 +26,18 @@
         <script src="../js/Avatar/BackseatAvatar.js"></script>
         <script src="../js/Avatar/BackseatPainter.js"></script>
 
+        <!-- Google Tag Manager Header -->
+        <?php readfile("includes/tagmanagerHeader.php") ?>
+
     </head>
 
     <body class='dashboard'>
 
         <!-- NAVIGATION -->
         <?php include("includes/menu.php") ?>
+
+        <!-- Google Tag Manager Body -->
+        <?php readfile("includes/tagmanagerBody.php") ?>
 
         <div class="container">
 

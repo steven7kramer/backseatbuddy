@@ -35,6 +35,7 @@ if(!($_SESSION["admin"])) {
 
         <!-- Javascript -->
         <script src="../js/BackseatNAV.js"></script>
+        <?php readfile("includes/tagmanagerHeader.php") ?>
 
     </head>
 
@@ -42,6 +43,8 @@ if(!($_SESSION["admin"])) {
 
         <!-- NAVIGATION -->
         <?php include("includes/menu.php") ?>
+        <?php readfile("includes/tagmanagerBody.php") ?>
+
         <div id="main" class = "width-100 height-100">
             <form action="../php/BackseatDB.php" title="" method="post" class="backseat-form" id="backseatContentForm" enctype="multipart/form-data">
                 <h1> Insert POI into DB </h1>

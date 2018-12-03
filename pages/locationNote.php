@@ -7,11 +7,17 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Google Tag Manager Header -->
+  <?php readfile("includes/tagmanagerHeader.php") ?>
+
 </head>
 <body>
 
+  <!-- Google Tag Manager Body -->
+  <?php readfile("includes/tagmanagerBody.php") ?>
+
 <div id="LocatieContainer">
-            
+
         <div class="locationText">
             <h1>Hoi!</h1>
 

@@ -31,12 +31,18 @@ For the update logs, see the end of this document
         <script src="js/BackseatNAV.js"></script>
         <script src="js/BackseatNotifications.js"></script>
 
+        <!-- Google Tag Manager Header -->
+        <?php readfile("pages/includes/tagmanagerHeader.php") ?>
+
     </head>
 
     <body>
 
         <!-- NAVIGATION -->
         <?php include("pages/includes/menu.php") ?>
+
+        <!-- Google Tag Manager Body -->
+        <?php readfile("pages/includes/tagmanagerBody.php") ?>
 
         <!-- Info window -->
         <div id="sideContent" class="BinfoWindow">

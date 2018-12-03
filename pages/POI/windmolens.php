@@ -6,6 +6,7 @@
     </head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
+
         <title>Backseat Buddy - Prototype | Game</title>
 
         <!-- CSS -->
@@ -20,9 +21,15 @@
         <!-- Javascript -->
         <script src="../../../js/BackseatWindmills.js"></script>
         <script src="../../../js/BackseatNAV.js"></script>
+
+        <!-- Google Tag Manager Header -->
+        <?php readfile("../includes/tagmanagerHeader.php") ?>
     <body>
         <!-- NAVIGATION -->
         <?php include("../includes/menu.php") ?>
+
+        <!-- Google Tag Manager Body -->
+        <?php readfile("../includes/tagmanagerBody.php") ?>
 
         <!-- Info window -->
         <div id="sideContent" class="sideWindow">

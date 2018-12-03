@@ -14,8 +14,14 @@ if( isset($_SESSION["uID"])){
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Tag Manager Header -->
+    <?php readfile("includes/tagmanagerHeader.php") ?>
 </head>
 <body>
+
+  <!-- Google Tag Manager Body -->
+  <?php readfile("includes/tagmanagerBody.php") ?>
 
 <div id="loginContainer">
 	<div class="loginHead">
