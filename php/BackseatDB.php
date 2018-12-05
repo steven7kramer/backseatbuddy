@@ -11,6 +11,7 @@ $highscores = array();
 $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
+$customCar = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -147,6 +148,12 @@ if (!isset($result['error'])) {
           if (connect()) {
               gameChecker();
               $result['gameChecker'] = $GLOBALS['gameChecker'];
+          }
+          break;
+      case 'customCar':
+          if (connect()) {
+              customCar();
+              $result['customCar'] = $GLOBALS['customCar'];
           }
           break;
         default:
@@ -610,10 +617,9 @@ function quizLoader(){
 }
 
 function gameChecker(){
-  $table1 = "PointsOfInterest";
+  $table = "PointsOfInterest";
 
-  //$query = sprintf("SELECT pID FROM %s WHERE pCategory = %d", $table1, $_POST['category']);
-  $query = sprintf("SELECT pID FROM %s WHERE pCategory = '%s'", $table1, $_POST['category']);
+  $query = sprintf("SELECT pID FROM %s WHERE pCategory = '%s'", $table, $_POST['category']);
 
   $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -625,6 +631,26 @@ function gameChecker(){
 
   while ($row = $result -> fetch_assoc()) {
       array_push($GLOBALS['gameChecker'], $row);
+  }
+
+  mysqli_free_result($result);
+}
+
+function customCar(){
+  $table = "Users";
+
+  $query = sprintf("SELECT carType, carColour FROM %s WHERE uID = %d", $table, $_SESSION['uID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['customCar'], $row);
   }
 
   mysqli_free_result($result);
