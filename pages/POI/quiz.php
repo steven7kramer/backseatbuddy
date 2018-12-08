@@ -18,6 +18,7 @@
 
     <!-- Javascript -->
     <script src="/js/BackseatNAV.js"></script>
+		<script src="/js/BackseatCheck.js"></script>
 
 		<!-- Google Tag Manager Header -->
 		<?php readfile("../includes/tagmanagerHeader.php") ?>
