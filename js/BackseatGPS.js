@@ -156,9 +156,14 @@ function setPosition(position) {
                     success: function(data) { // callback for successful completion
                       var carType = data;
                       var carColour = colour;
+                      var firstTimeMarker;
 
                       //push both variables to make the marker
-                      makeMarker(carType, carColour);
+                      //only once
+                      if(firstTimeMarker != false){
+                        firstTimeMarker = false;
+                        makeMarker(carType, carColour);
+                      }
                     },
                     error: function() { // callback if there's an error
                       alert("error");
