@@ -2,8 +2,14 @@
 
 <html>
 <head>
- <link rel="stylesheet" href="../css/locationNote.css">
+
+  <!-- StyleSheets -->
+  <link rel="stylesheet" href="../css/locationNote.css">
+  <link rel="stylesheet" href="../css/bsb_style.css">
+
+  <!-- Libraries -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -47,6 +53,10 @@
             <p><i>Geen zorgen, wij zorgen ervoor dat je locatie niet naar jou te herleiden is.</i></p>
 
             <p>Staat jouw browser of device er niet bij? Kies dan degene die het dichtst in de buurt komt en probeer of het ongeveer hetzelfde werkt als jouw browser!</p>
+
+            <p> Heb je de stappen doorlopen? Klik dan hieronder om terug naar de hoofdpagina te gaan! </p>
+
+            <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>
 
 </div>
 

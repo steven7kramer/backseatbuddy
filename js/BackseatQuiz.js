@@ -223,6 +223,10 @@ function saveCoins(coins){
 		        success: function(obj, textstatus) {
 		            if (!('error' in obj)) {
 		                console.log("Saved " + coins + " coins in the database" );
+                    $.getScript("/js/BackseatGeneral.js",function(){
+                      updateCoins();
+                      animateCoinsWon(coins);
+                    });
 		            } else {
 		                console.error("Failed to save " + coins + " coins in the database" );
 		            }
