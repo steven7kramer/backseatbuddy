@@ -21,9 +21,9 @@ var submitButton = document.getElementById('submit');
 jQuery(document).ready(function(){
   // first, check if users is close enough to the POI
   $.getScript('/js/BackseatGeneral.js', function(){
+    quizContainer.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
     waitForIt();
     function waitForIt(){
-      quizContainer.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
         if (userIsNearby == undefined && zeroLength == undefined) {
               setTimeout(function(){waitForIt()},100);
         } else {

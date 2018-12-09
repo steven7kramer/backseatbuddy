@@ -17,6 +17,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <!-- Javascript -->
+  <script type="text/javascript" src="../../js/BackseatGeneral.js"></script>
+  <script type="text/javascript" src="../../js/BackseatCheck.js"></script>
   <script type="text/javascript" src="../../js/BackseatNAV.js"></script>
 
   <!-- Google Tag Manager Header -->

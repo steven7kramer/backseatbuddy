@@ -25,9 +25,9 @@ jQuery(document).ready(function(){
 
     // first, check if users is close enough to the POI
     $.getScript('/js/BackseatGeneral.js', function(){
+      abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
       waitForIt();
       function waitForIt(){
-        abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
           if (userIsNearby == undefined && zeroLength == undefined) {
                 setTimeout(function(){waitForIt()},100);
           } else {

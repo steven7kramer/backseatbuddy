@@ -17,6 +17,28 @@ function getURLParameter(sParam)
 jQuery(document).ready(function(){
   var contentID = getURLParameter('id');
 
+  // first, check if users is close enough to the POI
+  $.getScript('/js/BackseatGeneral.js', function(){
+
+    infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i></div></div>';
+    waitForIt();
+    function waitForIt(){
+        if (userIsNearby == undefined && zeroLength == undefined) {
+              setTimeout(function(){waitForIt()},100);
+        } else {
+            if(userIsNearby == true || zeroLength == true){
+              init();
+            }else{
+              infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Je bent niet dichtbij genoeg om deze minigame te spelen! </div> <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div></div></div>';
+              abortGame();
+            }
+        }
+    }
+  });
+
+});
+
+function init(){
   jQuery.ajax({
       type: "POST",
       url: "../../php/BackseatDB.php",
@@ -34,7 +56,7 @@ jQuery(document).ready(function(){
           }
       }
   });
-});
+}
 
 var infoContainer = document.getElementById('infoContainer');
 
