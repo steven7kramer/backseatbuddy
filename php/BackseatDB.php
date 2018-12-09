@@ -7,7 +7,7 @@ session_start();
 $result = array();
 $points = array();
 $collectibles = array();
-$highscores = array();
+$HighscoresWindmill = array();
 $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
@@ -64,15 +64,15 @@ if (!isset($result['error'])) {
                 }
             }
         break;
-        case 'saveHighscore':
+        case 'saveHighscoreWindmill':
             if (connect()) {
                 addScoreToDB();
             }
         break;
-        case 'getHighscores':
+        case 'getHighscoresWindmill':
             if (connect()) {
-                queryHighscores();
-                $result['highscores'] = $GLOBALS['highscores'];
+                queryHighscoresWindmill();
+                $result['HighscoresWindmill'] = $GLOBALS['HighscoresWindmill'];
                 mysqli_close($GLOBALS['link']);
             } else {
                 $result['error'] = mysqli_connect_error();
@@ -227,11 +227,11 @@ function queryCollectibles() {
     mysqli_free_result($result);
 }
 
-function queryHighscores() {
-    $table1 = "Highscores H";
+function queryHighscoresWindmill() {
+    $table1 = "HighscoresWindmill H";
     $table2 = "Users U";
 
-    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID AND H.pID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['pID']);
+    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID AND H.contentID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['contentID']);
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {
@@ -241,7 +241,7 @@ function queryHighscores() {
     }
 
     while ($row = $result -> fetch_assoc()) {
-        array_push($GLOBALS['highscores'], $row);
+        array_push($GLOBALS['HighscoresWindmill'], $row);
     }
 
 
@@ -266,9 +266,9 @@ function queryAddToDatabase() {
 function addScoreToDB() {
     $timestamp = date("Y-m-d H:i:s", strtotime("+30 minutes"));
 
-    $query = sprintf("INSERT INTO Highscores (pID, uID, score, date)
+    $query = sprintf("INSERT INTO HighscoresWindmill (contentID, uID, score, date)
               VALUES ('%d', '%d', '%d', '%s')",
-              $_POST['pID'], $_SESSION['uID'], $_POST['score'], $timestamp);
+              $_POST['contentID'], $_SESSION['uID'], $_POST['score'], $timestamp);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -615,7 +615,7 @@ function quizLoader(){
 function gameChecker(){
   $table = "PointsOfInterest";
 
-  $query = sprintf("SELECT pID FROM %s WHERE pCategory = '%s'", $table, $_POST['category']);
+  $query = sprintf("SELECT contentID FROM %s WHERE pCategory = '%s'", $table, $_POST['category']);
 
   $result = mysqli_query($GLOBALS['link'], $query);
 

@@ -556,7 +556,7 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
             if (pIcon != 0 && pIcon != 1){
                 addThirtyMinutesToDatabase(loadLocationArray.pID);
                 if(pIcon == 2){
-                    jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.pID);
+                    jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.contentID);
                 }else if(pIcon == 3){
                     jQuery('#pButton').attr('href', '/pages/POI/info.php?id=' + loadLocationArray.contentID);
                 }else if(pIcon == 4){

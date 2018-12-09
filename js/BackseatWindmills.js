@@ -21,33 +21,26 @@ var contentID = getURLParameter('id');
 
 jQuery(document).ready(function(){
   jQuery('.hideOnStart').hide();
+  var abortMessage = document.getElementById('abortMessage');
 
-      jQuery.ajax({
-          type: "POST",
-          url: "../../php/BackseatDB.php",
-          datatype: 'json',
-          data: {functionname: 'gameChecker', category: "Windmolens"},
-
-          success: function(data) {
-              if (!('error' in data)) {
-                  console.log(data);
-                  for(let i=0;i<data.gameChecker.length;i++){
-                    if(data.gameChecker[i].pID == contentID){
-                        jQuery('#abortGameContainer').show();
-                        startGame();
-                        console.log('Game Started');
-                        break;
-                    }else if(i == (data.gameChecker.length-1)){
-                        console.error('no matching pID found in array');
-                        abortGame();
-                    }
-                  }
-              } else {
-                  console.error("error in data");
+    // first, check if users is close enough to the POI
+    $.getScript('/js/BackseatGeneral.js', function(){
+      waitForIt();
+      function waitForIt(){
+        abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
+          if (userIsNearby == undefined) {
+                setTimeout(function(){waitForIt()},100);
+          } else {
+              if(userIsNearby == true){
+                init();
+              }else{
+                abortGame();
               }
           }
-      });
+      }
+    });
 });
+
 /* End Retrieving gameID and checking validity */
 
 var windMillHead;
@@ -62,6 +55,35 @@ var firstSwipe = true;
 var currentWindow = '';
 var score;
 var savedHighscore;
+
+function init(){
+  jQuery.ajax({
+      type: "POST",
+      url: "../../php/BackseatDB.php",
+      datatype: 'json',
+      data: {functionname: 'gameChecker', category: "Windmolens"},
+
+      success: function(data) {
+          if (!('error' in data)) {
+              console.log(data);
+              for(let i=0;i<data.gameChecker.length;i++){
+                if(data.gameChecker[i].contentID == contentID){
+                    jQuery('#abortGameContainer').show();
+                    startGame();
+                    console.log('Game Started');
+                    break;
+                }else if(i == (data.gameChecker.length-1)){
+                    console.error('no matching contentID found in array');
+                    abortMessage.innerHTML = 'Er is iets misgegaan met het inladen van deze minigame!';
+                    abortGame();
+                }
+              }
+          } else {
+              console.error("error in data");
+          }
+      }
+  });
+}
 
 function startGame(data) {
     tutorialAnimation();
@@ -179,7 +201,7 @@ function saveHighscore(score) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'saveHighscore', pID: contentID, score: score},
+        data: {functionname: 'saveHighscoreWindmill', contentID: contentID, score: score},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
@@ -257,14 +279,14 @@ function getHighscoresFromDB(moment) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'getHighscores', pID: contentID},
+        data: {functionname: 'getHighscoresWindmill', contentID: contentID},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
               if(moment == 'loadTop10'){
                   jQuery('#scoresTabel').empty();
                   jQuery('#scoresTabel').append("<tr><th>#</th><th>Naam</th><th>Score</th><tr>)");
-                  jQuery.each(obj.highscores, function(index, value) {
+                  jQuery.each(obj.HighscoresWindmill, function(index, value) {
                       if (index + 1 > 3) {
                           var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uEmail + "</td><td>" + value.score + "</td></tr>";
                       } else {
@@ -274,14 +296,14 @@ function getHighscoresFromDB(moment) {
                   });
               }else if(moment == 'lastHighscorePlace'){
 
-                    for(i=0;i<obj.highscores.length;i++){
+                    for(i=0;i<obj.HighscoresWindmill.length;i++){
                       //if the score appears in the top 10, return that data into showLastScore()
-                      if(score == obj.highscores[i].score){
+                      if(score == obj.HighscoresWindmill[i].score){
                         showLastScore(score, (i+1));
                         saveCoins(i+1)
                         break;
                       }
-                      if(i == (obj.highscores.length - 1)){
+                      if(i == (obj.HighscoresWindmill.length - 1)){
                       //if at the end of the for loop, the score hasn't been found, it's not in top 10
                         showLastScore(score, 'Geen top 10');
                     }
@@ -364,7 +386,7 @@ function exitGame(moment){
   gameIsActive = false;
 }
 
-//abortGame is triggered when there is no matching pID in the gameChecker array
+//abortGame is triggered when there is no matching contentID in the gameChecker array
 function abortGame(){
   jQuery('#abortGameContainer').hide();
   jQuery('#abortGame').show();

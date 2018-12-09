@@ -68,10 +68,14 @@ jQuery(document).ready(function(){
               function waitForIt(){
                   if (!acqUserPosition) {
                       setTimeout(function(){waitForIt()},100);
-                  } else {
-                    lat1 = data.checkIfUnlocked[0].lat;
-                    lng1 = data.checkIfUnlocked[0].lng;
-                    calculateDistance();
+                  }else{
+                    if(data.checkIfUnlocked.length == 0){
+                      console.error('data array length is 0');
+                    }else{
+                      lat1 = data.checkIfUnlocked[0].lat;
+                      lng1 = data.checkIfUnlocked[0].lng;
+                      calculateDistance();
+                    }
                   }
               }
 
@@ -118,9 +122,8 @@ function checkDistance(d){
 
   if(maxDistPOI(pType) - d > 0){
     userIsNearby = true;
-    console.log('User is close enough to the POI');
   }else{
     userIsNearby = false;
-    console.log('User is too far from the POI');
+    console.error('User is too far from the POI');
   }
 }

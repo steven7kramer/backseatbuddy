@@ -19,7 +19,7 @@ var resultsContainer = document.getElementById('results');
 var submitButton = document.getElementById('submit');
 
 jQuery(document).ready(function(){
-  // first, check if users is close enough to the
+  // first, check if users is close enough to the POI
   $.getScript('/js/BackseatGeneral.js', function(){
     waitForIt();
     function waitForIt(){
