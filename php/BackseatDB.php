@@ -12,6 +12,7 @@ $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
 $customCar = array();
+$checkIfUnlocked = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -87,11 +88,12 @@ if (!isset($result['error'])) {
                 addThirtyMinutes();
             }
             break;
-        /*case 'checkIfUnlocked':
+        case 'checkIfUnlocked':
             if (connect()) {
                 checkIfUnlocked();
+                $result['checkIfUnlocked'] = $GLOBALS['checkIfUnlocked'];
             }
-            break;*/
+            break;
         case 'addCoins':
             if (connect()) {
                 addCoins();
@@ -436,10 +438,10 @@ function checkThirtyMinutes() {
     }
 
 }
-/*function checkIfUnlocked(){
-  $table1 = "HasUnlocked HU";
+function checkIfUnlocked(){
+  $table1 = "PointsOfInterest";
 
-  $query = sprintf("SELECT * FROM %s WHERE HU.uID = %d AND HU.pID = %d", $table1, $_SESSION['uID'], $_POST['pID']);
+  $query = sprintf("SELECT lng, lat FROM %s WHERE pIcon = %d AND contentID = %d", $table1, $_POST['pType'], $_POST['contentID']);
   $result = mysqli_query($GLOBALS['link'], $query);
 
   if (!$result) {
@@ -448,18 +450,12 @@ function checkThirtyMinutes() {
       die($message);
   }
 
-  $time_end = $result -> fetch_assoc()['time_end'];
-
-  if (!$time_end) {
-      return false;
-  } else if (new DateTime() > new DateTime($time_end)) {
-      $query = sprintf("DELETE FROM HasUnlocked WHERE uID = %d AND pID = %d", $_SESSION['uID'], $_POST['pID']);
-      $result = mysqli_query($GLOBALS['link'], $query);
-      return false;
-  } else {
-      return true;
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['checkIfUnlocked'], $row);
   }
-}*/
+
+  mysqli_free_result($result);
+}
 
 function addCoins(){
     $query = sprintf("UPDATE Users
