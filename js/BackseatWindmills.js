@@ -28,12 +28,13 @@ jQuery(document).ready(function(){
       waitForIt();
       function waitForIt(){
         abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
-          if (userIsNearby == undefined) {
+          if (userIsNearby == undefined && zeroLength == undefined) {
                 setTimeout(function(){waitForIt()},100);
           } else {
-              if(userIsNearby == true){
+              if(userIsNearby == true || zeroLength == true){
                 init();
               }else{
+                abortMessage.innerHTML = 'Je bent niet dichtbij genoeg om deze minigame te spelen!';
                 abortGame();
               }
           }
@@ -57,6 +58,8 @@ var score;
 var savedHighscore;
 
 function init(){
+  jQuery('#abortGameContainer').show();
+
   jQuery.ajax({
       type: "POST",
       url: "../../php/BackseatDB.php",
@@ -331,6 +334,7 @@ function tutorialAnimation(){
   const startPos = 200;
   elem.style.left = (window.innerWidth / 2) + 100 + 'px';
   elem.style.top = startPos + 'px';
+  jQuery('#swipeImage').show();
 
   //animate the div
   var pos = startPos;

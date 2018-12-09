@@ -12,6 +12,7 @@ var lat2;
 var lng2;
 var acqUserPosition = false;
 var userIsNearby;
+var zeroLength;
 
 var maxDistPOI = function(pType){
   $.getScript('/js/BackseatGeneral.js', function(){
@@ -70,6 +71,8 @@ jQuery(document).ready(function(){
                       setTimeout(function(){waitForIt()},100);
                   }else{
                     if(data.checkIfUnlocked.length == 0){
+                      // handling this error is done in the POI's itself
+                      zeroLength = true;
                       console.error('data array length is 0');
                     }else{
                       lat1 = data.checkIfUnlocked[0].lat;

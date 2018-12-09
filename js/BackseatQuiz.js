@@ -24,10 +24,10 @@ jQuery(document).ready(function(){
     waitForIt();
     function waitForIt(){
       quizContainer.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
-        if (userIsNearby == undefined) {
+        if (userIsNearby == undefined && zeroLength == undefined) {
               setTimeout(function(){waitForIt()},100);
         } else {
-            if(userIsNearby == true){
+            if(userIsNearby == true || zeroLength == true){
               init();
             }else{
               quizContainer.innerHTML = 'Je bent niet dichtbij genoeg! Ga terug naar de map en kijk wat er in de buurt is. <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
