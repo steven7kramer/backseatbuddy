@@ -118,9 +118,9 @@ function checkDistance(d){
 
   if(maxDistPOI(pType) - d > 0){
     userIsNearby = true;
+    console.log('User is close enough to the POI');
   }else{
     userIsNearby = false;
+    console.log('User is too far from the POI');
   }
-
-  console.log(userIsNearby);
 }
