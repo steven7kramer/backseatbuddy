@@ -8,6 +8,47 @@ var maxDistPOI = function(pIcon){
   return 1000; //for development
 }
 
+jQuery(document).ready(function(){
+
+  //place amount of coins in the div called coinDisplay if available
+  if($('#coinDisplay').length){
+    var coinDisplay = document.getElementById('coinDisplay');
+
+    jQuery.ajax({
+        type: "POST",
+        url: "../../php/BackseatDB.php",
+        datatype: 'json',
+        data: {functionname: 'coinDisplay'},
+
+        success: function(obj, textstatus) {
+            if (!('error' in obj)) {
+                coinDisplay.innerHTML = '<img src="/images/other/bsbCoin.png"/>';
+                jQuery('#coinDisplay').append(obj.coins);
+            } else {
+                console.error("Failed to add Coins to display" );
+            }
+        }
+    });
+  }
+
+  //place username and email in the designated placement divs
+  jQuery.ajax({
+      type: "POST",
+      url: "../../php/BackseatDB.php",
+      datatype: 'json',
+      data: {functionname: 'usernameEmail'},
+
+      success: function(obj, textstatus) {
+          if (!('error' in obj)) {
+              jQuery('.usernamePlace').html(obj.usernameEmail[0].uUsername);
+              jQuery('.emailPlace').html(obj.usernameEmail[0].uEmail);
+          } else {
+              console.error("Failed to retrieve username and email" );
+          }
+      }
+  });
+});
+
 function updateCoins(firstTime){
     jQuery.ajax({
         type: "POST",

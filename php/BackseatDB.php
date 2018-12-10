@@ -13,6 +13,7 @@ $quizQuestion = array();
 $gameChecker = array();
 $customCar = array();
 $checkIfUnlocked = array();
+$usernameEmail = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -158,6 +159,13 @@ if (!isset($result['error'])) {
               $result['customCar'] = $GLOBALS['customCar'];
           }
           break;
+      case 'usernameEmail':
+          if (connect()) {
+              usernameEmail();
+              $result['usernameEmail'] = $GLOBALS['usernameEmail'];
+          }
+          break;
+
         default:
             $result['error'] = 'Specified function not found';
             break;
@@ -688,6 +696,26 @@ function customCar(){
 
   while ($row = $result -> fetch_assoc()) {
       array_push($GLOBALS['customCar'], $row);
+  }
+
+  mysqli_free_result($result);
+}
+
+function usernameEmail(){
+  $table = "Users";
+
+  $query = sprintf("SELECT uUsername, uEmail FROM %s WHERE uID = %d", $table, $_SESSION['uID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['usernameEmail'], $row);
   }
 
   mysqli_free_result($result);

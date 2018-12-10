@@ -181,6 +181,9 @@ function setPosition(position) {
                     scale: .1,
                     fillColor: carColour,
                     fillOpacity: 1,
+                    strokeColor: 'black',
+                    strokeOpacity: 1,
+                    strokeWeight: .5,
                     rotation: 90,
                     anchor: new google.maps.Point(256,256)
 

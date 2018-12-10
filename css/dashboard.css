@@ -1,0 +1,38 @@
+.dashboard .container {
+    padding: 1% 5%;
+}
+
+.dashboard {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#dashboardUserInfo{
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  width:70%;
+}
+#dashboardUserInfo th, #dashboardUserInfo tr{
+  padding: 10px 20px 10px 0px;
+}
+#bsb-avatar-drawing{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 20px 0;
+  width:29%;
+  text-align: right;
+}
+.infoPlace{
+  font-style: italic;
+  font-weight: normal;
+}
+#coinDisplay{
+  font-size: 18px;
+}
+#coinDisplay img{
+  width:30px;
+  height:30px;
+  display:inline-block;
+  vertical-align: middle;
+  margin-right:5px;
+}
