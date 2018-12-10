@@ -22,8 +22,7 @@ jQuery(document).ready(function(){
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
-                coinDisplay.innerHTML = '<img src="/images/other/bsbCoin.png"/>';
-                jQuery('#coinDisplay').append(obj.coins);
+                coinDisplay.innerHTML = '<a href="/pages/dashboard.php"><img src="/images/other/bsbCoin.png"/><div id="coins">' + obj.coins + '</div><script>updateCoins(true);</script></a>';
             } else {
                 console.error("Failed to add Coins to display" );
             }

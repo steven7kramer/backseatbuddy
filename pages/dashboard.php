@@ -77,7 +77,7 @@
             <h2 class="no-margin-bottom">Shop</h2>
             <hr class="divider"/>
 
-            <div id="coinDisplay"></div>
+            <div id="coinDisplay" class="coinNoLink"></div>
 
             <h4>Brillen</h4>
 
