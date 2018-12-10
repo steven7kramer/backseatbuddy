@@ -231,7 +231,7 @@ function queryHighscoresWindmill() {
     $table1 = "HighscoresWindmill H";
     $table2 = "Users U";
 
-    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID AND H.contentID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['contentID']);
+    $query = sprintf("SELECT U.uUsername, H.score FROM %s, %s WHERE U.uID = H.uID AND H.contentID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['contentID']);
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {
@@ -287,6 +287,20 @@ function addUserToDB() {
     }
 
     $email = strtolower($_POST["uEmail"]);
+    $username = $_POST["uUsername"];
+
+    if (strlen($_POST["uUsername"]) > 15) {
+      $GLOBALS['result']['error'] = "Je username mag maximaal 15 tekens hebben!";
+      return;
+    }
+
+    $query = sprintf("SELECT * FROM Users WHERE uUsername = '%s'", $_POST['uUsername']);
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $GLOBALS['result']['error'] = "Deze username is al in gebruik!";
+        return;
+    }
 
     if (strlen($_POST["uPassword"]) < 8) {
         $GLOBALS['result']['error'] = "Je wachtwoord moet uit minimaal 8 karakters bestaan!";
@@ -303,9 +317,9 @@ function addUserToDB() {
 
     $password = password_hash($_POST["uPassword"], PASSWORD_DEFAULT);
 
-    $query = sprintf("INSERT INTO Users (uID, uEmail, uPassword)
-              VALUES (NULL, '%s', '%s')",
-              $email, $password);
+    $query = sprintf("INSERT INTO Users (uID, uEmail, uUsername, uPassword)
+              VALUES (NULL, '%s', '%s', '%s')",
+              $email, $username, $password);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -317,6 +331,28 @@ function addUserToDB() {
 
     $_POST['uEmail'] = $email;
     checkDBForUser();
+
+    //add the default car to the user
+    $query = sprintf("INSERT INTO HasCars (uID, cType, cColour) VALUES (DEFAULT, DEFAULT, DEFAULT)");
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+
+    //add the default avatar to the user
+    $query = sprintf("INSERT INTO AttachAvatars (uID, aID) VALUES (DEFAULT, DEFAULT)");
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
 }
 
 function checkDBForUser() {
@@ -340,6 +376,7 @@ function checkDBForUser() {
 
             $_SESSION["uID"] = $row['uID'];
             $_SESSION["email"] = $row['uEmail'];
+            $_SESSION["username"] = $row['uUsername'];
             $GLOBALS['result']['tutorialDone']=$row['tutorialDone'];
 
             if ($row['admin'] == 1) {
@@ -533,9 +570,10 @@ function tutorialEndButton(){
 }
 
 function getAvatarProperties() {
-    $query = sprintf("SELECT * FROM Avatars
-              WHERE aID = %d",
-              $_POST['aID']);
+    $table1 = "AttachAvatars AA";
+    $table2 = "Avatars A";
+
+    $query = sprintf("SELECT aID, aGlasses FROM %s NATURAL JOIN %s WHERE AA.uID = %d", $table1, $table2, $_SESSION['uID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -552,9 +590,11 @@ function getAvatarProperties() {
 }
 
 function findAvatarID() {
-    $query = sprintf("SELECT aID FROM Users
-              WHERE uID = %d",
-              $_SESSION['uID']);
+    $table1 = "AttachAvatars AA";
+    $table2 = "Avatars A";
+
+    $query = sprintf("SELECT aID FROM %s NATURAL JOIN %s WHERE AA.uID = %d", $table1, $table2, $_SESSION['uID']);
+
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -633,9 +673,10 @@ function gameChecker(){
 }
 
 function customCar(){
-  $table = "Users";
+  $table1 = "HasCars HC";
+  $table2 = "Cars C";
 
-  $query = sprintf("SELECT carType, carColour FROM %s WHERE uID = %d", $table, $_SESSION['uID']);
+  $query = sprintf("SELECT cType, cColour FROM %s NATURAL JOIN %s WHERE HC.uID = %d", $table1, $table2, $_SESSION['uID']);
 
   $result = mysqli_query($GLOBALS['link'], $query);
 

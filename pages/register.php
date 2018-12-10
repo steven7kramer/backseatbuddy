@@ -36,7 +36,9 @@ if( isset($_SESSION["uID"])){
         <div class="error feedback" id="errorRegi"></div>
         <div class="success feedback" id="successRegi"></div>
 		<form action="../php/BackseatDB.php" title="" method="post" id="backseatRegister">
-		    <input type="text" placeholder="E-mail" id="uEmail" required>
+		    <input type="text" placeholder="E-mail" id="uEmail" class="email" required>
+
+        <input type="text" placeholder="Username" id="uUsername" class="username" required>
 
 		    <input type="password" placeholder="Wachtwoord" id="uPassword" required>
 
@@ -63,6 +65,7 @@ if( isset($_SESSION["uID"])){
                     /* Send the data using post with element id name and name2*/
                     var posting = $.post( url, {
                         uEmail: $('#uEmail').val(),
+                        uUsername: $('#uUsername').val(),
                         uPassword: $('#uPassword').val(),
                         functionname: $('#functionname').val()
                     });

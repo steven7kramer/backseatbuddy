@@ -84,8 +84,11 @@ input[type=text], input[type=password]{
 	padding-left:45px;
 }
 
-input[type=text]{
+.email{
 	background: url(../images/icons/email.png) no-repeat scroll 13px 13px;
+}
+.username{
+	background: url(../images/icons/username.png) no-repeat scroll 13px 13px;
 }
 
 input.verify[type=text]{

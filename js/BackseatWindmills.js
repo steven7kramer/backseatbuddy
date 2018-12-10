@@ -291,9 +291,9 @@ function getHighscoresFromDB(moment) {
                   jQuery('#scoresTabel').append("<tr><th>#</th><th>Naam</th><th>Score</th><tr>)");
                   jQuery.each(obj.HighscoresWindmill, function(index, value) {
                       if (index + 1 > 3) {
-                          var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uEmail + "</td><td>" + value.score + "</td></tr>";
+                          var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uUsername + "</td><td>" + value.score + "</td></tr>";
                       } else {
-                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uEmail + "</td><td>" + value.score + "</td></tr>";
+                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + value.score + "</td></tr>";
                       }
                       jQuery('#scoresTabel').append(HTMLString);
                   });
