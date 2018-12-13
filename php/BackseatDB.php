@@ -11,7 +11,9 @@ $HighscoresWindmill = array();
 $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
-$customCar = array();
+$loadCar = array();
+$selectCar = array();
+$buyCar = array();
 $checkIfUnlocked = array();
 $usernameEmail = array();
 $link;
@@ -153,10 +155,10 @@ if (!isset($result['error'])) {
               $result['gameChecker'] = $GLOBALS['gameChecker'];
           }
           break;
-      case 'customCar':
+      case 'loadCar':
           if (connect()) {
-              customCar();
-              $result['customCar'] = $GLOBALS['customCar'];
+              loadCar();
+              $result['loadCar'] = $GLOBALS['loadCar'];
           }
           break;
       case 'usernameEmail':
@@ -341,7 +343,7 @@ function addUserToDB() {
     checkDBForUser();
 
     //add the default car to the user
-    $query = sprintf("INSERT INTO HasCars (uID, cType, cColour) VALUES (DEFAULT, DEFAULT, DEFAULT)");
+    $query = sprintf("INSERT INTO HasCars (uID, carID, current) VALUES (DEFAULT, DEFAULT, DEFAULT)");
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -680,11 +682,39 @@ function gameChecker(){
   mysqli_free_result($result);
 }
 
-function customCar(){
-  $table1 = "HasCars HC";
-  $table2 = "Cars C";
+function loadCar(){
+  $table1 = "AllCars C";
+  $table2 = "CarsOwned CO";
 
-  $query = sprintf("SELECT cType, cColour FROM %s NATURAL JOIN %s WHERE HC.uID = %d", $table1, $table2, $_SESSION['uID']);
+  // check on which page the call is made. In index, only the current car should load
+  if($_POST['moment'] == 'index'){
+    $query = sprintf("SELECT carType, carColour, carStrokeColour FROM %s NATURAL JOIN %s WHERE uID = %d AND current = 1", $table1, $table2, $_SESSION['uID']);
+  }else{
+      /*if($_POST['moment'] == 'dashboardSelect'){
+          $query = sprintf("UPDATE current = 1 FROM %s WHERE aID = %d", $table2, $_POST['carID']);
+
+          $result = mysqli_query($GLOBALS['link'], $query);
+
+          if (!$result) {
+              $message  = 'Invalid query: ' . mysqli_error() . "\n";
+              $message .= 'Whole query: ' . $query;
+              die($message);
+          }
+      }
+      if($_POST['moment'] == 'dashboardBuy'){
+          $query = sprintf("INSERT INTO CarsOwned (uID, carID, current)
+                    VALUES ('%d', '%s', DEFAULT)", $_SESSION['uID'], $_POST['carID']);
+
+          $result = mysqli_query($GLOBALS['link'], $query);
+
+          if (!$result) {
+              $message  = 'Invalid query: ' . mysqli_error() . "\n";
+              $message .= 'Whole query: ' . $query;
+              die($message);
+          }
+       }*/
+    $query = sprintf("SELECT carType, carColour, carStrokeColour, current FROM %s NATURAL JOIN %s WHERE uID = %d", $table1, $table2, $_SESSION['uID']);
+  }
 
   $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -695,7 +725,7 @@ function customCar(){
   }
 
   while ($row = $result -> fetch_assoc()) {
-      array_push($GLOBALS['customCar'], $row);
+      array_push($GLOBALS['loadCar'], $row);
   }
 
   mysqli_free_result($result);

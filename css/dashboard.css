@@ -40,10 +40,9 @@
   display:inline-block;
   vertical-align: middle;
   color: black;
-  text-decoration: underline;
 }
 .coinNoLink{
   pointer-events: none;
   cursor: default;
-  text-decoration: none !important;
+  text-decoration: none;
 }

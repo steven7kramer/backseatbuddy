@@ -81,7 +81,22 @@
 
             <h4>Brillen</h4>
 
+                <ul id="brillen-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
+
+                </ul>
+
             <h4>Auto's</h4>
+
+            <div id="carsContainer">
+              <script>
+                var selectedCar = new makeCar(80, "carsContainer", "dashboardSelect");
+                // functionName( size, container div name, moment )
+              </script>
+            </div>
+
+                <ul id="cars-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
+
+                </ul>
 
             <h2 class="no-margin-bottom">Collectibles</h2>
             <hr class="divider"/>
