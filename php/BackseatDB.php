@@ -164,6 +164,11 @@ if (!isset($result['error'])) {
               selectCar();
           }
           break;
+      case 'buyCar':
+          if (connect()) {
+              buyCar();
+          }
+          break;
       case 'usernameEmail':
           if (connect()) {
               usernameEmail();
@@ -686,14 +691,24 @@ function gameChecker(){
 }
 
 function loadCar(){
-  $table1 = "AllCars C";
-  $table2 = "CarsOwned CO";
+  $table1 = "AllCars ac";
+  $table2 = "CarsOwned co";
 
   // check on which page the call is made. In index, only the current car should load
   if($_POST['moment'] == 'index'){
     $query = sprintf("SELECT carType, carColour, carStrokeColour FROM %s NATURAL JOIN %s WHERE uID = %d AND current = 1", $table1, $table2, $_SESSION['uID']);
   }else{
-    $query = sprintf("SELECT carID, carType, carColour, carStrokeColour, current FROM %s NATURAL JOIN %s WHERE uID = %d ORDER BY current DESC", $table1, $table2, $_SESSION['uID']);
+    $query = sprintf("SELECT carID, carType, carColour, carStrokeColour, carCosts, current FROM %s NATURAL JOIN %s WHERE uID = %d
+
+    UNION ALL
+
+    SELECT DISTINCT carID, carType, carColour, carStrokeColour, carCosts, ''
+    FROM %s
+    WHERE NOT EXISTS(
+        SELECT * FROM %s
+        WHERE co.carID = ac.carID AND co.uID = %d)
+
+    ORDER BY current DESC", $table1, $table2, $_SESSION['uID'], $table1, $table2, $_SESSION['uID']);
   }
 
   $result = mysqli_query($GLOBALS['link'], $query);
@@ -712,6 +727,21 @@ function loadCar(){
 }
 
 function selectCar(){
+    // first set all currents to 0
+    $query = sprintf("UPDATE CarsOwned
+              SET current = 0
+              WHERE uID = %d",
+              $_SESSION['uID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+
+    // then set selected car current to 1
     $query = sprintf("UPDATE CarsOwned
               SET current = 1
               WHERE uID = %d AND carID = %d",
@@ -724,6 +754,48 @@ function selectCar(){
         $message .= 'Whole query: ' . $query;
         die($message);
     }
+}
+
+function buyCar(){
+  //set current car to 0, since the bought car will be the new current car
+  $query = sprintf("UPDATE CarsOwned
+            SET current = 0
+            WHERE uID = %d",
+            $_SESSION['uID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  //add bought car to CarsOwned
+  $query = sprintf("INSERT INTO CarsOwned (uID, carID, current, unq)
+      VALUES(%d, %s, '1', DEFAULT)", $_SESSION['uID'], $_POST['carID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  // subtract costs for car of total coins
+  $query = sprintf("UPDATE Users
+            SET uCoins = uCoins - %d
+            WHERE uID = %d",
+            $_POST['costs'], $_SESSION['uID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
 }
 
 function usernameEmail(){

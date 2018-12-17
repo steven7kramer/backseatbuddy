@@ -48,15 +48,13 @@
 }
 
 #indivCar{
-  width: 220px;
+  width: 20%;
+  min-width: 150px;
   display: inline-block;
   background-color: white;
   padding: 20px;
   border-radius: 5px;
-  margin: 5px;
-}
-.carsvg{
-
+  margin: 2px;
 }
 #carText h3{
   text-align: center;

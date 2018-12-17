@@ -36,8 +36,8 @@ function getAllCars(container, size, moment) {
       var carArray = [];
         for(let i=0;i<response.loadCar.length;i++){
           var car = {};
-          car = {type: response.loadCar[i].carType, colour: response.loadCar[i].carColour, strokeColour: response.loadCar[i].carStrokeColour}
-          carArray.push(car)
+          car = {carID: response.loadCar[i].carID, type: response.loadCar[i].carType, colour: response.loadCar[i].carColour, strokeColour: response.loadCar[i].carStrokeColour, costs: response.loadCar[i].carCosts, current: response.loadCar[i].current};
+          carArray.push(car);
         }
 
       fillCarPathArray(carArray, size, container);
@@ -56,7 +56,7 @@ function fillCarPathArray(carArray, size, container){
 
   for (let i = 0; i < carArray.length; i++) {
     $.ajax({
-      url: '/lib/carTypes/small/car' + carArray[0].type + '.txt', // file with the svg path of the car
+      url: '/lib/carTypes/car' + carArray[0].type + '.txt', // file with the svg path of the car
       dataType: 'text', // type of file (text, json, xml, etc)
       success: function(data) { // callback for successful completion
         var carPath = data;
@@ -77,26 +77,31 @@ function displayCars(carArray, carPathArray, size, container){
     htmlArray.push(
       '<div id="indivCar">'
       + '<div id="carSVG">'
-      + '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="' + size + 'px" height="' + size + 'px" viewBox="0 0 ' + size + ' ' + size + '" enable-background="new 0 0 ' + size + ' ' + size + '" xml:space="preserve">'
+      + '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">'
       + '<g><path id="car" fill="' + carArray[i].colour + '" d="' + carPathArray[i] + '" stroke="' + carArray[i].strokeColour + '" stroke-width="1"></path></g></svg>'
       + '</div>'
     );
-    if(i == 0){
+    if(carArray[i].current === '1'){
       htmlArray.push(
         '<div id="carText">'
         + ' <h3 class="selected"> Huidige Auto </h3> '
         + '</div>'
       );
-    }else{
+    }else if(carArray[i].current === '0'){
       htmlArray.push(
         '<div id="carText">'
         + ' <a onclick="selectCar(' + carArray[i].carID + ')"><h3 class="unlocked"> Selecteer Auto </h3></a> '
         + '</div>'
       );
+    }else{
+      htmlArray.push(
+        '<div id="carText">'
+        + ' <a onclick="buyCar(' + carArray[i].carID + ', ' + carArray[i].costs + ')"><h3 class="buy"> Koop Auto <img src="/images/other/bsbCoin.png" width="20px"/> ' + carArray[i].costs + ' </h3></a> '
+        + '</div>'
+      );
     }
     htmlArray.push('</div>') // close first indivCar div
   }
-  console.log(htmlArray);
   carsContainer.innerHTML = htmlArray.join(' ');
 }
 
@@ -148,4 +153,33 @@ function selectCar(carID){
   }
 
   jQuery.ajax(request);
+}
+
+function buyCar(carID, costs){
+  //check for sufficient funds
+  getScript('/js/BackseatGeneral.js', function(){
+    if(userCoins >= costs){
+      var requestData = {functionname: "buyCar", carID: carID, costs: costs};
+      var request = constructAJAXRequest(requestData, "BackseatDB.php");
+
+      request.success = function(response) {
+        location.reload();
+      }
+
+      jQuery.ajax(request);
+    }else{
+      console.log('insufficient coins');
+    }
+  });
+}
+
+function getScript(url, callback) {
+   var script = document.createElement('script');
+   script.type = 'text/javascript';
+   script.src = url;
+
+   script.onreadystatechange = callback;
+   script.onload = callback;
+
+   document.getElementsByTagName('head')[0].appendChild(script);
 }

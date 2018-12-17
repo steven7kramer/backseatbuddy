@@ -82,11 +82,7 @@ function initializeGoogleMapsAPI() {
 
     // Get the users position
     if (window.navigator.geolocation) {
-      // make sure the users position gets called only once
-      if(positionFirstTime == false){
-        positionFirstTime = true;
         navigator.geolocation.watchPosition(setPosition, handleGPSError, {enableHighAccuracy: true}); //getCurrentPosition
-      }
     } else {
         console.log("This browser does not support HTML5 Geolocation");
     }
@@ -138,6 +134,9 @@ function setPosition(position) {
 
         userMarkerLocation = new google.maps.LatLng(userLocation.lat(), userLocation.lng());
 
+    // make sure the users position gets called only once
+    if(positionFirstTime == false){
+      positionFirstTime = true;
 
         jQuery.ajax({
             type: "POST",
@@ -202,7 +201,7 @@ function setPosition(position) {
             $("#toggleBtnLocationImg").attr("src", "images/icons/toggleGPSactive.png")
             jQuery('#toggleBtnLocation').addClass("active");
         }
-
+      }
 
     } else {
         if (canAnimateToNext && !userMarkerLocation.equals(userLocation)) {

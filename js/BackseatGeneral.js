@@ -1,3 +1,4 @@
+var userCoins;
 var maxDistPOI = function(pIcon){
   /*switch(pIcon) {
     case '1': return 1; break;
@@ -60,6 +61,7 @@ function updateCoins(firstTime){
                 if(!firstTime){
                   jQuery('#coinPlaceDiv').fadeOut();
                 }
+                  userCoins = obj.coins;
                   jQuery('#coinPlaceDiv').html(obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
                   jQuery('#coinPlaceDiv').fadeIn();
             } else {

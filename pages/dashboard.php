@@ -94,10 +94,6 @@
                   makeCar(220, "carContainer", "ownedCars");
                 </script>
 
-                <ul id="cars-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
-
-                </ul>
-
             <h2 class="no-margin-bottom">Collectibles</h2>
             <hr class="divider"/>
 
