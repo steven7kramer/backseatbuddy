@@ -24,30 +24,11 @@ function makeCar(size, container, moment){
       return false;
   }
 
-  /**
-   * The identifier of this car object. Corresponds to the DB id
-   */
-  object.id;
-
-  /**
-   * Stores the location in HTML of where to draw
-   */
-  object.container = container;
-
-  /**
-   * Stores the size of the SVG
-   */
-  object.size = size;
-
-  /**
-   * Contains all properties of this car object
-   */
-  object.properties;
-  getAllCars(container, moment);
+  getAllCars(container, size, moment);
 }
 
 //load all properties of the car in separate car Objects, and load these objects into the carArray
-function getAllCars(container, moment) {
+function getAllCars(container, size, moment) {
     var requestData = {functionname: "loadCar", moment: moment};
     var request = constructAJAXRequest(requestData, "BackseatDB.php");
 
@@ -59,7 +40,7 @@ function getAllCars(container, moment) {
           carArray.push(car)
         }
 
-      displayCars(carArray, container);
+      fillCarPathArray(carArray, size, container);
     }
 
     jQuery.ajax(request);
@@ -70,26 +51,53 @@ function getAllCars(container, moment) {
  * @return HTML element to add
  */
 
-function displayCars(carArray, container){
-  var carsContainer = document.getElementById(container);
+function fillCarPathArray(carArray, size, container){
   var carPathArray = [];
 
-  //for (let i = 0; i < carArray.length; i++) {
+  for (let i = 0; i < carArray.length; i++) {
     $.ajax({
-      url: '/lib/carTypes/car' + carArray[0].type + '.txt', // file with the svg path of the car
+      url: '/lib/carTypes/small/car' + carArray[0].type + '.txt', // file with the svg path of the car
       dataType: 'text', // type of file (text, json, xml, etc)
       success: function(data) { // callback for successful completion
         var carPath = data;
-        //carPathArray.push(carPath);
-
-        carsContainer.innerHTML = '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g><path id="car" fill="' + carArray[0].colour + '" d="' + carPath + '"></path></g></svg>';
+        carPathArray.push(carPath);
+        if(i == (carArray.length - 1)){
+          displayCars(carArray, carPathArray, size, container);
+        }
       }
     });
-  //}
+  }
+}
 
-  /*console.log(carPathArray);
-  console.log(carPathArray[0]);*/
+function displayCars(carArray, carPathArray, size, container){
+  var htmlArray = [];
+  var carsContainer = document.getElementById(container);
 
+  for (let i = 0; i < carArray.length; i++){
+    htmlArray.push(
+      '<div id="indivCar">'
+      + '<div id="carSVG">'
+      + '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="' + size + 'px" height="' + size + 'px" viewBox="0 0 ' + size + ' ' + size + '" enable-background="new 0 0 ' + size + ' ' + size + '" xml:space="preserve">'
+      + '<g><path id="car" fill="' + carArray[i].colour + '" d="' + carPathArray[i] + '" stroke="' + carArray[i].strokeColour + '" stroke-width="1"></path></g></svg>'
+      + '</div>'
+    );
+    if(i == 0){
+      htmlArray.push(
+        '<div id="carText">'
+        + ' <h3 class="selected"> Huidige Auto </h3> '
+        + '</div>'
+      );
+    }else{
+      htmlArray.push(
+        '<div id="carText">'
+        + ' <a onclick="selectCar(' + carArray[i].carID + ')"><h3 class="unlocked"> Selecteer Auto </h3></a> '
+        + '</div>'
+      );
+    }
+    htmlArray.push('</div>') // close first indivCar div
+  }
+  console.log(htmlArray);
+  carsContainer.innerHTML = htmlArray.join(' ');
 }
 
 /**
@@ -130,21 +138,14 @@ function constructAJAXRequest(data, phpFile) {
 
     return response;
 }
-/*
-    userMarker = new google.maps.Marker({
-          position: userMarkerLocation,
-          map: map,
-          icon: {
-            path: carType,
-            scale: .1,
-            fillColor: carColour,
-            fillOpacity: 1,
-            strokeColor: 'black',
-            strokeOpacity: 1,
-            strokeWeight: .5,
-            rotation: 90,
-            anchor: new google.maps.Point(256,256)
 
-        }
-    });
-*/
+function selectCar(carID){
+  var requestData = {functionname: "selectCar", carID: carID};
+  var request = constructAJAXRequest(requestData, "BackseatDB.php");
+
+  request.success = function(response) {
+    location.reload();
+  }
+
+  jQuery.ajax(request);
+}

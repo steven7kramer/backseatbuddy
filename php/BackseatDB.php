@@ -12,8 +12,6 @@ $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
 $loadCar = array();
-$selectCar = array();
-$buyCar = array();
 $checkIfUnlocked = array();
 $usernameEmail = array();
 $link;
@@ -159,6 +157,11 @@ if (!isset($result['error'])) {
           if (connect()) {
               loadCar();
               $result['loadCar'] = $GLOBALS['loadCar'];
+          }
+          break;
+      case 'selectCar':
+          if (connect()) {
+              selectCar();
           }
           break;
       case 'usernameEmail':
@@ -690,30 +693,7 @@ function loadCar(){
   if($_POST['moment'] == 'index'){
     $query = sprintf("SELECT carType, carColour, carStrokeColour FROM %s NATURAL JOIN %s WHERE uID = %d AND current = 1", $table1, $table2, $_SESSION['uID']);
   }else{
-      /*if($_POST['moment'] == 'dashboardSelect'){
-          $query = sprintf("UPDATE current = 1 FROM %s WHERE aID = %d", $table2, $_POST['carID']);
-
-          $result = mysqli_query($GLOBALS['link'], $query);
-
-          if (!$result) {
-              $message  = 'Invalid query: ' . mysqli_error() . "\n";
-              $message .= 'Whole query: ' . $query;
-              die($message);
-          }
-      }
-      if($_POST['moment'] == 'dashboardBuy'){
-          $query = sprintf("INSERT INTO CarsOwned (uID, carID, current)
-                    VALUES ('%d', '%s', DEFAULT)", $_SESSION['uID'], $_POST['carID']);
-
-          $result = mysqli_query($GLOBALS['link'], $query);
-
-          if (!$result) {
-              $message  = 'Invalid query: ' . mysqli_error() . "\n";
-              $message .= 'Whole query: ' . $query;
-              die($message);
-          }
-       }*/
-    $query = sprintf("SELECT carType, carColour, carStrokeColour, current FROM %s NATURAL JOIN %s WHERE uID = %d", $table1, $table2, $_SESSION['uID']);
+    $query = sprintf("SELECT carID, carType, carColour, carStrokeColour, current FROM %s NATURAL JOIN %s WHERE uID = %d ORDER BY current DESC", $table1, $table2, $_SESSION['uID']);
   }
 
   $result = mysqli_query($GLOBALS['link'], $query);
@@ -729,6 +709,21 @@ function loadCar(){
   }
 
   mysqli_free_result($result);
+}
+
+function selectCar(){
+    $query = sprintf("UPDATE CarsOwned
+              SET current = 1
+              WHERE uID = %d AND carID = %d",
+              $_SESSION['uID'], $_POST['carID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
 }
 
 function usernameEmail(){

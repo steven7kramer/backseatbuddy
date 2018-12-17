@@ -85,14 +85,14 @@
 
                 </ul>
 
-            <h4>Auto's</h4>
+            <h4>Jouw auto's</h4>
 
-            <div id="carsContainer">
-              <script>
-                var selectedCar = new makeCar(80, "carsContainer", "dashboardSelect");
-                // functionName( size, container div name, moment )
-              </script>
+            <div id="carContainer">
             </div>
+
+                <script>
+                  makeCar(220, "carContainer", "ownedCars");
+                </script>
 
                 <ul id="cars-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
 
