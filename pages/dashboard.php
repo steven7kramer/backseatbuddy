@@ -76,6 +76,16 @@
 
             <h2 class="no-margin-bottom">Shop</h2>
             <hr class="divider"/>
+            <div id="fixedShopError">Je hebt niet voldoende munten!</div>
+            <div id="buyCheckBG">
+              <div id="buyCheck">
+                <h2> Weet je het zeker? </h2>
+                <img src="/images/other/bsbCoin.png" width="30px"/> <div id="price"></div>
+
+                <div id="ynBtns">
+                </div>
+              </div>
+            </div>
 
             <div id="coinDisplay" class="coinNoLink"></div>
 
@@ -85,16 +95,16 @@
 
                 </ul>
 
-            <h4>Jouw auto's</h4>
+            <h4 class="clearBoth">Jouw auto's</h4>
 
-            <div id="carContainer">
-            </div>
+            <ul id="car-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
+            </ul>
 
                 <script>
-                  makeCar(220, "carContainer", "ownedCars");
+                  makeCar("dashboard");
                 </script>
 
-            <h2 class="no-margin-bottom">Collectibles</h2>
+            <h2 class="no-margin-bottom clearBoth">Collectibles</h2>
             <hr class="divider"/>
 
                 <ul id="collectibles-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">

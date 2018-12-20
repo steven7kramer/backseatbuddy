@@ -1,22 +1,8 @@
+var dbReady;
+
 // set right properties to object
-function makeCar(size, container, moment){
-  /**
-   * Contains all data for this object
-   */
-  var object = {};
-
-  // Robustness tests:
-  // Check whether the size variable is properly defined
-  if (typeof(size) !== "number" || size <= 0) {
-      console.error("makeCar() failed: " + size + " is not a valid size.");
-      return false;
-  }
-
-  // Check whether the container variable is properly defined
-  if (typeof(container) !== "string") {
-      console.error("makeCar() failed: " + container + " is not a valid container name.");
-      return false;
-  }
+function makeCar(moment){
+  dbReady = false;
 
   // Check whether the moment variable is properly defined
   if (typeof(moment) !== "string") {
@@ -24,15 +10,16 @@ function makeCar(size, container, moment){
       return false;
   }
 
-  getAllCars(container, size, moment);
+  getAllCars(moment);
 }
 
 //load all properties of the car in separate car Objects, and load these objects into the carArray
-function getAllCars(container, size, moment) {
+function getAllCars(moment) {
     var requestData = {functionname: "loadCar", moment: moment};
     var request = constructAJAXRequest(requestData, "BackseatDB.php");
 
     request.success = function(response) {
+      console.log(response);
       var carArray = [];
         for(let i=0;i<response.loadCar.length;i++){
           var car = {};
@@ -40,7 +27,7 @@ function getAllCars(container, size, moment) {
           carArray.push(car);
         }
 
-      fillCarPathArray(carArray, size, container);
+      fillCarPathArray(carArray);
     }
 
     jQuery.ajax(request);
@@ -51,7 +38,7 @@ function getAllCars(container, size, moment) {
  * @return HTML element to add
  */
 
-function fillCarPathArray(carArray, size, container){
+function fillCarPathArray(carArray){
   var carPathArray = [];
 
   for (let i = 0; i < carArray.length; i++) {
@@ -62,47 +49,56 @@ function fillCarPathArray(carArray, size, container){
         var carPath = data;
         carPathArray.push(carPath);
         if(i == (carArray.length - 1)){
-          displayCars(carArray, carPathArray, size, container);
+          displayCars(carArray, carPathArray);
         }
       }
     });
   }
 }
 
-function displayCars(carArray, carPathArray, size, container){
-  var htmlArray = [];
-  var carsContainer = document.getElementById(container);
+function displayCars(carArray, carPathArray){
+  var counter = 0;
+  var NUMBER_OF_CELLS_CARS = 10;
+  dbReady = true;
 
-  for (let i = 0; i < carArray.length; i++){
-    htmlArray.push(
-      '<div id="indivCar">'
-      + '<div id="carSVG">'
-      + '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">'
-      + '<g><path id="car" fill="' + carArray[i].colour + '" d="' + carPathArray[i] + '" stroke="' + carArray[i].strokeColour + '" stroke-width="1"></path></g></svg>'
-      + '</div>'
-    );
-    if(carArray[i].current === '1'){
-      htmlArray.push(
-        '<div id="carText">'
-        + ' <h3 class="selected"> Huidige Auto </h3> '
-        + '</div>'
-      );
-    }else if(carArray[i].current === '0'){
-      htmlArray.push(
-        '<div id="carText">'
-        + ' <a onclick="selectCar(' + carArray[i].carID + ')"><h3 class="unlocked"> Selecteer Auto </h3></a> '
-        + '</div>'
-      );
-    }else{
-      htmlArray.push(
-        '<div id="carText">'
-        + ' <a onclick="buyCar(' + carArray[i].carID + ', ' + carArray[i].costs + ')"><h3 class="buy"> Koop Auto <img src="/images/other/bsbCoin.png" width="20px"/> ' + carArray[i].costs + ' </h3></a> '
-        + '</div>'
-      );
-    }
-    htmlArray.push('</div>') // close first indivCar div
+  for (var i = 0; i < carArray.length; i++) {
+
+      var car = "";
+      car += '<li class="chew-cell">';
+      car += '<div class="chew-card">';
+
+        car += '<div id="indivCar">'
+        car += '<div id="carSVG">'
+        car += '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">'
+        car += '<g><path id="car" fill="' + carArray[i].colour + '" d="' + carPathArray[i] + '" stroke="' + carArray[i].strokeColour + '" stroke-width="1"></path></g></svg>'
+        car += '</div>'
+
+        if(carArray[i].current === '1'){
+            car += '<div id="carText">'
+            car += ' <h3 class="selected"> Huidige Auto </h3> '
+            car += '</div>'
+        }else if(carArray[i].current === '0'){
+            car += '<div id="carText">'
+            car += ' <a onclick="selectCar(' + carArray[i].carID + ')"><h3 class="unlocked"> Selecteer Auto </h3></a> '
+            car += '</div>'
+        }else{
+            car += '<div id="carText">'
+            car += ' <a onclick="askBuyCar(' + carArray[i].carID + ', ' + carArray[i].costs + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + carArray[i].costs + ' </h3></a> '
+            car += '</div>'
+        }
+
+      car += '</div>' // close first indivCar div
+      car += '</div></li>';
+
+      jQuery("#car-row").append(car);
+      counter++;
   }
-  carsContainer.innerHTML = htmlArray.join(' ');
+
+  while (counter % NUMBER_OF_CELLS_CARS != 0) {
+      var ghost = "<li class='chew-cell chew-cell--ghost'></li>";
+      jQuery("#car-row").append(ghost);
+      counter++;
+  }
 }
 
 /**
@@ -149,28 +145,57 @@ function selectCar(carID){
   var request = constructAJAXRequest(requestData, "BackseatDB.php");
 
   request.success = function(response) {
-    location.reload();
+    $('#car-row').text('');
+    makeCar("dashboard");
   }
 
   jQuery.ajax(request);
 }
 
-function buyCar(carID, costs){
+function askBuyCar(carID, costs){
+  // weet je het zeker?
+  $('#price').text(costs);
+  $('#ynBtns').append('<a onclick="buyCar(' + carID + ',' + costs + ');closeAskScreen();" class="yesButton shopBtn"> Ja </a> <a onclick="closeAskScreen()" class="noButton shopBtn"> Nee </a>');
+  $('#buyCheckBG').fadeIn();
+}
+
+function closeAskScreen(){
+  $('#buyCheckBG').fadeOut('fast', function() {
+      $('#ynBtns').text('');
+});
+
+}
+
+function buyCar(carID,costs){
   //check for sufficient funds
   getScript('/js/BackseatGeneral.js', function(){
     if(userCoins >= costs){
-      var requestData = {functionname: "buyCar", carID: carID, costs: costs};
-      var request = constructAJAXRequest(requestData, "BackseatDB.php");
-
-      request.success = function(response) {
-        location.reload();
-      }
-
-      jQuery.ajax(request);
+      buyCarFromDB(carID, costs);
     }else{
-      console.log('insufficient coins');
+      $('#fixedShopError').show();
+      setTimeout(function(){$('#fixedShopError').fadeOut();},1500);
     }
   });
+}
+
+function buyCarFromDB(carID, costs){
+  var requestData = {functionname: "buyCar", carID: carID, costs: costs};
+  var request = constructAJAXRequest(requestData, "BackseatDB.php");
+
+  request.success = function(response) {
+    $('#car-row').text('');
+    makeCar("dashboard");
+    waitForIt();
+    function waitForIt(){
+        if (!dbReady) {
+            setTimeout(function(){waitForIt()},100);
+        } else {
+            updateCoins('false');
+        }
+      }
+  }
+
+  jQuery.ajax(request);
 }
 
 function getScript(url, callback) {

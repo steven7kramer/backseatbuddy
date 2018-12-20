@@ -323,3 +323,31 @@ input[type=submit]:hover {
   margin:20px auto;
   font-size:20px;
 }
+
+#ynBtns{
+  margin: 0 auto;
+}
+.shopBtn{
+  padding: 10px 20px;
+  margin: 20px;
+  color: white;
+  border-radius: 10px;
+  display: inline-block;
+  width: 50px;
+  font-weight: bold;
+}
+.shopBtn:hover{
+  cursor: pointer;
+}
+.yesButton{
+  background-color: #2ecc71;
+}
+.yesButton:hover{
+  background-color: #62dc96;
+}
+.noButton{
+  background-color: red;
+}
+.noButton:hover{
+  background-color: #f55;
+}

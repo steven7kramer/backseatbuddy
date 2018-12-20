@@ -48,13 +48,12 @@
 }
 
 #indivCar{
-  width: 20%;
-  min-width: 150px;
-  display: inline-block;
+  /*width: 20%;
+  margin: .25%;
+  display: inline-block;*/
   background-color: white;
   padding: 20px;
   border-radius: 5px;
-  margin: 2px;
 }
 #carText h3{
   text-align: center;
@@ -84,4 +83,61 @@
 .buy:hover{
   background-color: #48E68B;
   cursor: pointer;
+}
+#fixedShopError{
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: 40px;
+
+  display: none;
+
+  color:white;
+  background-color: red;
+  border-color: white;
+  border-width: thin;
+  border-style: solid;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.clearBoth{
+  clear: both;
+}
+#buyCheckBG{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+#buyCheck{
+  position: fixed;
+  top: 35%;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 80%;
+  left: 5%;
+  right: 5%;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #1d71b8;
+  text-align: center;
+  border-width: 4px;
+  border-color: grey;
+  border-style: solid;
+  color: white;
+}
+#buyCheck img{
+  vertical-align: middle;
+  margin: 10px;
+}
+#price{
+  color:white;
+  vertical-align: middle;
+  display: inline-block;
 }
