@@ -267,7 +267,7 @@ function queryHighscoresWindmill() {
 }
 
 function queryAddToDatabase() {
-
+    
     $query = sprintf("INSERT INTO PointsOfInterest (pID, lng, lat, pTitle, pDescr, pCategory, pIcon, pImage)
               VALUES (NULL, '%f', '%f', '%s', '%s', '%s', '%s', '%s')",
               $_POST['lng'], $_POST['lat'], $_POST['pTitle'], $_POST['pDescr'], $_POST['pCategory'], $_POST['pIcon'], $_POST['pImage']);
@@ -351,7 +351,7 @@ function addUserToDB() {
     checkDBForUser();
 
     //add the default car to the user
-    $query = sprintf("INSERT INTO HasCars (uID, carID, current) VALUES (DEFAULT, DEFAULT, DEFAULT)");
+    $query = sprintf("INSERT INTO CarsOwned (uID, carID, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -362,7 +362,7 @@ function addUserToDB() {
     }
 
     //add the default avatar to the user
-    $query = sprintf("INSERT INTO AttachAvatars (uID, aID) VALUES (DEFAULT, DEFAULT)");
+    $query = sprintf("INSERT INTO AttachAvatars (uID, aID) VALUES (%d, DEFAULT)", $_SESSION['uID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
