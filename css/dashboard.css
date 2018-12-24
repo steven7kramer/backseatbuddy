@@ -141,3 +141,16 @@
   vertical-align: middle;
   display: inline-block;
 }
+
+.editUsername{
+  display: inline-block;
+  padding: 10px;
+  color: #1d71b8;
+}
+.editUsername:hover{
+  color: #489be2;
+}
+
+.infoPlace{
+  display: inline-block;
+}

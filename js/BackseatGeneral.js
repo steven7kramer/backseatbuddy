@@ -1,4 +1,5 @@
 var userCoins;
+var userName;
 var maxDistPOI = function(pIcon){
   /*switch(pIcon) {
     case '1': return 1; break;
@@ -31,22 +32,7 @@ jQuery(document).ready(function(){
     });
   }
 
-  //place username and email in the designated placement divs
-  jQuery.ajax({
-      type: "POST",
-      url: "../../php/BackseatDB.php",
-      datatype: 'json',
-      data: {functionname: 'usernameEmail'},
-
-      success: function(obj, textstatus) {
-          if (!('error' in obj)) {
-              jQuery('.usernamePlace').html(obj.usernameEmail[0].uUsername);
-              jQuery('.emailPlace').html(obj.usernameEmail[0].uEmail);
-          } else {
-              console.error("Failed to retrieve username and email" );
-          }
-      }
-  });
+  placeUsername();
 });
 
 function updateCoins(firstTime){
@@ -69,6 +55,26 @@ function updateCoins(firstTime){
             }
         }
     });
+}
+
+function placeUsername(){
+  //place username and email in the designated placement divs
+  jQuery.ajax({
+      type: "POST",
+      url: "../../php/BackseatDB.php",
+      datatype: 'json',
+      data: {functionname: 'usernameEmail'},
+
+      success: function(obj, textstatus) {
+          if (!('error' in obj)) {
+            userName = obj.usernameEmail[0].uUsername;
+              jQuery('.usernamePlace').html(userName);
+              jQuery('.emailPlace').html(obj.usernameEmail[0].uEmail);
+          } else {
+              console.error("Failed to retrieve username and email" );
+          }
+      }
+  });
 }
 
 function animateCoinsWon(coins){

@@ -50,10 +50,13 @@
               <table>
                 <tr>
                   <th>
-                    Username
+                    Gebruikersnaam
                   </th>
                   <th>
-                    <div class="usernamePlace infoPlace"></div>
+                    <form action="../php/BackseatDB.php" title="" method="post" id="editUsername" enctype="multipart/form-data">
+                      <div class="usernamePlace infoPlace"></div>
+                      <a href="#" onclick="editUsername()" class="editUsernameIcon"> <i class='fa fa-pencil' style="margin-left: 10px;"></i> </a>
+                    </form>
                   </th>
                 </tr>
                 <tr>
@@ -66,6 +69,34 @@
                 </tr>
               </table>
             </div>
+
+            <!-- form handler for editing userName -->
+            <script type='text/javascript'>
+                /* attach a submit handler to the form */
+                $("#editUsername").submit(function(event) {
+
+                  /* stop form from submitting normally */
+                  event.preventDefault();
+
+                  /* get the action attribute from the <form action=""> element */
+                  var $form = $( this ),
+                      url = $form.attr( 'action' );
+
+                  /* Send the data using post with element id name and name2*/
+                  var posting = $.post( url, {
+                    username: $('#username').val(),
+                    functionname: $('#functionname').val()
+                  });
+
+                  /* Alerts the results */
+                  posting.done(function( data ) {
+                    console.log($('#username').val());
+                    console.log(posting.username);
+                    $('.usernamePlace').text($('#username').val());
+                    $('.editUsernameIcon').show();
+                  });
+                });
+            </script>
 
             <!--  Draw an avatar -->
             <div id="bsb-avatar-drawing">

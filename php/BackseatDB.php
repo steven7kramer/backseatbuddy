@@ -175,7 +175,11 @@ if (!isset($result['error'])) {
               $result['usernameEmail'] = $GLOBALS['usernameEmail'];
           }
           break;
-
+      case 'editUsername':
+          if (connect()) {
+              editUsername();
+          }
+          break;
         default:
             $result['error'] = 'Specified function not found';
             break;
@@ -267,7 +271,7 @@ function queryHighscoresWindmill() {
 }
 
 function queryAddToDatabase() {
-    
+
     $query = sprintf("INSERT INTO PointsOfInterest (pID, lng, lat, pTitle, pDescr, pCategory, pIcon, pImage)
               VALUES (NULL, '%f', '%f', '%s', '%s', '%s', '%s', '%s')",
               $_POST['lng'], $_POST['lat'], $_POST['pTitle'], $_POST['pDescr'], $_POST['pCategory'], $_POST['pIcon'], $_POST['pImage']);
@@ -816,5 +820,20 @@ function usernameEmail(){
   }
 
   mysqli_free_result($result);
+}
+
+function editUsername(){
+    $query = sprintf("UPDATE Users
+              SET uUsername = '%s'
+              WHERE uID = %s",
+              $_POST['username'], $_SESSION['uID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
 }
 ?>

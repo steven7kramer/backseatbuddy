@@ -1,5 +1,9 @@
 var dbReady;
 
+getScript('/js/BackseatGeneral.js', function(){
+  var userName = userName;
+});
+
 // set right properties to object
 function makeCar(moment){
   dbReady = false;
@@ -207,4 +211,14 @@ function getScript(url, callback) {
    script.onload = callback;
 
    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function editUsername(){
+  var editUsernameHTML = '<h3> Nieuwe gebruikersnaam </h3>'
+  editUsernameHTML += '<input id="username" type="text" name="username" value="' + userName + '"><br>';
+  editUsernameHTML += '<input type="hidden" id="functionname" name="functionname" value="editUsername">';
+  editUsernameHTML += '<input type="submit" value="Opslaan">';
+  $('.editUsernameIcon').hide();
+  $('.usernamePlace').text('');
+  $('.usernamePlace').append(editUsernameHTML);
 }
