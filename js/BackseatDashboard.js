@@ -68,7 +68,7 @@ function displayCars(carArray, carPathArray){
   dbReady = true;
 
   for (var i = 0; i < carArray.length; i++) {
-
+      var carMoment = "'car'";
       var car = "";
       car += '<li class="chew-cell">';
       car += '<div class="chew-card">';
@@ -85,11 +85,11 @@ function displayCars(carArray, carPathArray){
             car += '</div>'
         }else if(carArray[i].current === '0'){
             car += '<div id="productText">'
-            car += ' <a onclick="selectCar(' + carArray[i].carID + ')"><h3 class="unlocked"> Selecteer </h3></a> '
+            car += ' <a onclick="askBuyProduct(' + carArray[i].carID + ', ' + carMoment + ')"><h3 class="unlocked"> Selecteer </h3></a> '
             car += '</div>'
         }else{
             car += '<div id="productText">'
-            car += ' <a onclick="askBuyCar(' + carArray[i].carID + ', ' + carArray[i].costs + ', "car")"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + carArray[i].costs + ' </h3></a> '
+            car += ' <a onclick="askBuyProduct(' + carArray[i].carID + ', ' + carArray[i].costs + ', ' + carMoment + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + carArray[i].costs + ' </h3></a> '
             car += '</div>'
         }
 
@@ -137,7 +137,7 @@ function displayAvatars(avatarArray){
 
   for (var i = 0; i < avatarArray.length; i++) {
 
-      var avatarMoment = "avatar";
+      var avatarMoment = "'avatar'";
       var avatar = "";
       avatar += '<li class="chew-cell">';
       avatar += '<div class="chew-card">';
@@ -153,11 +153,11 @@ function displayAvatars(avatarArray){
             avatar += '</div>'
         }else if(avatarArray[i].current === '0'){
             avatar += '<div id="productText">'
-            avatar += ' <a onclick="selectAvatar(' + avatarArray[i].avatarID + ')"><h3 class="unlocked"> Selecteer </h3></a> '
+            avatar += ' <a onclick="askBuyProduct(' + avatarArray[i].avatarID + ', ' + avatarMoment + ')"><h3 class="unlocked"> Selecteer </h3></a> '
             avatar += '</div>'
         }else{
             avatar += '<div id="productText">'
-            avatar += ' <a onclick="askBuyAvatar(' + avatarArray[i].avatarID + ', ' + avatarArray[i].costs + ', ' + avatarMoment + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + avatarArray[i].costs + ' </h3></a> '
+            avatar += ' <a onclick="askBuyProduct(' + avatarArray[i].avatarID + ', ' + avatarArray[i].costs + ', ' + avatarMoment + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + avatarArray[i].costs + ' </h3></a> '
             avatar += '</div>'
         }
 
@@ -228,11 +228,10 @@ function selectCar(carID){
   jQuery.ajax(request);
 }
 
-function askBuyCar(productID, costs, moment){
+function askBuyProduct(productID, costs, moment){
   // weet je het zeker?
   $('#price').text(costs);
-
-    $('#ynBtns').append('<a onclick="costCheck(' + productID + ',' + costs + ',' + moment + ');closeAskScreen();" class="yesButton shopBtn"> Ja </a> <a onclick="closeAskScreen()" class="noButton shopBtn"> Nee </a>');
+  $('#ynBtns').append('<a onclick="costCheck(' + productID + ',' + costs + ',' + moment + ');closeAskScreen();" class="yesButton shopBtn"> Ja </a> <a onclick="closeAskScreen()" class="noButton shopBtn"> Nee </a>');
   $('#buyCheckBG').fadeIn();
 }
 
@@ -247,9 +246,9 @@ function costCheck(productID, costs, moment){
   //check for sufficient funds
   getScript('/js/BackseatGeneral.js', function(){
     if(userCoins >= costs){
-      if(moment == 'car'){
+      if(moment == car){
         buyCarFromDB(productID, costs);
-      }else if(moment == 'avatar'){
+      }else if(moment == avatar){
         buyAvatarFromDB(productID, costs);
       }
 
@@ -266,7 +265,7 @@ function buyCarFromDB(carID, costs){
 
   request.success = function(response) {
     $('#car-row').text('');
-    makeCar("dashboard");
+    makeProducts("dashboard");
     waitForIt();
     function waitForIt(){
         if (!dbReady) {
@@ -286,7 +285,7 @@ function buyAvatarFromDB(avatarID, costs){
 
   request.success = function(response) {
     $('#avatar-row').text('');
-    makeCar("dashboard");
+    makeProducts("dashboard");
     waitForIt();
     function waitForIt(){
         if (!dbReady) {
