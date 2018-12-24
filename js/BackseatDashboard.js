@@ -5,19 +5,21 @@ getScript('/js/BackseatGeneral.js', function(){
 });
 
 // set right properties to object
-function makeCar(moment){
+function makeProducts(moment){
   dbReady = false;
 
   // Check whether the moment variable is properly defined
   if (typeof(moment) !== "string") {
-      console.error("makeCar() failed: " + moment + " is not a valid moment name.");
+      console.error("makeProducts() failed: " + moment + " is not a valid moment name.");
       return false;
   }
 
   getAllCars(moment);
+  getAllAvatars(moment);
 }
 
-//load all properties of the car in separate car Objects, and load these objects into the carArray
+// START CAR LOADER
+
 function getAllCars(moment) {
     var requestData = {functionname: "loadCar", moment: moment};
     var request = constructAJAXRequest(requestData, "BackseatDB.php");
@@ -71,23 +73,23 @@ function displayCars(carArray, carPathArray){
       car += '<li class="chew-cell">';
       car += '<div class="chew-card">';
 
-        car += '<div id="indivCar">'
+        car += '<div id="indivProduct">'
         car += '<div id="carSVG">'
         car += '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">'
         car += '<g><path id="car" fill="' + carArray[i].colour + '" d="' + carPathArray[i] + '" stroke="' + carArray[i].strokeColour + '" stroke-width="1"></path></g></svg>'
         car += '</div>'
 
         if(carArray[i].current === '1'){
-            car += '<div id="carText">'
-            car += ' <h3 class="selected"> Huidige Auto </h3> '
+            car += '<div id="productText">'
+            car += ' <h3 class="selected"> Huidig </h3> '
             car += '</div>'
         }else if(carArray[i].current === '0'){
-            car += '<div id="carText">'
-            car += ' <a onclick="selectCar(' + carArray[i].carID + ')"><h3 class="unlocked"> Selecteer Auto </h3></a> '
+            car += '<div id="productText">'
+            car += ' <a onclick="selectCar(' + carArray[i].carID + ')"><h3 class="unlocked"> Selecteer </h3></a> '
             car += '</div>'
         }else{
-            car += '<div id="carText">'
-            car += ' <a onclick="askBuyCar(' + carArray[i].carID + ', ' + carArray[i].costs + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + carArray[i].costs + ' </h3></a> '
+            car += '<div id="productText">'
+            car += ' <a onclick="askBuyCar(' + carArray[i].carID + ', ' + carArray[i].costs + ', "car")"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + carArray[i].costs + ' </h3></a> '
             car += '</div>'
         }
 
@@ -104,6 +106,76 @@ function displayCars(carArray, carPathArray){
       counter++;
   }
 }
+
+// END CAR LOADER
+
+// START AVATAR LOADER
+
+function getAllAvatars(moment) {
+    var requestData = {functionname: "loadAvatar", moment: moment};
+    var request = constructAJAXRequest(requestData, "BackseatDB.php");
+
+    request.success = function(response) {
+      console.log(response);
+      var avatarArray = [];
+        for(let i=0;i<response.loadAvatar.length;i++){
+          var avatarShop = {};
+          avatarShop = {avatarID: response.loadAvatar[i].aID, costs: response.loadAvatar[i].costs, current: response.loadAvatar[i].current};
+          avatarArray.push(avatarShop);
+        }
+
+      displayAvatars(avatarArray);
+    }
+
+    jQuery.ajax(request);
+}
+
+function displayAvatars(avatarArray){
+  var counter = 0;
+  var NUMBER_OF_CELLS_AVATARS = 10;
+  dbReady = true;
+
+  for (var i = 0; i < avatarArray.length; i++) {
+
+      var avatarMoment = "avatar";
+      var avatar = "";
+      avatar += '<li class="chew-cell">';
+      avatar += '<div class="chew-card">';
+
+        avatar += '<div id="indivAvatar">'
+        avatar += '<div id="avatarSVG">'
+        avatar += BackseatAvatar(100, "avatar-row");
+        avatar += '</div>'
+
+        if(avatarArray[i].current === '1'){
+            avatar += '<div id="productText">'
+            avatar += ' <h3 class="selected"> Huidig </h3> '
+            avatar += '</div>'
+        }else if(avatarArray[i].current === '0'){
+            avatar += '<div id="productText">'
+            avatar += ' <a onclick="selectAvatar(' + avatarArray[i].avatarID + ')"><h3 class="unlocked"> Selecteer </h3></a> '
+            avatar += '</div>'
+        }else{
+            avatar += '<div id="productText">'
+            avatar += ' <a onclick="askBuyAvatar(' + avatarArray[i].avatarID + ', ' + avatarArray[i].costs + ', ' + avatarMoment + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + avatarArray[i].costs + ' </h3></a> '
+            avatar += '</div>'
+        }
+
+      avatar += '</div>' // close first indivCar div
+      avatar += '</div></li>';
+
+      jQuery("#avatar-row").append(avatar);
+      counter++;
+  }
+
+  while (counter % NUMBER_OF_CELLS_AVATARS != 0) {
+      var ghost = "<li class='chew-cell chew-cell--ghost'></li>";
+      jQuery("#avatar-row").append(ghost);
+      counter++;
+  }
+}
+
+// END AVATAR LOADER
 
 /**
  * Sends an AJAX request
@@ -156,10 +228,11 @@ function selectCar(carID){
   jQuery.ajax(request);
 }
 
-function askBuyCar(carID, costs){
+function askBuyCar(productID, costs, moment){
   // weet je het zeker?
   $('#price').text(costs);
-  $('#ynBtns').append('<a onclick="buyCar(' + carID + ',' + costs + ');closeAskScreen();" class="yesButton shopBtn"> Ja </a> <a onclick="closeAskScreen()" class="noButton shopBtn"> Nee </a>');
+
+    $('#ynBtns').append('<a onclick="costCheck(' + productID + ',' + costs + ',' + moment + ');closeAskScreen();" class="yesButton shopBtn"> Ja </a> <a onclick="closeAskScreen()" class="noButton shopBtn"> Nee </a>');
   $('#buyCheckBG').fadeIn();
 }
 
@@ -170,11 +243,16 @@ function closeAskScreen(){
 
 }
 
-function buyCar(carID,costs){
+function costCheck(productID, costs, moment){
   //check for sufficient funds
   getScript('/js/BackseatGeneral.js', function(){
     if(userCoins >= costs){
-      buyCarFromDB(carID, costs);
+      if(moment == 'car'){
+        buyCarFromDB(productID, costs);
+      }else if(moment == 'avatar'){
+        buyAvatarFromDB(productID, costs);
+      }
+
     }else{
       $('#fixedShopError').show();
       setTimeout(function(){$('#fixedShopError').fadeOut();},1500);
@@ -188,6 +266,26 @@ function buyCarFromDB(carID, costs){
 
   request.success = function(response) {
     $('#car-row').text('');
+    makeCar("dashboard");
+    waitForIt();
+    function waitForIt(){
+        if (!dbReady) {
+            setTimeout(function(){waitForIt()},100);
+        } else {
+            updateCoins('false');
+        }
+      }
+  }
+
+  jQuery.ajax(request);
+}
+
+function buyAvatarFromDB(avatarID, costs){
+  var requestData = {functionname: "buyAvatar", avatarID: avatarID, costs: costs};
+  var request = constructAJAXRequest(requestData, "BackseatDB.php");
+
+  request.success = function(response) {
+    $('#avatar-row').text('');
     makeCar("dashboard");
     waitForIt();
     function waitForIt(){

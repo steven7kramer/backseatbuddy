@@ -99,7 +99,7 @@ function BackseatPainter(size, container) {
                 // Gewoon een snelle planga
                 break;
             case "modern":
-                // Pink, trendy, a bit gay glasses
+                // Pink, trendy and awesome glasses
                 this.draw.circle(this.faceSize * 0.45).fill({color: BACKSEAT_PINK, opacity:0.5}).stroke({color: BACKSEAT_PINK, width: 10}).move(this.faceSize * 0.025, this.faceSize * 0.15);
                 this.draw.circle(this.faceSize * 0.45).fill({color: BACKSEAT_PINK, opacity:0.5}).stroke({color: BACKSEAT_PINK, width: 10}).move(this.faceSize * 0.525, this.faceSize * 0.15);
                 break;

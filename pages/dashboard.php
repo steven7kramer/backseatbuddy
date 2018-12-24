@@ -122,8 +122,7 @@
 
             <h4>Brillen</h4>
 
-                <ul id="brillen-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
-
+                <ul id="avatar-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
                 </ul>
 
             <h4 class="clearBoth">Jouw auto's</h4>
@@ -131,8 +130,10 @@
             <ul id="car-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
             </ul>
 
+
                 <script>
-                  makeCar("dashboard");
+                // Fills car products as well as the avatars
+                  makeProducts("dashboard");
                 </script>
 
             <h2 class="no-margin-bottom clearBoth">Collectibles</h2>
@@ -141,16 +142,6 @@
                 <ul id="collectibles-row" class="chew-row chew-row--card-min-200 chew-row--card-max-400  chew-row--col-6 chew-row--gutter">
 
                 </ul>
-
-
-            <h2 class="no-margin-bottom">Games</h2>
-            <hr class="divider"/>
-
-            <div id="windmillImg"></div>
-            <div id="windmillScores">
-              <h4>Windmolen</h4>
-
-            </div>
         </div>
     </body>
 

@@ -12,6 +12,7 @@ $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
 $loadCar = array();
+$loadAvatar = array();
 $checkIfUnlocked = array();
 $usernameEmail = array();
 $link;
@@ -167,6 +168,12 @@ if (!isset($result['error'])) {
       case 'buyCar':
           if (connect()) {
               buyCar();
+          }
+          break;
+      case 'loadAvatar':
+          if (connect()) {
+              loadAvatar();
+              $result['loadAvatar'] = $GLOBALS['loadAvatar'];
           }
           break;
       case 'usernameEmail':
@@ -366,7 +373,7 @@ function addUserToDB() {
     }
 
     //add the default avatar to the user
-    $query = sprintf("INSERT INTO AttachAvatars (uID, aID) VALUES (%d, DEFAULT)", $_SESSION['uID']);
+    $query = sprintf("INSERT INTO AttachAvatars (uID, aID, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -800,6 +807,42 @@ function buyCar(){
       $message .= 'Whole query: ' . $query;
       die($message);
   }
+}
+
+function loadAvatar(){
+  $table1 = "Avatars AV";
+  $table2 = "AttachAvatars AA";
+
+  // check on which page the call is made. In index, only the current avatar should load
+  if($_POST['moment'] == 'index'){
+    $query = sprintf("SELECT aID, aGlasses FROM %s NATURAL JOIN %s WHERE uID = %d AND current = 1", $table1, $table2, $_SESSION['uID']);
+  }else{
+    $query = sprintf("SELECT aID, aGlasses, costs, current FROM %s NATURAL JOIN %s WHERE uID = %d
+
+    UNION ALL
+
+    SELECT DISTINCT aID, aGlasses, costs, ''
+    FROM %s
+    WHERE NOT EXISTS(
+        SELECT * FROM %s
+        WHERE AA.aID = AV.aID AND AA.uID = %d)
+
+    ORDER BY current DESC", $table1, $table2, $_SESSION['uID'], $table1, $table2, $_SESSION['uID']);
+  }
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['loadAvatar'], $row);
+  }
+
+  mysqli_free_result($result);
 }
 
 function usernameEmail(){
