@@ -101,7 +101,7 @@
             <!--  Draw an avatar -->
             <div id="bsb-avatar-drawing">
                 <script>
-                    var avatar = new BackseatAvatar(150, "bsb-avatar-drawing");
+                    var avatar = new BackseatAvatar(150, "bsb-avatar-drawing", "current");
                 </script>
             </div>
 

@@ -46,11 +46,10 @@
   cursor: default;
   text-decoration: none;
 }
-
+.avatarSVG{
+  text-align: center;
+}
 #indivProduct{
-  /*width: 20%;
-  margin: .25%;
-  display: inline-block;*/
   background-color: white;
   padding: 20px;
   border-radius: 5px;
@@ -60,6 +59,15 @@
   margin: 20px 0 0;
   padding: 10px;
   border-radius: 5px;
+}
+
+@media only screen and (max-width: 400px) {
+  #productText h3{
+    min-width: 150px;
+  }
+  #indivProduct{
+    min-width: 190px;
+  }
 }
 .selected{
   font-style: italic;

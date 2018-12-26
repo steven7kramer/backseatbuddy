@@ -50,7 +50,7 @@ if($basename == "index"):
               <img src="/images/other/bsbCoin.png" id="coinDisplayImage"/>
               <span class="coinAmount">
                 <div id="coinPlaceDiv"></div>
-                <script>updateCoins(true);</script>
+                <script>updateCoins("firstTime");</script>
               </span>
             </div>
         </a>

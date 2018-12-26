@@ -35,7 +35,7 @@ jQuery(document).ready(function(){
   placeUsername();
 });
 
-function updateCoins(firstTime){
+function updateCoins(moment){
     jQuery.ajax({
         type: "POST",
         url: "../../php/BackseatDB.php",
@@ -44,7 +44,7 @@ function updateCoins(firstTime){
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
-                if(!firstTime){
+                if(moment != "firstTime"){
                   jQuery('#coinPlaceDiv').fadeOut();
                 }
                   userCoins = obj.coins;

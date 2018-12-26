@@ -176,6 +176,16 @@ if (!isset($result['error'])) {
               $result['loadAvatar'] = $GLOBALS['loadAvatar'];
           }
           break;
+      case 'selectAvatar':
+          if (connect()) {
+              selectAvatar();
+          }
+          break;
+      case 'buyAvatar':
+          if (connect()) {
+              buyAvatar();
+          }
+          break;
       case 'usernameEmail':
           if (connect()) {
               usernameEmail();
@@ -373,7 +383,7 @@ function addUserToDB() {
     }
 
     //add the default avatar to the user
-    $query = sprintf("INSERT INTO AttachAvatars (uID, aID, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
+    $query = sprintf("INSERT INTO AttachAvatars (uID, aID, glassColour, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -602,7 +612,7 @@ function getAvatarProperties() {
     $table1 = "AttachAvatars AA";
     $table2 = "Avatars A";
 
-    $query = sprintf("SELECT aID, aGlasses FROM %s NATURAL JOIN %s WHERE AA.uID = %d", $table1, $table2, $_SESSION['uID']);
+    $query = sprintf("SELECT aID, aGlasses, glassColour FROM %s NATURAL JOIN %s WHERE AA.uID = %d AND AA.aID = %d", $table1, $table2, $_SESSION['uID'], $_POST['aID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -622,8 +632,11 @@ function findAvatarID() {
     $table1 = "AttachAvatars AA";
     $table2 = "Avatars A";
 
-    $query = sprintf("SELECT aID FROM %s NATURAL JOIN %s WHERE AA.uID = %d", $table1, $table2, $_SESSION['uID']);
-
+    if($_POST['moment'] == "all"){
+      $query = sprintf("SELECT aID FROM %s NATURAL JOIN %s WHERE AA.uID = %d", $table1, $table2, $_SESSION['uID']);
+    }else if($_POST['moment'] == "current"){
+      $query = sprintf("SELECT aID FROM %s NATURAL JOIN %s WHERE AA.uID = %d AND AA.current = 1", $table1, $table2, $_SESSION['uID']);
+    }
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -719,7 +732,7 @@ function loadCar(){
         SELECT * FROM %s
         WHERE co.carID = ac.carID AND co.uID = %d)
 
-    ORDER BY current DESC", $table1, $table2, $_SESSION['uID'], $table1, $table2, $_SESSION['uID']);
+    ORDER BY current DESC, carCosts", $table1, $table2, $_SESSION['uID'], $table1, $table2, $_SESSION['uID']);
   }
 
   $result = mysqli_query($GLOBALS['link'], $query);
@@ -809,25 +822,26 @@ function buyCar(){
   }
 }
 
+// START AVATAR //
 function loadAvatar(){
   $table1 = "Avatars AV";
   $table2 = "AttachAvatars AA";
 
   // check on which page the call is made. In index, only the current avatar should load
   if($_POST['moment'] == 'index'){
-    $query = sprintf("SELECT aID, aGlasses FROM %s NATURAL JOIN %s WHERE uID = %d AND current = 1", $table1, $table2, $_SESSION['uID']);
+    $query = sprintf("SELECT aID, aGlasses, glassColour FROM %s NATURAL JOIN %s WHERE uID = %d AND current = 1", $table1, $table2, $_SESSION['uID']);
   }else{
-    $query = sprintf("SELECT aID, aGlasses, costs, current FROM %s NATURAL JOIN %s WHERE uID = %d
+    $query = sprintf("SELECT aID, aGlasses, glassColour, costs, current FROM %s NATURAL JOIN %s WHERE uID = %d
 
     UNION ALL
 
-    SELECT DISTINCT aID, aGlasses, costs, ''
+    SELECT DISTINCT aID, aGlasses, glassColour, costs, ''
     FROM %s
     WHERE NOT EXISTS(
         SELECT * FROM %s
         WHERE AA.aID = AV.aID AND AA.uID = %d)
 
-    ORDER BY current DESC", $table1, $table2, $_SESSION['uID'], $table1, $table2, $_SESSION['uID']);
+    ORDER BY current DESC, costs", $table1, $table2, $_SESSION['uID'], $table1, $table2, $_SESSION['uID']);
   }
 
   $result = mysqli_query($GLOBALS['link'], $query);
@@ -844,6 +858,78 @@ function loadAvatar(){
 
   mysqli_free_result($result);
 }
+function selectAvatar(){
+    // first set all currents to 0
+    $query = sprintf("UPDATE AttachAvatars
+              SET current = 0
+              WHERE uID = %d",
+              $_SESSION['uID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+
+    // then set selected car current to 1
+    $query = sprintf("UPDATE AttachAvatars
+              SET current = 1
+              WHERE uID = %d AND aID = %d",
+              $_SESSION['uID'], $_POST['aID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+}
+
+function buyAvatar(){
+  //set current car to 0, since the bought car will be the new current car
+  $query = sprintf("UPDATE AttachAvatars
+            SET current = 0
+            WHERE uID = %d",
+            $_SESSION['uID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  //add bought car to CarsOwned
+  $query = sprintf("INSERT INTO AttachAvatars (uID, aID, current, unq)
+      VALUES(%d, %s, '1', DEFAULT)", $_SESSION['uID'], $_POST['aID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  // subtract costs for avatar of total coins
+  $query = sprintf("UPDATE Users
+            SET uCoins = uCoins - %d
+            WHERE uID = %d",
+            $_POST['costs'], $_SESSION['uID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+}
+// END AVATAR //
 
 function usernameEmail(){
   $table = "Users";
