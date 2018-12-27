@@ -80,6 +80,9 @@ function BackseatPainter(size, container) {
      * Draws the glasses
      */
     object.drawGlasses = function(type, glassColour) {
+      // make strokeWidth also match for smaller sized avatars
+      var strokeWidth = this.faceSize * 0.0333;
+
         // Check the type of the glasses
         switch (type) {
             case "none":
@@ -87,22 +90,22 @@ function BackseatPainter(size, container) {
                 break;
             case "classic":
                 // Draw classic, black, cool sunglasses
-                this.draw.rect(this.faceSize * 0.4, this.faceSize * 0.3).fill({color: glassColour, opacity:0.75}).stroke({color: glassColour, width: 5}).move(this.faceSize * 0.05, this.faceSize * 0.20);
-                this.draw.rect(this.faceSize * 0.4, this.faceSize * 0.3).fill({color: glassColour, opacity:0.75}).stroke({color: glassColour, width: 5}).move(this.faceSize * 0.55, this.faceSize * 0.20);
+                this.draw.rect(this.faceSize * 0.4, this.faceSize * 0.3).fill({color: glassColour, opacity:0.75}).stroke({color: glassColour, width: strokeWidth}).move(this.faceSize * 0.05, this.faceSize * 0.20);
+                this.draw.rect(this.faceSize * 0.4, this.faceSize * 0.3).fill({color: glassColour, opacity:0.75}).stroke({color: glassColour, width: strokeWidth}).move(this.faceSize * 0.55, this.faceSize * 0.20);
 
                 var lineY = this.faceSize * 0.35;
-                this.draw.line(0, lineY, this.faceSize * 0.05, lineY).stroke({ color: glassColour, width: 5 });
-                this.draw.line(this.faceSize * 0.45, lineY, this.faceSize * 0.55, lineY).stroke({ color: glassColour, width: 5 });
-                this.draw.line(this.faceSize * 0.95, lineY, this.faceSize, lineY).stroke({ color: glassColour, width: 5 });
+                this.draw.line(0, lineY, this.faceSize * 0.05, lineY).stroke({ color: glassColour, width: strokeWidth });
+                this.draw.line(this.faceSize * 0.45, lineY, this.faceSize * 0.55, lineY).stroke({ color: glassColour, width: strokeWidth });
+                this.draw.line(this.faceSize * 0.95, lineY, this.faceSize, lineY).stroke({ color: glassColour, width: strokeWidth });
                 break;
             case "futuristic":
                 // Gewoon een snelle planga
-                this.draw.rect(this.faceSize, this.faceSize * 0.2).fill({color: glassColour, opacity:0.75}).stroke({color: glassColour, width: 5}).move(this.faceSize * 0, this.faceSize * 0.275);
+                this.draw.rect(this.faceSize, this.faceSize * 0.2).fill({color: glassColour, opacity:0.75}).stroke({color: glassColour, width: strokeWidth}).move(this.faceSize * 0, this.faceSize * 0.275);
                 break;
             case "modern":
                 // Pink, trendy and awesome glasses
-                this.draw.circle(this.faceSize * 0.45).fill({color: glassColour, opacity:0.5}).stroke({color: glassColour, width: 10}).move(this.faceSize * 0.025, this.faceSize * 0.15);
-                this.draw.circle(this.faceSize * 0.45).fill({color: glassColour, opacity:0.5}).stroke({color: glassColour, width: 10}).move(this.faceSize * 0.525, this.faceSize * 0.15);
+                this.draw.circle(this.faceSize * 0.45).fill({color: glassColour, opacity:0.5}).stroke({color: glassColour, width: strokeWidth*2}).move(this.faceSize * 0.025, this.faceSize * 0.15);
+                this.draw.circle(this.faceSize * 0.45).fill({color: glassColour, opacity:0.5}).stroke({color: glassColour, width: strokeWidth*2}).move(this.faceSize * 0.525, this.faceSize * 0.15);
                 break;
             default:
             console.error("BackseatPainter.drawGlasses() failed: Glasses of type " + type + " are not supported");

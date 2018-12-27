@@ -15,6 +15,7 @@ $loadCar = array();
 $loadAvatar = array();
 $checkIfUnlocked = array();
 $usernameEmail = array();
+$overlayCheck = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -195,6 +196,12 @@ if (!isset($result['error'])) {
       case 'editUsername':
           if (connect()) {
               editUsername();
+          }
+          break;
+      case 'overlayCheck':
+          if (connect()) {
+              overlayCheck();
+              $result['overlayCheck'] = $GLOBALS['overlayCheck'];
           }
           break;
         default:
@@ -964,5 +971,31 @@ function editUsername(){
         $message .= 'Whole query: ' . $query;
         die($message);
     }
+}
+
+function overlayCheck(){
+  $table = "Users";
+
+  if($_POST['moment'] == "initiate"){
+    $query = sprintf("SELECT dashDone FROM %s WHERE uID = '%s'", $table, $_SESSION['uID']);
+  }else if($_POST['moment'] == "done"){
+    $query = sprintf("UPDATE %s SET dashDone = 1 WHERE uID = '%s'", $table, $_SESSION['uID']);
+  }
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  if($_POST['moment'] == "initiate"){
+    while ($row = $result -> fetch_assoc()) {
+        array_push($GLOBALS['overlayCheck'], $row);
+    }
+
+    mysqli_free_result($result);
+  }
 }
 ?>
