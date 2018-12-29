@@ -415,3 +415,23 @@ a.closebutton{
 a.closebutton:hover{
   color: #CCC;
 }
+
+textarea {
+  width: 1000px;
+  resize: none;
+  box-sizing: border-box;
+  margin: 10px 0;
+  border-radius: 4px;
+  max-width: 100%;
+}
+
+#formFeedback{
+  font-style: italic;
+  color: white;
+  text-align: center;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 5px;
+
+  display: none;
+}

@@ -12,6 +12,7 @@
     <a href='<?php echo $BASE_URL; ?>'>Kaart</a>
     <a href='<?php echo $BASE_URL . '/pages/dashboard.php'; ?>'>Dashboard</a>
     <a href='<?php echo $BASE_URL . '/pages/tutorial.php'; ?>'>Tutorial</a>
+    <a href='<?php echo $BASE_URL . '/pages/feedback.php'; ?>'>Geef Feedback!</a>
     <a href='<?php echo $BASE_URL . '/pages/logout.php'; ?>'>Afmelden</a>
 
 

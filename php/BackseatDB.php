@@ -204,6 +204,12 @@ if (!isset($result['error'])) {
               $result['overlayCheck'] = $GLOBALS['overlayCheck'];
           }
           break;
+      case 'giveFeedback':
+          if(connect()) {
+              $result['error'] = "none";
+              giveFeedback();
+          }
+          break;
         default:
             $result['error'] = 'Specified function not found';
             break;
@@ -390,7 +396,7 @@ function addUserToDB() {
     }
 
     //add the default avatar to the user
-    $query = sprintf("INSERT INTO AttachAvatars (uID, aID, glassColour, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
+    $query = sprintf("INSERT INTO AttachAvatars (uID, aID, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -997,5 +1003,20 @@ function overlayCheck(){
 
     mysqli_free_result($result);
   }
+}
+
+function giveFeedback() {
+
+    $query = sprintf("INSERT INTO Feedback (fID, uID, cijfer, goed, kanbeter)
+              VALUES (DEFAULT, %s, %s, '%s', '%s')",
+              $_SESSION['uID'], $_POST['cijfer'], $_POST['goed'], $_POST['kanbeter']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
 }
 ?>
