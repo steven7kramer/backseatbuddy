@@ -59,10 +59,10 @@
 	<div id="landscape">
 
 				<div id="touchSteeringContainer">
-					<div id="touchLeft" class="inline"> <div class="steeringText b "> Stuur links </div> </div>
+					<div id="touchLeft" class="inline"> <div class="steeringText b "> Stuur <br /> links </div> </div>
 					<div id="touchMiddle" class="inline"> <div class="steeringText "> <i>Hoe te spelen: </i> <br /> <b> Remmen </b> </div> </div>
-					<div id="touchRight" class="inline"> <div class="steeringText b "> Stuur rechts </div> </div>
-					<div id="tiltPhone"> <div class="steeringText b "> Geef gas door je telefoon van je af te draaien <i class="fas fa-mobile-alt" style="font-size:150px; margin-top:20px;"></i><i class="arrowI fas fa-angle-double-up"></i> </div> </div>
+					<div id="touchRight" class="inline"> <div class="steeringText b "> Stuur <br /> rechts </div> </div>
+					<div id="tiltPhone"> <div class="steeringText b "> Geef gas door je telefoon van je af te draaien </div> </div>
 					<div id="startAfterTutorial"> Starten! </div>
 				</div>
 

@@ -14,6 +14,24 @@ var windowOpen = false; // sideWindow for tutorial and highscore
 
 var fpsElement = document.getElementById('fpsElement');
 
+function getURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+
+    return -1;
+}
+
+var contentID = getURLParameter('id');
+
 /* Touch Steering */
 
 $(document).ready(function(){
@@ -36,7 +54,7 @@ function Car (x, y, alfa, color, maxVelocity, radius) {
 	this.v0 = 0.5;				//
 
 	this.a = 1.025;				// Acceleration pixels/frame^2
-	this.maxVelocity = maxVelocity == null ? 4 : maxVelocity;	// Maximum velocity
+	this.maxVelocity = maxVelocity == null ? 10 : maxVelocity;	// Maximum velocity - change to increase top speed
 
 	this.color = color == null ? '#4A96AD' : color;	// Car's color
 	this.r = radius == null ? 10 : radius;			// Radius
@@ -213,7 +231,7 @@ function frame () {
 
 		if (keyDown('UP') || phoneTilted) {
 			if (car.v > 0) {
-				car.v *= car.a; // Accelerate
+				car.v *= car.a; // How quickly you accelerate
 			} else if (car.v < 0) {
 				car.v *= 1 - (car.a - 1) * 5;
 			} else {
@@ -228,7 +246,7 @@ function frame () {
 				car.v = -1 * car.v0;
 			}
 		} else {
-			car.v *= 0.98; // Friction
+			car.v *= 0.98; // Friction - How quickly you slow down without speed
 		}
 
 		// Brakes
@@ -584,7 +602,7 @@ function insideRectangle (x, y, array) {
 }
 
 var tracks = [
-				new Track('Track 0', 'track0', 1000, 600, 942, 450, null, null, {'start' : [875, 995, 425, 435], '1' : [875, 995, 250, 260], '2' : [875, 995, 100, 110] }),
+				new Track('zandvoort', 'zandvoort', 5885, 4931, 2494, 4762, 225, null, {'start' : [875, 995, 425, 435], '1' : [875, 995, 250, 260], '2' : [875, 995, 100, 110] }),
 				new Track('Track 1', 'track', 1500, 800, 770, 80, 0, null, { 'start' : [790, 800, 5, 160], '1' : [850, 860, 5, 160], '2' : [900, 910, 5, 160] })
 			 ],
 	track, c, cNode, hiddenCanvas, trackImg,
@@ -615,7 +633,7 @@ var show = 'menu', // menu, 321, game
 var debug = false;
 
 // Load track
-loadTrack(1);
+loadTrack(contentID);
 
 // Select track
 /*var selected,
