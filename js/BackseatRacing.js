@@ -4,22 +4,25 @@ var steerLeft;
 var steerRight;
 var touchBrake;
 
-document.getElementById("touchLeft").addEventListener("mousedown", mouseDown)
-document.getElementById("touchLeft").addEventListener("mouseUp", mouseUp)
+var startX;
+var startY;
+
+var firstStart = true;
+
+var phoneTilted;
+var windowOpen = false; // sideWindow for tutorial and highscore
+
+var fpsElement = document.getElementById('fpsElement');
 
 /* Touch Steering */
-function mouseDown(block){
-	console.log("mouseDown");
-	//if(block == "left"){
-		console.log("left");
-		steerLeft = true;
-	//}
-}
-function mouseUp(block){
-	if(block == "left"){
-		steerLeft = false;
+
+$(document).ready(function(){
+	// Device orientation motion event listener for accelerating
+	if (window.DeviceOrientationEvent) {
+		window.addEventListener('deviceorientation', deviceOrientationHandler, false);
+		console.log("Orientation is supported in this browser!");
 	}
-}
+});
 
 
 /*
@@ -121,6 +124,8 @@ function Track (name, filename, width, height, x, y, alfa, teleporter, checkpoin
 	this.filenameHidden = filename + '_h.png';
 	this.w = width;		// Track size
 	this.h = height;
+	startX = x;
+	startY = y;
 	this.x = x; 	// Car's initial position
 	this.y = y;
 	this.alfa = alfa == null ? Math.PI / 2 : alfa;
@@ -156,12 +161,57 @@ function frame () {
 		return;
 	}
 
+	if (show === 'menu') {
+		jQuery('.startbtn').click(function() { // New game
+			if(firstStart){
+				startTutorial();
+			}else{
+				startGame();
+			}
+		});
+
+		function startGame(){
+			if (windowOpen) {
+					closeSideWindow();
+			}
+			show = '321';
+			countdown = (new Date()).getTime();
+		}
+
+		function startTutorial(){
+			if (windowOpen) {
+					closeSideWindow();
+			}
+			$('.racingMenu').fadeOut();
+			$('#touchSteeringContainer').fadeIn();
+		}
+
+		jQuery('#startAfterTutorial').click(function(){
+			$('#startAfterTutorial').fadeOut();
+			firstStart = false;
+			startGame();
+		});
+	}
+
 	if (show === 'game') {
 		// Backup
 		var x = car.x,
 			y = car.y;
 
-		if (keyDown('UP')) {
+		// Steering touch input
+			// Left touch
+			$('#touchLeft').on({ 'touchstart' : function(){ 	steerLeft = true; } });
+			$('#touchLeft').on({ 'touchend' : function(){ 	steerLeft = false; } });
+
+			// Right touch
+			$('#touchRight').on({ 'touchstart' : function(){ 	steerRight = true; } });
+			$('#touchRight').on({ 'touchend' : function(){ 	steerRight = false; } });
+
+			// Middle touch
+			$('#touchMiddle').on({ 'touchstart' : function(){ 	touchBrake = true; } });
+			$('#touchMiddle').on({ 'touchend' : function(){ 	touchBrake = false; } });
+
+		if (keyDown('UP') || phoneTilted) {
 			if (car.v > 0) {
 				car.v *= car.a; // Accelerate
 			} else if (car.v < 0) {
@@ -169,7 +219,7 @@ function frame () {
 			} else {
 				car.v = car.v0;
 			}
-		} else if (keyDown('DOWN')) {
+		}else if (keyDown('DOWN')) {
 			if (car.v < 0) {
 				car.v *= car.a;
 			} else if (car.v > 0) {
@@ -182,7 +232,7 @@ function frame () {
 		}
 
 		// Brakes
-		if (keyDown('SPACE')) {
+		if (keyDown('SPACE') || touchBrake == true) {
 			car.v *= Math.pow(1 - (car.a - 1), 3);
 		}
 
@@ -199,7 +249,7 @@ function frame () {
 		if (!strictSteering || car.v > 0) {
 			if (keyDown('LEFT') || steerLeft == true){
 				car.alfa += steeringAngle;
-			} else if (keyDown('RIGHT')) {
+			} else if (keyDown('RIGHT') || steerRight == true) {
 				car.alfa -= steeringAngle;
 			}
 		}
@@ -208,9 +258,6 @@ function frame () {
 		// Update car's position
 		car.x += car.v * Math.cos(car.alfa);
 		car.y -= car.v * Math.sin(car.alfa);
-
-		// Special effects
-		track.teleporter(car);
 
 		// Collision
 		if (car.collision()) {
@@ -249,6 +296,8 @@ function frame () {
 			lapTime = time;
 
 			countdown = null;
+
+			$('.exitGame').fadeIn();
 			show = 'game';
 		}
 	} else {
@@ -289,8 +338,17 @@ function frame () {
 			displayText('GO!', 100, 60);
 		}
 	} else if (show === 'menu') {
-		displayText('Druk op [ENTER] om te starten!', 400, 60);
+		if(!firstStart){
+			$('.racingMenu').show();
+		}
 	} else if (show === '321') {
+		document.getElementById("touchLeft").style.backgroundColor = "transparent";
+		document.getElementById("touchRight").style.backgroundColor = "transparent";
+		document.getElementById("touchMiddle").style.backgroundColor = "transparent";
+
+		$('.steeringText').hide();
+
+		$('.racingMenu').fadeOut();
 		if (diff < 1000) {
 			displayText('3', 100, 60);
 		} else if (diff < 2000) {
@@ -489,10 +547,6 @@ function keyHandler (e) {
 	if (!trackLoaded) return;
 
 	if (show === 'menu') {
-		if (e.keyCode === 13) { // New game
-			show = '321';
-			countdown = (new Date()).getTime();
-		}
 	} else if (show === 'game') { // Pause
 		if (e.keyCode === 80) {
 
@@ -509,6 +563,19 @@ function keyHandler (e) {
 	}
 }
 
+function deviceOrientationHandler(){
+	var absolute = event.absolute;
+  var alpha    = event.alpha;
+  var beta     = event.beta;
+  var gamma    = event.gamma; // gamma detects tilting the phone outwards and inwards when holding in front
+
+	if(gamma < 0 && gamma > -80){ // if phone is tilted backwards ar enough
+		phoneTilted = true;
+	}else{
+		phoneTilted = false;
+	}
+}
+
 /*
  * Return whether coordinates (x, y) lie inside rectangle.
  */
@@ -518,9 +585,7 @@ function insideRectangle (x, y, array) {
 
 var tracks = [
 				new Track('Track 0', 'track0', 1000, 600, 942, 450, null, null, {'start' : [875, 995, 425, 435], '1' : [875, 995, 250, 260], '2' : [875, 995, 100, 110] }),
-				new Track('Track 1', 'track', 1500, 800, 770, 80, 0, null, { 'start' : [790, 800, 5, 160], '1' : [850, 860, 5, 160], '2' : [900, 910, 5, 160] }),
-				new Track('Speedway', 'speedway', 1000, 600, 925, 300, null, null, { 'start' : [835, 990, 290, 300], '1' : [510, 540, 10, 200], '2' : [480, 490, 400, 559] }),
-				new Track('Infinity', 'infinity', 1000, 600, 550, 250, null, infiniteTrack)
+				new Track('Track 1', 'track', 1500, 800, 770, 80, 0, null, { 'start' : [790, 800, 5, 160], '1' : [850, 860, 5, 160], '2' : [900, 910, 5, 160] })
 			 ],
 	track, c, cNode, hiddenCanvas, trackImg,
 	car = new Car(0, 0),
@@ -562,12 +627,12 @@ for (var i = 0; i < tracks.length; i++) {
 }*/
 
 // Display FPS
-/*setInterval(function () {
+setInterval(function () {
 	if (show === 'game') {
 		fpsElement.innerHTML = (f / ((new Date()).getTime() - fpsTime) * 1000).toFixed(0);
 		if ((new Date()).getTime() - fpsTime > 5000) resetFPS(); // 5 seconds' average FPS
 	}
-}, 250);*/
+}, 250);
 
 // Display time, lap time, nr. of laps, speed
 setInterval(function () {
@@ -586,3 +651,67 @@ setInterval(function () {
 }, 1000);
 
 frame();
+
+function openSideWindow(toLoad) {
+    if (windowOpen && currentWindow==toLoad) {
+        closeSideWindow();
+    } else {
+        closeSideWindow();
+        windowOpen = true;
+        var width = $( document ).width();
+        var height = $( document ).height();
+
+        if(toLoad == 'highscores'){
+          currentWindow = 'highscores';
+          jQuery('.headerText').text('Top 10');
+          //getHighscoresFromDB('loadTop10');
+        }else if(toLoad == 'tutorial'){
+          currentWindow = 'tutorial';
+          jQuery('.headerText').text('Tutorial');
+          jQuery('#tutorialContent').text('Zet jij de snelste tijd op deze track? Sturen doe je door op het linker en rechter deel van je scherm te drukken. Gas geven doe je door je telefoon van je af te kantelen. remmen kan door op het midden van het scherm te klikken. Racen maar!');
+          jQuery('#sideWindowImg').append('<img src="../../images/sofieCircle.png" class="sofieCircle">');
+        }
+
+        if (width >= height) {
+            $('.nowrap').css('width', 400 * 0.8 + "px");
+            $('#sideContent').css({'width': '400px', 'box-shadow': '5px 0px 8px #2b2b2b77'});
+        } else {
+            $('.nowrap').css('width', width * 0.8 + "px");
+            $('#sideContent').css('width', '100%');
+        }
+    }
+}
+function closeSideWindow() {
+    windowOpen = false;
+    $('#sideContent').css({'width': '0', 'box-shadow': 'none'});
+    jQuery('#scoresTabel').empty();
+    jQuery('#tutorialContent').empty();
+    jQuery('#sideWindowImg').empty();
+}
+
+function exitGame(moment){
+	show = 'menu';
+	$('.racingMenu').fadeIn();
+	$('.exitGame').fadeOut();
+
+	// reset position
+	car.x = startX;
+	car.y = startY;
+
+	// reset rotation
+	car.alfa = 0;
+
+	// reset speed
+	car.v = 0;
+
+	// reset textfields
+	speedElement.innerHTML = '0.00';
+	lapTimeElement.innerHTML = '0.00';
+
+	// reset checkpoints
+	car.resetCheckpoints();
+
+	// reset shadow
+	car.shadow = [];
+	car.newShadow = [];
+}
