@@ -39,7 +39,7 @@ function getURLParameter(sParam)
 var contentID = getURLParameter('id');
 if(contentID == 0){
   speed = 10;
-}else if(contentID == 1){
+}else /*if(contentID == 1)*/{
   speed = 4;
 }
 
