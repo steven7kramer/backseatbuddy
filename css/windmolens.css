@@ -162,6 +162,7 @@ body{
 
 #swipeImage{
 	position: absolute;
+	display: hidden;
 }
 
 #swipeImage img{
@@ -246,4 +247,8 @@ body{
 	width:200px;
 	margin:20px auto;
 	display: block;
+}
+
+#abortGameContainer{
+	display: hidden;
 }

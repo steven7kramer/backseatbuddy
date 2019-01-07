@@ -32,13 +32,10 @@ var POS_UPDATE_NUMDELTAS = 100; // ms
 // Set the unlocking distance for each individual pIcon in km
 // 0 and 3, parking and infoPoint,  will stay at the default distance of 5
 var maxDistPOI = function(pIcon){
-  /*switch(pIcon) {
-    case '1': return 1; break;
-    case '2': return 10; break;
-    case '4': return 7; break;
-    default: return 5;
-  };*/
-  return 1000; //for development
+  $.getScript('/js/BackseatGeneral.js', function(){
+    return maxDistPOI(pIcon);
+  });
+  return;
 }
 
 // For the users current position
@@ -559,7 +556,7 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
             if (pIcon != 0 && pIcon != 1){
                 addThirtyMinutesToDatabase(loadLocationArray.pID);
                 if(pIcon == 2){
-                    jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.pID);
+                    jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.contentID);
                 }else if(pIcon == 3){
                     jQuery('#pButton').attr('href', '/pages/POI/info.php?id=' + loadLocationArray.contentID);
                 }else if(pIcon == 4){
@@ -582,8 +579,6 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
 
     function distanceString(){
         distanceNumber = distanceCheck-maxDistPOI(pIcon);
-
-        console.log('maxDistPOI(pIcon) = ' + maxDistPOI(pIcon));
 
         if(distanceNumber > 1){
             return Math.round(distanceNumber) + ' KM';

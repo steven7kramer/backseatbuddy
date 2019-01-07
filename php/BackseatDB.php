@@ -7,11 +7,12 @@ session_start();
 $result = array();
 $points = array();
 $collectibles = array();
-$highscores = array();
+$HighscoresWindmill = array();
 $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
 $customCar = array();
+$checkIfUnlocked = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -63,15 +64,15 @@ if (!isset($result['error'])) {
                 }
             }
         break;
-        case 'saveHighscore':
+        case 'saveHighscoreWindmill':
             if (connect()) {
                 addScoreToDB();
             }
         break;
-        case 'getHighscores':
+        case 'getHighscoresWindmill':
             if (connect()) {
-                queryHighscores();
-                $result['highscores'] = $GLOBALS['highscores'];
+                queryHighscoresWindmill();
+                $result['HighscoresWindmill'] = $GLOBALS['HighscoresWindmill'];
                 mysqli_close($GLOBALS['link']);
             } else {
                 $result['error'] = mysqli_connect_error();
@@ -87,11 +88,12 @@ if (!isset($result['error'])) {
                 addThirtyMinutes();
             }
             break;
-        /*case 'checkIfUnlocked':
+        case 'checkIfUnlocked':
             if (connect()) {
                 checkIfUnlocked();
+                $result['checkIfUnlocked'] = $GLOBALS['checkIfUnlocked'];
             }
-            break;*/
+            break;
         case 'addCoins':
             if (connect()) {
                 addCoins();
@@ -225,11 +227,11 @@ function queryCollectibles() {
     mysqli_free_result($result);
 }
 
-function queryHighscores() {
-    $table1 = "Highscores H";
+function queryHighscoresWindmill() {
+    $table1 = "HighscoresWindmill H";
     $table2 = "Users U";
 
-    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID AND H.pID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['pID']);
+    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID AND H.contentID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['contentID']);
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {
@@ -239,7 +241,7 @@ function queryHighscores() {
     }
 
     while ($row = $result -> fetch_assoc()) {
-        array_push($GLOBALS['highscores'], $row);
+        array_push($GLOBALS['HighscoresWindmill'], $row);
     }
 
 
@@ -264,9 +266,9 @@ function queryAddToDatabase() {
 function addScoreToDB() {
     $timestamp = date("Y-m-d H:i:s", strtotime("+30 minutes"));
 
-    $query = sprintf("INSERT INTO Highscores (pID, uID, score, date)
+    $query = sprintf("INSERT INTO HighscoresWindmill (contentID, uID, score, date)
               VALUES ('%d', '%d', '%d', '%s')",
-              $_POST['pID'], $_SESSION['uID'], $_POST['score'], $timestamp);
+              $_POST['contentID'], $_SESSION['uID'], $_POST['score'], $timestamp);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -436,10 +438,10 @@ function checkThirtyMinutes() {
     }
 
 }
-/*function checkIfUnlocked(){
-  $table1 = "HasUnlocked HU";
+function checkIfUnlocked(){
+  $table1 = "PointsOfInterest";
 
-  $query = sprintf("SELECT * FROM %s WHERE HU.uID = %d AND HU.pID = %d", $table1, $_SESSION['uID'], $_POST['pID']);
+  $query = sprintf("SELECT lng, lat FROM %s WHERE pIcon = %d AND contentID = %d", $table1, $_POST['pType'], $_POST['contentID']);
   $result = mysqli_query($GLOBALS['link'], $query);
 
   if (!$result) {
@@ -448,18 +450,12 @@ function checkThirtyMinutes() {
       die($message);
   }
 
-  $time_end = $result -> fetch_assoc()['time_end'];
-
-  if (!$time_end) {
-      return false;
-  } else if (new DateTime() > new DateTime($time_end)) {
-      $query = sprintf("DELETE FROM HasUnlocked WHERE uID = %d AND pID = %d", $_SESSION['uID'], $_POST['pID']);
-      $result = mysqli_query($GLOBALS['link'], $query);
-      return false;
-  } else {
-      return true;
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['checkIfUnlocked'], $row);
   }
-}*/
+
+  mysqli_free_result($result);
+}
 
 function addCoins(){
     $query = sprintf("UPDATE Users
@@ -619,7 +615,7 @@ function quizLoader(){
 function gameChecker(){
   $table = "PointsOfInterest";
 
-  $query = sprintf("SELECT pID FROM %s WHERE pCategory = '%s'", $table, $_POST['category']);
+  $query = sprintf("SELECT contentID FROM %s WHERE pCategory = '%s'", $table, $_POST['category']);
 
   $result = mysqli_query($GLOBALS['link'], $query);
 

@@ -1,3 +1,13 @@
+var maxDistPOI = function(pIcon){
+  /*switch(pIcon) {
+    case '1': return 1; break;
+    case '2': return 10; break;
+    case '4': return 7; break;
+    default: return 5;
+  };*/
+  return 1000; //for development
+}
+
 function updateCoins(firstTime){
     jQuery.ajax({
         type: "POST",

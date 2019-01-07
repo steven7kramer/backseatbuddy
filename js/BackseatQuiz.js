@@ -19,32 +19,51 @@ var resultsContainer = document.getElementById('results');
 var submitButton = document.getElementById('submit');
 
 jQuery(document).ready(function(){
-  var contentID = getURLParameter('id');
-
-  jQuery.ajax({
-      type: "POST",
-      url: "../../php/BackseatDB.php",
-      datatype: 'json',
-      data: {functionname: 'quizLoader', qID:contentID},
-
-      success: function(data) {
-          if (!('error' in data)) {
-            if(data.quizQuestion.length != 0){
-              generateQuiz(data, quizContainer, resultsContainer, submitButton);
-              console.log(data);
+  // first, check if users is close enough to the POI
+  $.getScript('/js/BackseatGeneral.js', function(){
+    quizContainer.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
+    waitForIt();
+    function waitForIt(){
+        if (userIsNearby == undefined && zeroLength == undefined) {
+              setTimeout(function(){waitForIt()},100);
+        } else {
+            if(userIsNearby == true || zeroLength == true){
+              init();
             }else{
-              console.log(data);
-              console.log('data.quizQuestion.length is 0');
-              quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
-        			submitButton.parentNode.removeChild(submitButton);
+              quizContainer.innerHTML = 'Je bent niet dichtbij genoeg! Ga terug naar de map en kijk wat er in de buurt is. <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
+              submitButton.parentNode.removeChild(submitButton);
             }
-          }else{
-            quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
-      			submitButton.parentNode.removeChild(submitButton);
-          }
-      }
+        }
+    }
   });
 });
+
+function init(){
+    var contentID = getURLParameter('id');
+
+    jQuery.ajax({
+        type: "POST",
+        url: "../../php/BackseatDB.php",
+        datatype: 'json',
+        data: {functionname: 'quizLoader', qID:contentID},
+
+        success: function(data) {
+            if (!('error' in data)) {
+              if(data.quizQuestion.length != 0){
+                generateQuiz(data, quizContainer, resultsContainer, submitButton);
+                console.log(data);
+                jQuery('#submit').show();
+              }else{
+                console.log(data);
+                console.log('data.quizQuestion.length is 0');
+                quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
+              }
+            }else{
+              quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
+            }
+        }
+    });
+}
 
 function generateQuiz(data, quizContainer, resultsContainer, submitButton){
 
@@ -204,6 +223,10 @@ function saveCoins(coins){
 		        success: function(obj, textstatus) {
 		            if (!('error' in obj)) {
 		                console.log("Saved " + coins + " coins in the database" );
+                    $.getScript("/js/BackseatGeneral.js",function(){
+                      updateCoins();
+                      animateCoinsWon(coins);
+                    });
 		            } else {
 		                console.error("Failed to save " + coins + " coins in the database" );
 		            }

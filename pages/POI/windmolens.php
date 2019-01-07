@@ -19,8 +19,10 @@
         <script type="text/javascript" src="../../../lib/TouchEvents/src/jquery.mobile-events.min.js"></script>
 
         <!-- Javascript -->
-        <script src="../../../js/BackseatWindmills.js"></script>
-        <script src="../../../js/BackseatNAV.js"></script>
+        <script src="/js/BackseatGeneral.js"></script>
+        <script src="/js/BackseatCheck.js"></script>
+        <script src="/js/BackseatWindmills.js"></script>
+        <script src="/js/BackseatNAV.js"></script>
 
         <!-- Google Tag Manager Header -->
         <?php readfile("../includes/tagmanagerHeader.php") ?>
@@ -96,7 +98,9 @@
         </div>
     </div>
     <div id="abortGame" class="hideOnStart nonSelectable notAvailable">
-      Er is iets misgegaan met het inladen van deze minigame!
+
+      <div id="abortMessage"></div>
+
       <div id="backToMap">
         <a href="https://caswognum.nl/">
           <i class="fa fa-map-o"></i>

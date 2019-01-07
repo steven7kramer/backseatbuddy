@@ -30,6 +30,7 @@ For the update logs, see the end of this document
         <script src="js/BackseatGPS.js"></script>
         <script src="js/BackseatNAV.js"></script>
         <script src="js/BackseatNotifications.js"></script>
+        <script src="js/BackseatGeneral.js"></script>
 
         <!-- Google Tag Manager Header -->
         <?php readfile("pages/includes/tagmanagerHeader.php") ?>
