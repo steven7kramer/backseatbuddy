@@ -44,6 +44,7 @@ var userMarkerLocation;
 var userMarker;
 var canAnimateToNext = true;
 var animationIteration;
+var positionFirstTime = false;
 
 // Timing
 var currentTime = 0;
@@ -133,19 +134,24 @@ function setPosition(position) {
 
         userMarkerLocation = new google.maps.LatLng(userLocation.lat(), userLocation.lng());
 
+    // make sure the users position gets called only once
+    if(positionFirstTime == false){
+      positionFirstTime = true;
 
         jQuery.ajax({
             type: "POST",
             url: "../php/BackseatDB.php",
             datatype: 'json',
-            data: {functionname: 'customCar'},
+            data: {functionname: 'loadCar', moment: 'index'},
 
             success: function(data) {
                 if ('error' in data) {
                     handleDBError(data.error)
                 } else {
-                  var type = data.customCar[0].cType;
-                  var colour = data.customCar[0].cColour;
+                  var type = data.loadCar[0].carType;
+                  var colour = data.loadCar[0].carColour;
+                  var strokeColour = data.loadCar[0].carStrokeColour;
+                  console.log(data);
 
                   $.ajax({
                     url: 'lib/carTypes/car' + type + '.txt', // file with the svg path of the car
@@ -153,14 +159,10 @@ function setPosition(position) {
                     success: function(data) { // callback for successful completion
                       var carType = data;
                       var carColour = colour;
-                      var firstTimeMarker;
+                      var carStrokeColour = strokeColour;
 
-                      //push both variables to make the marker
-                      //only once
-                      if(firstTimeMarker != false){
-                        firstTimeMarker = false;
-                        makeMarker(carType, carColour);
-                      }
+                      //push all car variables to make the marker
+                      makeMarker(carType, carColour, carStrokeColour);
                     },
                     error: function() { // callback if there's an error
                       alert("error");
@@ -172,7 +174,7 @@ function setPosition(position) {
         });
 
         // Make current location marker
-        function makeMarker(carType, carColour){
+        function makeMarker(carType, carColour, carStrokeColour){
             userMarker = new google.maps.Marker({
                   position: userMarkerLocation,
                   map: map,
@@ -181,6 +183,9 @@ function setPosition(position) {
                     scale: .1,
                     fillColor: carColour,
                     fillOpacity: 1,
+                    strokeColor: carStrokeColour,
+                    strokeOpacity: 1,
+                    strokeWeight: .5,
                     rotation: 90,
                     anchor: new google.maps.Point(256,256)
 
@@ -189,15 +194,14 @@ function setPosition(position) {
         }
 
         map.setCenter(userMarkerLocation);
-        //map.setZoom(16);
-        map.setZoom(6); //for testing purposes
+        map.setZoom(16);
 
 
         if (!(jQuery('#toggleBtnLocation').hasClass("active"))) {
             $("#toggleBtnLocationImg").attr("src", "images/icons/toggleGPSactive.png")
             jQuery('#toggleBtnLocation').addClass("active");
         }
-
+      }
 
     } else {
         if (canAnimateToNext && !userMarkerLocation.equals(userLocation)) {

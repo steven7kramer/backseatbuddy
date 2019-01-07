@@ -1,3 +1,5 @@
+var userCoins;
+var userName;
 var maxDistPOI = function(pIcon){
   /*switch(pIcon) {
     case '1': return 1; break;
@@ -8,7 +10,12 @@ var maxDistPOI = function(pIcon){
   return 1000; //for development
 }
 
-function updateCoins(firstTime){
+jQuery(document).ready(function(){
+
+  //place amount of coins in the div called coinDisplay if available
+  if($('#coinDisplay').length){
+    var coinDisplay = document.getElementById('coinDisplay');
+
     jQuery.ajax({
         type: "POST",
         url: "../../php/BackseatDB.php",
@@ -17,9 +24,30 @@ function updateCoins(firstTime){
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
-                if(!firstTime){
+                coinDisplay.innerHTML = '<a href="/pages/dashboard.php"><img src="/images/other/bsbCoin.png" /><div id="coins">' + obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</div><script>updateCoins(true);</script></a>';
+            } else {
+                console.error("Failed to add Coins to display" );
+            }
+        }
+    });
+  }
+
+  placeUsername();
+});
+
+function updateCoins(moment){
+    jQuery.ajax({
+        type: "POST",
+        url: "../../php/BackseatDB.php",
+        datatype: 'json',
+        data: {functionname: 'coinDisplay'},
+
+        success: function(obj, textstatus) {
+            if (!('error' in obj)) {
+                if(moment != "firstTime"){
                   jQuery('#coinPlaceDiv').fadeOut();
                 }
+                  userCoins = obj.coins;
                   jQuery('#coinPlaceDiv').html(obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
                   jQuery('#coinPlaceDiv').fadeIn();
             } else {
@@ -27,6 +55,26 @@ function updateCoins(firstTime){
             }
         }
     });
+}
+
+function placeUsername(){
+  //place username and email in the designated placement divs
+  jQuery.ajax({
+      type: "POST",
+      url: "../../php/BackseatDB.php",
+      datatype: 'json',
+      data: {functionname: 'usernameEmail'},
+
+      success: function(obj, textstatus) {
+          if (!('error' in obj)) {
+            userName = obj.usernameEmail[0].uUsername;
+              jQuery('.usernamePlace').html(userName);
+              jQuery('.emailPlace').html(obj.usernameEmail[0].uEmail);
+          } else {
+              console.error("Failed to retrieve username and email" );
+          }
+      }
+  });
 }
 
 function animateCoinsWon(coins){

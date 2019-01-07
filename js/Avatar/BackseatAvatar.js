@@ -13,7 +13,7 @@
  * @author Cas Wognum
  * @constructor
  */
-function BackseatAvatar(size, container) {
+function BackseatAvatar(size, container, moment) {
 
     /**
      * Contains all data for this object
@@ -52,18 +52,19 @@ function BackseatAvatar(size, container) {
      * Contains all properties of this Avatar object
      */
     object.properties;
-    getAvatarID(object);
+    getAvatarID(object, moment);
     return object;
 }
 
 /**
  * Retrieves the avatar ID based on the currently logged in user
  */
-function getAvatarID(avatar) {
-    var requestData = {functionname: "findAvatarID"};
+function getAvatarID(avatar, moment) {
+    var requestData = {functionname: "findAvatarID", moment: moment};
     var request = constructAJAXRequest(requestData, "BackseatDB.php");
 
     request.success = function(response) {
+      console.log(response);
         avatar.id = response.aID;
         getPropertiesFromDatabase(avatar);
     }
@@ -83,11 +84,22 @@ function getPropertiesFromDatabase(avatar) {
     var request = constructAJAXRequest(requestData, "BackseatDB.php");
 
     request.success = function(response) {
-        avatar.properties = { aID:response.aID, aGlasses:response.aGlasses};
+        avatar.properties = { aID:response.aID, aGlasses:response.aGlasses, glassColour: response.glassColour};
         display(avatar);
     }
 
     jQuery.ajax(request);
+}
+
+/**
+ * handles placing all avatars in the shop
+ * container is unique, since it is numbered by using a for loop in BackseatDashboard.js
+ * data is only from the right object, not all data is brought
+ */
+function ShopAvatars(container, data){
+  var painter = new BackseatPainter(150, container);
+  painter.drawFace();
+  painter.drawGlasses(data.aGlasses, data.glassColour);
 }
 
 /**
@@ -98,7 +110,7 @@ function display(avatar) {
     var painter = new BackseatPainter(avatar.size, avatar.container);
     painter.drawFace();
     console.log(avatar);
-    painter.drawGlasses(avatar.properties.aGlasses);
+    painter.drawGlasses(avatar.properties.aGlasses, avatar.properties.glassColour);
 }
 
 /**
