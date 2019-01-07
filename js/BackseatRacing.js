@@ -6,13 +6,19 @@ var touchBrake;
 
 var startX;
 var startY;
+var startAlfa;
 
 var firstStart = true;
+
+var speed;
 
 var phoneTilted;
 var windowOpen = false; // sideWindow for tutorial and highscore
 
 var fpsElement = document.getElementById('fpsElement');
+
+var savedHighscore;
+var dbLapTime;
 
 function getURLParameter(sParam)
 {
@@ -31,6 +37,11 @@ function getURLParameter(sParam)
 }
 
 var contentID = getURLParameter('id');
+if(contentID == 0){
+  speed = 10;
+}else if(contentID == 1){
+  speed = 4;
+}
 
 /* Touch Steering */
 
@@ -54,7 +65,7 @@ function Car (x, y, alfa, color, maxVelocity, radius) {
 	this.v0 = 0.5;				//
 
 	this.a = 1.025;				// Acceleration pixels/frame^2
-	this.maxVelocity = maxVelocity == null ? 10 : maxVelocity;	// Maximum velocity - change to increase top speed
+	this.maxVelocity = maxVelocity == null ? speed : maxVelocity;	// Maximum velocity - change to increase top speed
 
 	this.color = color == null ? '#4A96AD' : color;	// Car's color
 	this.r = radius == null ? 10 : radius;			// Radius
@@ -142,12 +153,9 @@ function Track (name, filename, width, height, x, y, alfa, teleporter, checkpoin
 	this.filenameHidden = filename + '_h.png';
 	this.w = width;		// Track size
 	this.h = height;
-	startX = x;
-	startY = y;
 	this.x = x; 	// Car's initial position
 	this.y = y;
 	this.alfa = alfa == null ? Math.PI / 2 : alfa;
-	this.teleporter = teleporter == null ? function (carObject) { } : teleporter; // A function to simulate infinite tracks, teleporters, ...
 
 	/* Checkpoints
 	 * Every track needs (exactly!) 2 checkpoints and a start (3 checkpoints in total). That way players can't cheat.
@@ -398,6 +406,23 @@ function newLap () {
 
 	lastLapTimeElement.innerHTML = (lastLapTime / 1000).toFixed(2);
 	fastestLapTimeElement.innerHTML = (fastestLapTime / 1000).toFixed(2);
+
+  // delete last number of string since the current variable has 1 extra
+  dbLapTime = lastLapTime.toString().slice(0, -1);
+  saveHighscore(dbLapTime);
+
+
+    jQuery('.lastHighScore').text('');
+    $('.lastHighScore').prepend('<i class="fa fa-spinner fa-spin"></i>');
+
+    waitForIt();
+    function waitForIt(){
+        if (!savedHighscore) {
+            setTimeout(function(){waitForIt()},100);
+        } else {
+          getHighscoresFromDB('lastHighscorePlace');
+        }
+    }
 }
 
 /*
@@ -415,6 +440,11 @@ function loadTrack(id) {
 	car.alfa = track.alfa;
 	car.shadow = [];
 	car.newShadow = [];
+
+  //store initial values for resetting the canvas
+  startX = track.x;
+  startY = track.y;
+  startAlfa = track.alfa;
 
 	if (track.name == 'Track 1') {
 		car.r = 14;
@@ -517,9 +547,9 @@ function displayText (text, x, y, fontSize) {
 	fontSize = fontSize == null ? 32 : fontSize;
 
 	c.textAlign = "center";
-	c.fillStyle = '#EEE';
-	c.strokeStyle = '#666';
-	c.globalAlpha = 0.25;
+	c.fillStyle = '#1d71b8';
+	c.strokeStyle = '#2d2e83';
+	c.globalAlpha = 0.7;
 	var x0 = Math.round(cNode.width / 2 - x / 2);
 	var y0 = Math.round(cNode.height / 2 - y / 2);
 	c.fillRect(x0, y0, x, y - Math.round(fontSize / 2));
@@ -527,7 +557,7 @@ function displayText (text, x, y, fontSize) {
 	c.globalAlpha = 1;
 
 	c.font = fontSize + "px Arial";
-	c.fillStyle = '#000';
+	c.fillStyle = '#FFF';
 	c.fillText(text, Math.round(cNode.width / 2), Math.round(cNode.height / 2));
 }
 
@@ -601,8 +631,8 @@ function insideRectangle (x, y, array) {
 	return (x > array[0] && x < array[1] && y > array[2] && y < array[3]);
 }
 
-var tracks = [
-				new Track('zandvoort', 'zandvoort', 5885, 4931, 2494, 4762, 225, null, {'start' : [875, 995, 425, 435], '1' : [875, 995, 250, 260], '2' : [875, 995, 100, 110] }),
+var tracks = [ // title, file name, width, height, finish x, finish y, alfa, teleportation { start,checkpoint1,checkpoint2 [x1, x2, y1, y2] --> collision box }
+				new Track('Zandvoort Short', 'zandvoortshort', 3248, 3756, 1377, 3593, 3.16, null, {'start' : [1332, 1361, 3487, 3685], '1' : [1106, 1134, 3487, 3685], '2' : [879, 907, 3487, 3685] }),
 				new Track('Track 1', 'track', 1500, 800, 770, 80, 0, null, { 'start' : [790, 800, 5, 160], '1' : [850, 860, 5, 160], '2' : [900, 910, 5, 160] })
 			 ],
 	track, c, cNode, hiddenCanvas, trackImg,
@@ -682,7 +712,7 @@ function openSideWindow(toLoad) {
         if(toLoad == 'highscores'){
           currentWindow = 'highscores';
           jQuery('.headerText').text('Top 10');
-          //getHighscoresFromDB('loadTop10');
+          getHighscoresFromDB('loadTop10');
         }else if(toLoad == 'tutorial'){
           currentWindow = 'tutorial';
           jQuery('.headerText').text('Tutorial');
@@ -707,10 +737,11 @@ function closeSideWindow() {
     jQuery('#sideWindowImg').empty();
 }
 
-function exitGame(moment){
+function exitGame(){
 	show = 'menu';
 	$('.racingMenu').fadeIn();
 	$('.exitGame').fadeOut();
+  $('#lastScore').fadeOut();
 
 	// reset position
 	car.x = startX;
@@ -732,4 +763,113 @@ function exitGame(moment){
 	// reset shadow
 	car.shadow = [];
 	car.newShadow = [];
+}
+
+function saveHighscore(score) {
+    savedHighscore = false;
+    jQuery.ajax({
+        type: "POST",
+        url: "../../php/BackseatDB.php",
+        datatype: 'json',
+        data: {functionname: 'saveHighscore', contentID: contentID, score: score, game: 'racing'},
+
+        success: function(obj, textstatus) {
+            if (!('error' in obj)) {
+                console.log("Saved highscore " + score + " in the database" );
+                savedHighscore = true;
+            } else {
+                console.error("Failed to save highscore " + score + " in the database" );
+            }
+        }
+    });
+}
+
+function getHighscoresFromDB(moment) {
+  var dbScore;
+
+    jQuery.ajax({
+        type: "POST",
+        url: "../../php/BackseatDB.php",
+        datatype: 'json',
+        data: {functionname: 'getHighscores', contentID: contentID, game: 'racing'},
+
+        success: function(obj, textstatus) {
+            if (!('error' in obj)) {
+              if(moment == 'loadTop10'){
+                  jQuery('#scoresTabel').empty();
+                  jQuery('#scoresTabel').append("<tr><th>#</th><th>Naam</th><th>Tijd (sec)</th><tr>)");
+                  jQuery.each(obj.Highscores, function(index, value) {
+                    dbScore = value.score.toString().slice(0, value.score.length - 2) + ":" + value.score.toString().slice(value.score.length - 2);
+                      if (index + 1 > 3) {
+                          var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
+                      } else {
+                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
+                      }
+                      jQuery('#scoresTabel').append(HTMLString);
+                  });
+              }else if(moment == 'lastHighscorePlace'){
+
+                    for(i=0;i<obj.Highscores.length;i++){
+                      //if the score appears in the top 10, return that data into showLastScore()
+                      if(dbLapTime == obj.Highscores[i].score){
+                        showLastScore(dbLapTime, (i+1));
+                        saveCoins(i+1)
+                        break;
+                      }
+                      if(i == (obj.Highscores.length - 1)){
+                      //if at the end of the for loop, the score hasn't been found, it's not in top 10
+                        showLastScore(dbLapTime, 'Geen top 10');
+                    }
+                  };
+                }
+              } else {
+                console.error("Failed to retrieve highscores from the database" );
+            }
+        }
+    });
+}
+
+function showLastScore(score, lastHighscorePlace){
+  jQuery('.lastScore').text(score);
+  jQuery('.lastHighScore').text(lastHighscorePlace);
+  if(lastHighscorePlace < 4){
+    $('.lastHighScore').prepend('<img id="trophyImg" src="../../images/game/hs-no' + lastHighscorePlace + '.png" style="width: 35px;"/>');
+  }
+  jQuery('#lastScore').fadeIn();
+
+  window.setTimeout( fadeOut, 5000 );
+  function fadeOut(){
+      $('#coinsWonContainer').fadeOut();
+      $('#lastScore').fadeOut();
+  }
+}
+
+function saveCoins(lastHighscorePlace){
+  let coinReward;
+  if(lastHighscorePlace > 3){
+    //the higher the place, the higher the reward
+    coinReward = (11-lastHighscorePlace) * 100;
+  }else{
+    //top 3 gets a higher reward
+    coinReward = ((11-lastHighscorePlace) * 100)+((4-lastHighscorePlace) * 200);
+  }
+
+  jQuery.ajax({
+		        type: "POST",
+		        url: "../../php/BackseatDB.php",
+		        datatype: 'json',
+		        data: {functionname: 'addCoins', coins:coinReward},
+
+		        success: function(obj, textstatus) {
+		            if (!('error' in obj)) {
+		                console.log("Saved " + coinReward + " coins in the database" );
+                    $.getScript("/js/BackseatGeneral.js",function(){
+                      updateCoins();
+                      animateCoinsWon(coinReward);
+                    });
+		            } else {
+		                console.error("Failed to save " + coinReward + " coins in the database" );
+		            }
+		        }
+		    });
 }

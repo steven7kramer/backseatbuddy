@@ -71,7 +71,7 @@
 				<canvas id="raceTrack"></canvas>
 			</div>
 
-			<a onclick="exitGame('during')" class="exitGame fa fa-times fa-3x nonSelectable" style="top: 90px; z-index: 3; display: none;"></a>
+			<a onclick="exitGame()" class="exitGame fa fa-times fa-3x nonSelectable" style="top: 90px; z-index: 3; display: none;"></a>
 
 			<div id="GameButtons" class="racingMenu">
 					<!-- Start game -->
@@ -97,6 +97,19 @@
 						<div id="fpsElement" class="fps">60</div>
 				</div>
 			</div>
+
+      <!-- Show last score after playing -->
+      <div id="lastScore" class="hideOnStart outGame">
+          <p class="boxShadow">
+            Laatste tijd: <b class='lastScore boxShadow'></b> sec <br />
+            <a onclick="openSideWindow('highscores')">Higscore plek: <b class='lastHighScore boxShadow'></b></a>
+          </p>
+          <div id="coinsWonContainer">
+            <img src="/images/other/bsbCoin.png" style="width:20px;" />
+            <div id="coinsWon">
+            </div>
+          </div>
+      </div>
 		</div>
 		<div class="hidden"><img id="track"><img id="hiddenTrack"><canvas id="hiddenCanvas" width="750" height="500"></canvas></div>
 

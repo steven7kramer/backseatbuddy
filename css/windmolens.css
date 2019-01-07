@@ -15,32 +15,6 @@ body{
 	text-align: center;
 }
 
-#scoresTabel {
-    font-family: Helvetica;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-#scoresTabel td, #scoresTabel th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#scoresTabel tr:nth-child(even){background-color: #ddd;}
-#scoresTabel tr:nth-child(odd){background-color: white;}
-
-#scoresTabel th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #1d71b8;
-    color: white;
-}
-
-#scoresTabel tr #no1{
-	background-color:pink;
-}
-
 #gameCanvas {
     background-image: url('../images/game/game_bg.jpg');
     background-size: cover;
@@ -52,21 +26,6 @@ body{
 #buttons {
   padding-top: 50px;
   text-align: center;
-}
-
-#lastScore p{
-	margin:10px auto;
-	background-color: #1d71b8;
-	border-radius: 5px 10px;
-	max-width: 200px;
-	color: #fff;
-	text-align: center;
-	padding: 5px;
-	line-height: 25px;
-}
-#lastScore{
-	position: absolute;
-	width: 100%;
 }
 
 #swipeImage{

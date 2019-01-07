@@ -114,6 +114,11 @@ body {
 #startAfterTutorial:hover{
   background-color: #ef6f9d;
 }
+#lastScore{
+  top: 80px;
+  display: none;
+}
+
 .arrowI{
   display: block;
   transform: rotate(0deg) !important;
