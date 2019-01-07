@@ -7,7 +7,7 @@ session_start();
 $result = array();
 $points = array();
 $collectibles = array();
-$HighscoresWindmill = array();
+$Highscores = array();
 $infoPoints = array();
 $quizQuestion = array();
 $gameChecker = array();
@@ -15,6 +15,7 @@ $loadCar = array();
 $loadAvatar = array();
 $checkIfUnlocked = array();
 $usernameEmail = array();
+$overlayCheck = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -66,15 +67,15 @@ if (!isset($result['error'])) {
                 }
             }
         break;
-        case 'saveHighscoreWindmill':
+        case 'saveHighscore':
             if (connect()) {
                 addScoreToDB();
             }
         break;
-        case 'getHighscoresWindmill':
+        case 'getHighscores':
             if (connect()) {
-                queryHighscoresWindmill();
-                $result['HighscoresWindmill'] = $GLOBALS['HighscoresWindmill'];
+                queryHighscores();
+                $result['Highscores'] = $GLOBALS['Highscores'];
                 mysqli_close($GLOBALS['link']);
             } else {
                 $result['error'] = mysqli_connect_error();
@@ -197,6 +198,18 @@ if (!isset($result['error'])) {
               editUsername();
           }
           break;
+      case 'overlayCheck':
+          if (connect()) {
+              overlayCheck();
+              $result['overlayCheck'] = $GLOBALS['overlayCheck'];
+          }
+          break;
+      case 'giveFeedback':
+          if(connect()) {
+              $result['error'] = "none";
+              giveFeedback();
+          }
+          break;
         default:
             $result['error'] = 'Specified function not found';
             break;
@@ -266,11 +279,22 @@ function queryCollectibles() {
     mysqli_free_result($result);
 }
 
-function queryHighscoresWindmill() {
-    $table1 = "HighscoresWindmill H";
+function queryHighscores() {
     $table2 = "Users U";
 
-    $query = sprintf("SELECT U.uUsername, H.score FROM %s, %s WHERE U.uID = H.uID AND H.contentID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['contentID']);
+    switch ($_POST['game']) {
+        case 'windmills':
+            $table1 = "HighscoresWindmill H";
+            $query = sprintf("SELECT U.uUsername, H.score FROM %s, %s WHERE U.uID = H.uID AND H.contentID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['contentID']);
+            break;
+        case 'racing':
+            $table1 = 'HighscoresRacing H';
+            $query = sprintf("SELECT U.uUsername, H.score FROM %s, %s WHERE U.uID = H.uID AND H.contentID = %d ORDER BY H.score ASC LIMIT 10", $table1, $table2, $_POST['contentID']);
+            break;
+        default:
+            $result['error'] = 'Specified game not found';
+            break;
+    }
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {
@@ -280,7 +304,7 @@ function queryHighscoresWindmill() {
     }
 
     while ($row = $result -> fetch_assoc()) {
-        array_push($GLOBALS['HighscoresWindmill'], $row);
+        array_push($GLOBALS['Highscores'], $row);
     }
 
 
@@ -305,7 +329,19 @@ function queryAddToDatabase() {
 function addScoreToDB() {
     $timestamp = date("Y-m-d H:i:s", strtotime("+30 minutes"));
 
-    $query = sprintf("INSERT INTO HighscoresWindmill (contentID, uID, score, date)
+    switch ($_POST['game']) {
+        case 'windmills':
+            $table = 'HighscoresWindmill';
+            break;
+        case 'racing':
+            $table = 'HighscoresRacing';
+            break;
+        default:
+            $result['error'] = 'Specified game not found';
+            break;
+    }
+
+    $query = sprintf("INSERT INTO $table (contentID, uID, score, date)
               VALUES ('%d', '%d', '%d', '%s')",
               $_POST['contentID'], $_SESSION['uID'], $_POST['score'], $timestamp);
 
@@ -383,7 +419,7 @@ function addUserToDB() {
     }
 
     //add the default avatar to the user
-    $query = sprintf("INSERT INTO AttachAvatars (uID, aID, glassColour, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
+    $query = sprintf("INSERT INTO AttachAvatars (uID, aID, current, unq) VALUES (%d, DEFAULT, DEFAULT, DEFAULT)", $_SESSION['uID']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -956,6 +992,47 @@ function editUsername(){
               SET uUsername = '%s'
               WHERE uID = %s",
               $_POST['username'], $_SESSION['uID']);
+
+    $result = mysqli_query($GLOBALS['link'], $query);
+
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysqli_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+}
+
+function overlayCheck(){
+  $table = "Users";
+
+  if($_POST['moment'] == "initiate"){
+    $query = sprintf("SELECT dashDone FROM %s WHERE uID = '%s'", $table, $_SESSION['uID']);
+  }else if($_POST['moment'] == "done"){
+    $query = sprintf("UPDATE %s SET dashDone = 1 WHERE uID = '%s'", $table, $_SESSION['uID']);
+  }
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  if($_POST['moment'] == "initiate"){
+    while ($row = $result -> fetch_assoc()) {
+        array_push($GLOBALS['overlayCheck'], $row);
+    }
+
+    mysqli_free_result($result);
+  }
+}
+
+function giveFeedback() {
+
+    $query = sprintf("INSERT INTO Feedback (fID, uID, cijfer, goed, kanbeter)
+              VALUES (DEFAULT, %s, %s, '%s', '%s')",
+              $_SESSION['uID'], $_POST['cijfer'], $_POST['goed'], $_POST['kanbeter']);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 

@@ -24,13 +24,16 @@ For the update logs, see the end of this document
 
         <!-- Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <!--<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">-->
+        <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+        <script src="../lib/SVG/svg.min.js"></script>
 
         <!-- Javascript -->
         <script src="js/BackseatGPS.js"></script>
         <script src="js/BackseatNAV.js"></script>
         <script src="js/BackseatNotifications.js"></script>
         <script src="js/BackseatGeneral.js"></script>
+        <script src="js/Avatar/BackseatAvatar.js"></script>
+        <script src="js/Avatar/BackseatPainter.js"></script>
 
         <!-- Google Tag Manager Header -->
         <?php readfile("pages/includes/tagmanagerHeader.php") ?>
@@ -63,10 +66,21 @@ For the update logs, see the end of this document
     			</div>
     		</div>
     	</div>
-
+      <div id="overlayNote">
+        <a href="javascript:void(0)" class="closebutton" onclick="closeOverlay()">&times;</a>
+        <img src="/images/other/dashboardNote.png" />
+        <p> Wist je dat je via het dashboard nieuwe auto's en brillen kunt kopen? </p>
+        <div id="overlayButton"><a onclick="closeOverlay()" href="pages/dashboard.php">Naar het dashboard </a></div>
+      </div>
       <!-- Display coins in header -->
       <div id="coinDispContainerInd">
-          <a href="/pages/dashboard.php">
+        <a href="/pages/dashboard.php">
+        <div id="avatarPlaceDiv">
+          <script>
+              var avatar = new BackseatAvatar(50, "avatarPlaceDiv", "current");
+          </script>
+        </div>
+
               <div id="coinBGInd">
                 <img src="images/other/bsbCoin.png" id="coinDisplayImage"/>
                 <span class="coinAmountInd">
@@ -81,6 +95,9 @@ For the update logs, see the end of this document
                             success: function(obj, textstatus) {
                                 if (!('error' in obj)) {
                                     jQuery('#coinPlaceDiv').html(obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+
+                                    // check if dashDone is true from BackseatGps.js
+                                    overlayCheck(obj.coins);
                                 } else {
                                     console.error("Failed to add Coins to display" );
                                 }
@@ -91,7 +108,6 @@ For the update logs, see the end of this document
               </div>
           </a>
       </div>
-
 
         <!-- Stay on location -->
         <div id="followMeSection">

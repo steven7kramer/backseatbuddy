@@ -10,40 +10,9 @@ body{
 .inGame{
 	display:none;
 }
-.sideWindowWrapper h1{
-	padding:20px;
-	text-align:center;
-	color: #1d71b8;
-}
 
 .cellcentered {
 	text-align: center;
-}
-
-#scoresTabel {
-    font-family: Helvetica;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-#scoresTabel td, #scoresTabel th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#scoresTabel tr:nth-child(even){background-color: #ddd;}
-#scoresTabel tr:nth-child(odd){background-color: white;}
-
-#scoresTabel th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #1d71b8;
-    color: white;
-}
-
-#scoresTabel tr #no1{
-	background-color:pink;
 }
 
 #gameCanvas {
@@ -57,107 +26,6 @@ body{
 #buttons {
   padding-top: 50px;
   text-align: center;
-}
-
-#lastScore p{
-	margin:10px auto;
-	background-color: #1d71b8;
-	border-radius: 5px 10px;
-	max-width: 200px;
-	color: #fff;
-	text-align: center;
-	padding: 5px;
-	line-height: 25px;
-}
-#lastScore{
-	position: absolute;
-	width: 100%;
-}
-
-/* start da css for da buttons */
-.btn {
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 22px;
-  text-decoration: none;
-  margin: 7px;
-  color: #fff;
-  position: relative;
-  display: inline-block;
-	min-width: 150px;
-}
-
-.btn:active {
-  transform: translate(0px, 5px);
-  -webkit-transform: translate(0px, 5px);
-  box-shadow: 0px 1px 0px 0px;
-}
-
-.green {
-  background-color: #2ecc71;
-  box-shadow: 0px 5px 0px 0px #15B358;
-}
-
-.green:hover {
-  background-color: #48E68B;
-}
-
-.blue {
-  background-color: #1d71b8;
-  box-shadow: 0px 5px 0px 0px #2d2e83;
-}
-
-.blue:hover {
-  background-color: #56a3e4;
-}
-
-.pink {
-  background-color: #e83273;
-  box-shadow: 0px 5px 0px 0px #c01653;
-}
-
-.pink:hover {
-  background-color: #f17ea7;
-}
-
-#GameButtons, #inGameBoxes{
-    width: 100%;
-    text-align: center;
-    position: absolute;
-    bottom: 10px;
-}
-.box{
-	background-color:#1d71b8;
-
-	border-radius: 5px;
-	padding: 1px 20px;
-	font-size: 22px;
-	text-decoration: none;
-	margin: 7px auto;
-	color: #fff;
-	position: relative;
-	display: block;
-	width: 250px;
-}
-
-.boxShadow{
-		-webkit-box-shadow:
-	    0 1px 4px #2d2e83,
-	    0 1px 1px rgba(0,0,0,.35);
-	  -moz-box-shadow:
-	    0 1px 4px #2d2e83,
-	    0 1px 1px rgba(0,0,0,.35);
-	  box-shadow:
-	    0 1px 4px #2d2e83,
-	    0 1px 1px rgba(0,0,0,.35);
-}
-
-.nonSelectable{
-	/* make the text not selectable while dragging */
-	-webkit-user-select: none; /* Safari */
-	-moz-user-select: none; /* Firefox */
-	-ms-user-select: none; /* IE10+/Edge */
-	user-select: none; /* Standard */
 }
 
 #swipeImage{
@@ -175,79 +43,10 @@ body{
 	-ms-user-select: none;
 }
 
-.exitGame{
-	position: absolute;
-	top: 60px;
-	left: 20px;
-	color: #e83273;
-	text-decoration: none;
-	text-shadow: 0px 4px #c01653;
-}
-.exitGame:hover{
-	color:#f17ea7;
-}
-.exitGame:active {
-  transform: translate(0px, 5px);
-  -webkit-transform: translate(0px, 5px);
-  box-shadow: 0px 1px 0px 0px;
-}
-
 /* Google Maps API CSS*/
 
 
 /* BackseatBuddy CSS */
-
-#sideContent .nowrap {
-    width: 320px;
-		margin:0 auto;
-}
-
-#sideContent .closebtn {
-    font-size: 48px;
-	position: absolute;
-    top: 0;
-    right: 25px;
-    margin-left: 50px;
-	color: #ededed;
-	text-decoration: none;
-}
-
-#sideContent .closebtn a:hover {
-    color: #fff;
-	text-decoration: none;
-}
-
-.sideWindow{
-	z-index: 10;
-	position: fixed;
-	width: 0;
-	height: 100%;
-	top: 0;
-	right: 0;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	background-color:white;
-	font-family:Helvetica;
-	box-shadow: -2px 0px 7px #888888;
-	transition: 0.5s;
-}
-
-.sideContent .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    margin-left: 50px;
-}
-
-#tutorialContent{
-	margin:0 40px;
-	text-align: justify;
-}
-.sofieCircle{
-	width:200px;
-	margin:20px auto;
-	display: block;
-}
 
 #abortGameContainer{
 	display: hidden;

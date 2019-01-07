@@ -40,16 +40,12 @@ hr {
 }
 
 .backseat-form {
-    margin: auto;
-    margin-top: 7%;
-    width: 50%;
+    margin: 7% 25% 0;
 }
 
 @media only screen and (orientation: portrait) {
     .backseat-form {
-        margin: auto;
-        margin-top: 30%;
-        width: 80%;
+        margin: 20% 10% 0;
     }
 }
 

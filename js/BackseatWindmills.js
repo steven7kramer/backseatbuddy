@@ -204,7 +204,7 @@ function saveHighscore(score) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'saveHighscoreWindmill', contentID: contentID, score: score},
+        data: {functionname: 'saveHighscore', contentID: contentID, score: score, game: 'windmills'},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
@@ -218,30 +218,30 @@ function saveHighscore(score) {
 }
 
 function saveCoins(lastHighscorePlace){
-  let coins;
+  let coinReward;
   if(lastHighscorePlace > 3){
     //the higher the place, the higher the reward
-    coins = (11-lastHighscorePlace) * 100;
+    coinReward = (11-lastHighscorePlace) * 100;
   }else{
     //top 3 gets a higher reward
-    coins = ((11-lastHighscorePlace) * 100)+((4-lastHighscorePlace) * 200);
+    coinReward = ((11-lastHighscorePlace) * 100)+((4-lastHighscorePlace) * 200);
   }
 
   jQuery.ajax({
 		        type: "POST",
 		        url: "../../php/BackseatDB.php",
 		        datatype: 'json',
-		        data: {functionname: 'addCoins', coins:coins},
+		        data: {functionname: 'addCoins', coins:coinReward},
 
 		        success: function(obj, textstatus) {
 		            if (!('error' in obj)) {
-		                console.log("Saved " + coins + " coins in the database" );
+		                console.log("Saved " + coinReward + " coins in the database" );
                     $.getScript("/js/BackseatGeneral.js",function(){
                       updateCoins();
-                      animateCoinsWon(coins);
+                      animateCoinsWon(coinReward);
                     });
 		            } else {
-		                console.error("Failed to save " + coins + " coins in the database" );
+		                console.error("Failed to save " + coinReward + " coins in the database" );
 		            }
 		        }
 		    });
@@ -282,14 +282,14 @@ function getHighscoresFromDB(moment) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'getHighscoresWindmill', contentID: contentID},
+        data: {functionname: 'getHighscores', contentID: contentID, game: 'windmills'},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
               if(moment == 'loadTop10'){
                   jQuery('#scoresTabel').empty();
                   jQuery('#scoresTabel').append("<tr><th>#</th><th>Naam</th><th>Score</th><tr>)");
-                  jQuery.each(obj.HighscoresWindmill, function(index, value) {
+                  jQuery.each(obj.Highscores, function(index, value) {
                       if (index + 1 > 3) {
                           var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uUsername + "</td><td>" + value.score + "</td></tr>";
                       } else {
@@ -299,14 +299,14 @@ function getHighscoresFromDB(moment) {
                   });
               }else if(moment == 'lastHighscorePlace'){
 
-                    for(i=0;i<obj.HighscoresWindmill.length;i++){
+                    for(i=0;i<obj.Highscores.length;i++){
                       //if the score appears in the top 10, return that data into showLastScore()
-                      if(score == obj.HighscoresWindmill[i].score){
+                      if(score == obj.Highscores[i].score){
                         showLastScore(score, (i+1));
-                        saveCoins(i+1)
+                        saveCoins(i+1);
                         break;
                       }
-                      if(i == (obj.HighscoresWindmill.length - 1)){
+                      if(i == (obj.Highscores.length - 1)){
                       //if at the end of the for loop, the score hasn't been found, it's not in top 10
                         showLastScore(score, 'Geen top 10');
                     }
