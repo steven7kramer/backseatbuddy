@@ -10,6 +10,8 @@ $collectibles = array();
 $highscores = array();
 $infoPoints = array();
 $quizQuestion = array();
+$gameChecker = array();
+$customCar = array();
 $link;
 
 if (!isset($_POST['functionname'])) {
@@ -142,6 +144,18 @@ if (!isset($result['error'])) {
               $result['quizQuestion'] = $GLOBALS['quizQuestion'];
           }
           break;
+      case 'gameChecker':
+          if (connect()) {
+              gameChecker();
+              $result['gameChecker'] = $GLOBALS['gameChecker'];
+          }
+          break;
+      case 'customCar':
+          if (connect()) {
+              customCar();
+              $result['customCar'] = $GLOBALS['customCar'];
+          }
+          break;
         default:
             $result['error'] = 'Specified function not found';
             break;
@@ -215,7 +229,7 @@ function queryHighscores() {
     $table1 = "Highscores H";
     $table2 = "Users U";
 
-    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID ORDER BY H.score DESC LIMIT 10", $table1, $table2);
+    $query = sprintf("SELECT U.uEmail, H.score FROM %s, %s WHERE U.uID = H.uID AND H.pID = %d ORDER BY H.score DESC LIMIT 10", $table1, $table2, $_POST['pID']);
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {
@@ -248,9 +262,11 @@ function queryAddToDatabase() {
 }
 
 function addScoreToDB() {
-    $query = sprintf("INSERT INTO Highscores (pID, uID, score)
-              VALUES ('%d', '%d', '%d')",
-              $_POST['pID'], $_SESSION['uID'], $_POST['score']);
+    $timestamp = date("Y-m-d H:i:s", strtotime("+30 minutes"));
+
+    $query = sprintf("INSERT INTO Highscores (pID, uID, score, date)
+              VALUES ('%d', '%d', '%d', '%s')",
+              $_POST['pID'], $_SESSION['uID'], $_POST['score'], $timestamp);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -595,6 +611,46 @@ function quizLoader(){
 
   while ($row = $result -> fetch_assoc()) {
       array_push($GLOBALS['quizQuestion'], $row);
+  }
+
+  mysqli_free_result($result);
+}
+
+function gameChecker(){
+  $table = "PointsOfInterest";
+
+  $query = sprintf("SELECT pID FROM %s WHERE pCategory = '%s'", $table, $_POST['category']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['gameChecker'], $row);
+  }
+
+  mysqli_free_result($result);
+}
+
+function customCar(){
+  $table = "Users";
+
+  $query = sprintf("SELECT carType, carColour FROM %s WHERE uID = %d", $table, $_SESSION['uID']);
+
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  while ($row = $result -> fetch_assoc()) {
+      array_push($GLOBALS['customCar'], $row);
   }
 
   mysqli_free_result($result);

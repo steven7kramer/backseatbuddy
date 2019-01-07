@@ -1,4 +1,5 @@
 <?php $BASE_URL =  'https://caswognum.nl'?>
+<script type="text/javascript" src='/js/BackseatGeneral.js'> </script>
 
 <div id="sidenav" class="sidenav">
 
@@ -44,27 +45,12 @@ if($basename == "index"):
     <!-- Display coins in header -->
 <div id="coinsAndMap">
     <div id="coinDispContainer">
-        <a href="<?php echo $BASE_URL . '/pages/dashboard.php'; ?>">
+        <a href="/pages/dashboard.php">
             <div id="coinBG">
-              <img src="<?php echo $BASE_URL . '/images/other/bsbCoin.png'; ?>" id="coinDisplayImage"/>
+              <img src="/images/other/bsbCoin.png" id="coinDisplayImage"/>
               <span class="coinAmount">
                 <div id="coinPlaceDiv"></div>
-                <script>
-                      jQuery.ajax({
-                          type: "POST",
-                          url: "../../php/BackseatDB.php",
-                          datatype: 'json',
-                          data: {functionname: 'coinDisplay'},
-
-                          success: function(obj, textstatus) {
-                              if (!('error' in obj)) {
-                                  jQuery('#coinPlaceDiv').html(obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-                              } else {
-                                  console.error("Failed to add Coins to display" );
-                              }
-                          }
-                      });
-                </script>
+                <script>updateCoins(true);</script>
               </span>
             </div>
         </a>

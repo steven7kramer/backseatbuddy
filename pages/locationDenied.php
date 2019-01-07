@@ -7,8 +7,14 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Google Tag Manager Header -->
+  <?php readfile("includes/tagmanagerHeader.php") ?>
+
 </head>
 <body>
+
+  <!-- Google Tag Manager Body -->
+  <?php readfile("includes/tagmanagerBody.php") ?>
 
 <div id="LocatieContainer">
             <img src="../images/browsers/jeanLocation.png" style="width:200px; margin-top:20px;">

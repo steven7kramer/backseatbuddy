@@ -6,6 +6,7 @@
     </head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
+
         <title>Backseat Buddy - Prototype | Game</title>
 
         <!-- CSS -->
@@ -20,9 +21,15 @@
         <!-- Javascript -->
         <script src="../../../js/BackseatWindmills.js"></script>
         <script src="../../../js/BackseatNAV.js"></script>
+
+        <!-- Google Tag Manager Header -->
+        <?php readfile("../includes/tagmanagerHeader.php") ?>
     <body>
         <!-- NAVIGATION -->
         <?php include("../includes/menu.php") ?>
+
+        <!-- Google Tag Manager Body -->
+        <?php readfile("../includes/tagmanagerBody.php") ?>
 
         <!-- Info window -->
         <div id="sideContent" class="sideWindow">
@@ -41,13 +48,18 @@
                 </div>
             </div>
     	</div>
-
+    <div id="abortGameContainer">
       <!-- Show last score after playing -->
       <div id="lastScore" class="hideOnStart outGame">
           <p class="boxShadow">
             Laatste score: <b class='lastScore boxShadow'></b> kWh <br />
             <a onclick="openSideWindow('highscores')">Higscore plek: <b class='lastHighScore boxShadow'></b></a>
           </p>
+          <div id="coinsWonContainer">
+            <img src="/images/other/bsbCoin.png" style="width:20px;" />
+            <div id="coinsWon">
+            </div>
+          </div>
       </div>
         <!-- Show score -->
       <div id="inGameContainer">
@@ -82,6 +94,15 @@
                 <a onclick="openSideWindow('tutorial')" class="btn pink nonSelectable">Tutorial</a>
             </div>
         </div>
-
+    </div>
+    <div id="abortGame" class="hideOnStart nonSelectable notAvailable">
+      Er is iets misgegaan met het inladen van deze minigame!
+      <div id="backToMap">
+        <a href="https://caswognum.nl/">
+          <i class="fa fa-map-o"></i>
+          Terug naar de map
+        </a>
+      </div>
+    </div>
     </body>
 </html>

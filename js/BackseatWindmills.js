@@ -1,3 +1,55 @@
+jQuery('#abortGameContainer').hide();
+
+/* Start Retrieving the gameID from URL and checking if there is windMill category attached to it */
+function getURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+
+    return -1;
+}
+
+var contentID = getURLParameter('id');
+
+jQuery(document).ready(function(){
+  jQuery('.hideOnStart').hide();
+
+      jQuery.ajax({
+          type: "POST",
+          url: "../../php/BackseatDB.php",
+          datatype: 'json',
+          data: {functionname: 'gameChecker', category: "Windmolens"},
+
+          success: function(data) {
+              if (!('error' in data)) {
+                  console.log(data);
+                  for(let i=0;i<data.gameChecker.length;i++){
+                    if(data.gameChecker[i].pID == contentID){
+                        jQuery('#abortGameContainer').show();
+                        startGame();
+                        console.log('Game Started');
+                        break;
+                    }else if(i == (data.gameChecker.length-1)){
+                        console.error('no matching pID found in array');
+                        abortGame();
+                    }
+                  }
+              } else {
+                  console.error("error in data");
+              }
+          }
+      });
+});
+/* End Retrieving gameID and checking validity */
+
 var windMillHead;
 var startAngle;
 var gameIsActive = false;
@@ -11,12 +63,7 @@ var currentWindow = '';
 var score;
 var savedHighscore;
 
-jQuery(document).ready(function() {
-    jQuery('.hideOnStart').hide();
-    startGame();
-});
-
-function startGame() {
+function startGame(data) {
     tutorialAnimation();
     myGameArea.start();
     windMillHead = new component(477, 447, "../../../images/game/windmill_head.png", window.innerWidth / 2, 300, true);
@@ -132,7 +179,7 @@ function saveHighscore(score) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'saveHighscore', pID: 1, score: score},
+        data: {functionname: 'saveHighscore', pID: contentID, score: score},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
@@ -143,6 +190,36 @@ function saveHighscore(score) {
             }
         }
     });
+}
+
+function saveCoins(lastHighscorePlace){
+  let coins;
+  if(lastHighscorePlace > 3){
+    //the higher the place, the higher the reward
+    coins = (11-lastHighscorePlace) * 100;
+  }else{
+    //top 3 gets a higher reward
+    coins = ((11-lastHighscorePlace) * 100)+((4-lastHighscorePlace) * 200);
+  }
+
+  jQuery.ajax({
+		        type: "POST",
+		        url: "../../php/BackseatDB.php",
+		        datatype: 'json',
+		        data: {functionname: 'addCoins', coins:coins},
+
+		        success: function(obj, textstatus) {
+		            if (!('error' in obj)) {
+		                console.log("Saved " + coins + " coins in the database" );
+                    $.getScript("/js/BackseatGeneral.js",function(){
+                      updateCoins();
+                      animateCoinsWon(coins);
+                    });
+		            } else {
+		                console.error("Failed to save " + coins + " coins in the database" );
+		            }
+		        }
+		    });
 }
 
 function openSideWindow(toLoad) {
@@ -180,7 +257,7 @@ function getHighscoresFromDB(moment) {
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'getHighscores'},
+        data: {functionname: 'getHighscores', pID: contentID},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
@@ -199,11 +276,9 @@ function getHighscoresFromDB(moment) {
 
                     for(i=0;i<obj.highscores.length;i++){
                       //if the score appears in the top 10, return that data into showLastScore()
-                      console.log('score = ' + score);
-                      console.log(obj.highscores[i].score);
-
                       if(score == obj.highscores[i].score){
                         showLastScore(score, (i+1));
+                        saveCoins(i+1)
                         break;
                       }
                       if(i == (obj.highscores.length - 1)){
@@ -287,4 +362,11 @@ function exitGame(moment){
   jQuery('.inGame').fadeOut();
   clearTimeout(gameTimerVar);
   gameIsActive = false;
+}
+
+//abortGame is triggered when there is no matching pID in the gameChecker array
+function abortGame(){
+  jQuery('#abortGameContainer').hide();
+  jQuery('#abortGame').show();
+
 }

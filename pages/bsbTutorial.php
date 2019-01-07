@@ -14,9 +14,12 @@ if( isset($_SESSION["uID"]) ){
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <?php readfile("includes/tagmanagerHeader.php") ?>
 
 </head>
 <body>
+<?php readfile("includes/tagmanagerBody.php") ?>
+
 <div id="tutClose">
     <a href="../index.php"><i class="fa fa-close"></i> Sluit Tutorial</a>
 </div>
@@ -34,7 +37,7 @@ if( isset($_SESSION["uID"]) ){
 
        <div id="tutTwo">
             <img src="..images/screens/tutorial2.png" alt="Backseat Buddy" />
-            
+
             <h1>Titel Tutorial deel 2</h1>
 
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -45,7 +48,7 @@ if( isset($_SESSION["uID"]) ){
 
        <div id="tutThree">
             <img src="..images/screens/tutorial3.png" alt="Backseat Buddy" />
-            
+
             <h1>Titel Tutorial deel 3</h1>
 
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -55,8 +58,8 @@ if( isset($_SESSION["uID"]) ){
        </div>
 
        <div id="tutBottomScroll">
-            1 - 2 - 3 
-       </div>   
+            1 - 2 - 3
+       </div>
 
 </div>
 

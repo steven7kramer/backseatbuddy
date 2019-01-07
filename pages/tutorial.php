@@ -15,10 +15,16 @@
   <!-- Libraries -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+  <!-- Google Tag Manager Header -->
+  <?php readfile("includes/tagmanagerHeader.php") ?>
+
   </head>
   <body>
      <!-- NAVIGATION -->
         <?php include("includes/menu.php") ?>
+
+    <!-- Google Tag Manager Body -->
+    <?php readfile("includes/tagmanagerBody.php") ?>
 
   <div class="responsive contentHeight">
     <div class="slickContent">

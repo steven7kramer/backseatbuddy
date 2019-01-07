@@ -19,10 +19,16 @@
   <!-- Javascript -->
   <script type="text/javascript" src="../../js/BackseatNAV.js"></script>
 
+  <!-- Google Tag Manager Header -->
+  <?php readfile("../includes/tagmanagerHeader.php") ?>
+
   </head>
   <body>
      <!-- NAVIGATION -->
         <?php include("../includes/menu.php") ?>
+
+    <!-- Google Tag Manager Body -->
+        <?php readfile("../includes/tagmanagerBody.php") ?>
 
 
     <div id="infoContainer"></div>
