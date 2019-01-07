@@ -144,8 +144,8 @@ function setPosition(position) {
                 if ('error' in data) {
                     handleDBError(data.error)
                 } else {
-                  var type = data.customCar[0].carType;
-                  var colour = data.customCar[0].carColour;
+                  var type = data.customCar[0].cType;
+                  var colour = data.customCar[0].cColour;
 
                   $.ajax({
                     url: 'lib/carTypes/car' + type + '.txt', // file with the svg path of the car
