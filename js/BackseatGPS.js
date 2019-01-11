@@ -520,6 +520,7 @@ function loadLocation() {
             if ('error' in obj) {
                 handleDBError(obj.error)
             } else {
+              console.log(obj);
                 gameUnlocked = obj.gameUnlocked;
                 designInfowindowButton(loadLocationArray.pIcon, gameUnlocked, distanceCheck);
             }
@@ -542,6 +543,8 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
         designInactiveButton(distanceCheck);
     }
 
+
+
     if(buttonState == false && distanceCheck != false){
 
             if (pIcon == 0){
@@ -552,34 +555,34 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
                 buttonString = 'JE SPEELT DIT VRIJ OVER: ' + distanceString();
             }
 
-            designInactiveButton(distanceCheck);//design when user is not within playing distance of infoWindow - buttonState = false
+        designInactiveButton(distanceCheck);//design when user is not within playing distance of infoWindow - buttonState = false
 
-        }else if(buttonState == true){//design of active button
-                jQuery('#pButton').css("color", "#000");
+    }else if(buttonState == true){//design of active button
+            jQuery('#pButton').css("color", "#000");
 
-            if (pIcon != 0 && pIcon != 1){
-                addThirtyMinutesToDatabase(loadLocationArray.pID);
-                if(pIcon == 2){
-                    jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.contentID);
-                }else if(pIcon == 3){
-                    jQuery('#pButton').attr('href', '/pages/POI/info.php?id=' + loadLocationArray.contentID);
-                }else if(pIcon == 4){
-                    jQuery('#pButton').attr('href', '/pages/POI/quiz.php?id=' + loadLocationArray.contentID);
-                }
-                jQuery('#pButton').html('GA NAAR ' + loadLocationArray.pTitle.toUpperCase() + ' &#8594;');
-                jQuery('#pButton').removeClass('not-active');
-                jQuery('#pReload').html('');
+        if (pIcon != 0 && pIcon != 1){
+            addThirtyMinutesToDatabase(loadLocationArray.pID);
+            if(pIcon == 2){
+                jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.contentID);
+            }else if(pIcon == 3){
+                jQuery('#pButton').attr('href', '/pages/POI/info.php?id=' + loadLocationArray.contentID);
+            }else if(pIcon == 4){
+                jQuery('#pButton').attr('href', '/pages/POI/quiz.php?id=' + loadLocationArray.contentID);
             }
-            if(pIcon == 1 || pIcon == 0){
-                if (pIcon == 1){
-                    jQuery('#pButton').html('JE KUNT ' + loadLocationArray.pTitle.toUpperCase() + ' NU ZIEN!');
-                }else if(pIcon == 0){
-                    jQuery('#pButton').html('JE BENT IN DE BUURT!');
-                }
-                jQuery('#pButton').addClass('not-active');
-                jQuery('#pReload').html('');
-            }
+            jQuery('#pButton').html('GA NAAR ' + loadLocationArray.pTitle.toUpperCase() + ' &#8594;');
+            jQuery('#pButton').removeClass('not-active');
+            jQuery('#pReload').html('');
         }
+        if(pIcon == 1 || pIcon == 0){
+            if (pIcon == 1){
+                jQuery('#pButton').html('JE KUNT ' + loadLocationArray.pTitle.toUpperCase() + ' NU ZIEN!');
+            }else if(pIcon == 0){
+                jQuery('#pButton').html('JE BENT IN DE BUURT!');
+            }
+            jQuery('#pButton').addClass('not-active');
+            jQuery('#pReload').html('');
+        }
+    }
 
     function distanceString(){
         distanceNumber = distanceCheck-maxDistPOI(pIcon);

@@ -83,7 +83,8 @@ if (!isset($result['error'])) {
             break;
         case 'checkThirtyMinutes':
             if (connect()) {
-                $result['gameUnlocked'] = checkThirtyMinutes();
+              checkThirtyMinutes();
+              $result['gameUnlocked'] = checkThirtyMinutes();
             }
             break;
         case 'addThirtyMinutes':
@@ -94,7 +95,7 @@ if (!isset($result['error'])) {
         case 'checkIfUnlocked':
             if (connect()) {
                 checkIfUnlocked();
-                $result['checkIfUnlocked'] = $GLOBALS['checkIfUnlocked'];
+                //$result['checkIfUnlocked'] = $GLOBALS['checkIfUnlocked'];
             }
             break;
         case 'addCoins':
@@ -526,9 +527,9 @@ function addThirtyMinutes() {
 }
 
 function checkThirtyMinutes() {
-    $table1 = "HasUnlocked HU";
+    $table = "HasUnlocked";
 
-    $query = sprintf("SELECT * FROM %s WHERE HU.uID = %d AND HU.pID = %d", $table1, $_SESSION['uID'], $_POST['pID']);
+    $query = sprintf("SELECT time_end FROM %s WHERE uID = %d AND pID = %d", $table, $_SESSION['uID'], $_POST['pID']);
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {
@@ -536,6 +537,8 @@ function checkThirtyMinutes() {
         $message .= 'Whole query: ' . $query;
         die($message);
     }
+
+    $GLOBALS["result"]["time_end"] = $result->fetch_assoc()['time_end'];
 
     $time_end = $result -> fetch_assoc()['time_end'];
 
@@ -548,7 +551,6 @@ function checkThirtyMinutes() {
     } else {
         return true;
     }
-
 }
 function checkIfUnlocked(){
   $table1 = "PointsOfInterest";
