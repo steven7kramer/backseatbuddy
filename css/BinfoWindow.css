@@ -97,3 +97,27 @@
 	text-decoration:none;
 	color:grey;
 }
+
+#gameTimerLeft {
+  display: none;
+
+  background-color: #1d71b8;
+  color: white;
+  font-weight: 100;
+  text-align: center;
+
+  margin-top: 20px;
+  padding: 20px;
+  width: 300px;
+
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+  border-width: 1;
+}
+.gameTimerLeftFill {
+    display: inline;
+}
+#gameTimerLeft i {
+    padding-right: 5px;
+}

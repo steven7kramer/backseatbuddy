@@ -510,40 +510,57 @@ function loadLocation() {
     var distanceCheck = checkDistanceToPOI(loadLocationArray.lat, loadLocationArray.lng);
     var gameUnlocked = false;
 
-    jQuery.ajax({
-        type: "POST",
-        url: "php/BackseatDB.php",
-        datatype: 'json',
-        data: {functionname: 'checkThirtyMinutes', pID: loadLocationArray.pID},
+    if(loadLocationArray.pIcon == 2){
+        jQuery.ajax({
+            type: "POST",
+            url: "php/BackseatDB.php",
+            datatype: 'json',
+            data: {functionname: 'checkThirtyMinutes', pID: loadLocationArray.pID},
 
-        success: function(obj, textstatus) {
-            if ('error' in obj) {
-                handleDBError(obj.error)
-            } else {
-              console.log(obj);
-                gameUnlocked = obj.gameUnlocked;
-                designInfowindowButton(loadLocationArray.pIcon, gameUnlocked, distanceCheck);
+            success: function(obj, textstatus) {
+                if ('error' in obj) {
+                    handleDBError(obj.error)
+                } else {
+                    let timeEnd = new Date(obj.time_end);
+
+                    if(timeEnd - new Date() > 0){
+                      var timeLeft = new Date(timeEnd - new Date());
+                      $(".gameTimerLeftFill").text(timeLeft.getMinutes());
+                      $("#gameTimerLeft").show();
+                      gameUnlocked = true;
+                    }else{
+                      $("#gameTimerLeft").hide();
+                      gameUnlocked = false;
+                    }
+                    designInfowindowButton(loadLocationArray.pIcon, gameUnlocked, distanceCheck);
+                }
             }
-            }
-    });
+        });
+    }else{
+      designInfowindowButton(loadLocationArray.pIcon, gameUnlocked, distanceCheck);
+    }
 }
 
 //in the next part, the buttons in the bottom of the infoWindows are designed based on their icon and distance.
 function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
     let buttonState = false; //false means button is not-active, either because the user is too far or GPS not detected
     let buttonString = '';
+    let resetTimer = true;
 
-    if (distanceCheck < maxDistPOI(pIcon) && distanceCheck != false) {
-        buttonState = true;
-    }else if(distanceCheck > maxDistPOI(pIcon)){
-        buttonState = false;
-    }else if(distanceCheck == false){
-        buttonState = false;
-        buttonString = 'WE HEBBEN JE GPS LOCATIE NIET KUNNEN VINDEN.';
-        designInactiveButton(distanceCheck);
-    }
-
-
+      if (distanceCheck < maxDistPOI(pIcon) && distanceCheck != false) {
+          buttonState = true;
+      }else if(distanceCheck > maxDistPOI(pIcon)){
+        if(pIcon != 2 || !gameUnlocked){
+          buttonState = false;
+        }else{
+          buttonState = true;
+          resetTimer = false;
+        }
+      }else if(distanceCheck == false){
+          buttonState = false;
+          buttonString = 'WE HEBBEN JE GPS LOCATIE NIET KUNNEN VINDEN.';
+          designInactiveButton(distanceCheck);
+      }
 
     if(buttonState == false && distanceCheck != false){
 
@@ -559,11 +576,20 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
 
     }else if(buttonState == true){//design of active button
             jQuery('#pButton').css("color", "#000");
+            $("#gameTimerLeft").hide();
 
         if (pIcon != 0 && pIcon != 1){
-            addThirtyMinutesToDatabase(loadLocationArray.pID);
             if(pIcon == 2){
+                if(resetTimer){
+                  addThirtyMinutesToDatabase(loadLocationArray.pID);
+                  $(".gameTimerLeftFill").text(30);
+                }
+
                 jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.contentID);
+
+                if(gameUnlocked){
+                    $("#gameTimerLeft").show();
+                }
             }else if(pIcon == 3){
                 jQuery('#pButton').attr('href', '/pages/POI/info.php?id=' + loadLocationArray.contentID);
             }else if(pIcon == 4){

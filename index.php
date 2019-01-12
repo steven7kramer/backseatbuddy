@@ -25,6 +25,8 @@ For the update logs, see the end of this document
         <!-- Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
         <script src="../lib/SVG/svg.min.js"></script>
 
         <!-- Javascript -->
@@ -63,7 +65,11 @@ For the update logs, see the end of this document
     			<div class="BinfoButton nowrap" id="bbInfoBubbleButton">
     				<a id="pButton"></a> <br />
                     <a id="pReload"></a>
-    			</div>
+            </div>
+
+            <div class='nowrap' id="gameTimerLeft">
+              <i class="fas fa-stopwatch"></i> Nog <b><div class="gameTimerLeftFill">30</div> minuten</b> over om te spelen!
+            </div>
     		</div>
     	</div>
       <div id="overlayNote">
