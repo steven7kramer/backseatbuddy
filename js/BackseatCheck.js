@@ -24,6 +24,7 @@ var maxDistPOI = function(pType){
 // get data out of the url to determine which POI they openend
 var contentID = getURLParameter('id');
 var pType;
+var pCategory;
 
 function getURLParameter(sParam)
 {
@@ -50,41 +51,78 @@ jQuery(document).ready(function(){
         pType = 4;
       }else if(window.location.href.indexOf("windmolens.php") > -1){
         pType = 2;
+        pCategory = "windmolens";
+      }else if(window.location.href.indexOf("racing.php") > -1){
+        pType = 2;
+        pCategory = "racing";
       }else if(window.location.href.indexOf("info.php") > -1){
         pType = 3;
       }
 
-      // get location of current POI from database
+      // get pID from db
+
       jQuery.ajax({
         type: "POST",
         url: "../../php/BackseatDB.php",
         datatype: 'json',
-        data: {functionname: 'checkIfUnlocked', pType:pType, contentID:contentID},
+        data: {functionname: 'findpID', pType:pType, pCategory:pCategory, contentID:contentID},
 
-        success: function(data) {
-            if (!('error' in data)) {
+        success: function(obj) {
+          var pID = obj.pID;
 
-              // wait until userPosition is acquired
-              waitForIt();
-              function waitForIt(){
-                  if (!acqUserPosition) {
-                      setTimeout(function(){waitForIt()},100);
-                  }else{
-                    if(data.checkIfUnlocked.length == 0){
-                      // handling this error is done in the POI's itself
-                      zeroLength = true;
-                      console.error('data array length is 0');
+              // get location of current POI from database
+              jQuery.ajax({
+                type: "POST",
+                url: "../../php/BackseatDB.php",
+                datatype: 'json',
+                data: {functionname: 'checkIfUnlocked', pType:pType, pCategory:pCategory, contentID:contentID, pID:pID},
+
+                success: function(data) {
+                    if (!('error' in data)) {
+
+                      // wait until userPosition is acquired
+                      waitForIt();
+                      function waitForIt(){
+                          if (!acqUserPosition) {
+                              setTimeout(function(){waitForIt()},100);
+                          }else{
+                            if(data.checkIfUnlocked.length == 0){
+                              // handling this error is done in the POI's itself
+                              if(pType == 2){
+                                calculateDistance();
+                                console.log("gameTimer for this pID is not found in db");
+                              }else{
+                                console.error('data array length is 0');
+                                zeroLength = true;
+                              }
+                            }else{
+                              lat1 = data.checkIfUnlocked[0].lat;
+                              lng1 = data.checkIfUnlocked[0].lng;
+
+                                if(pType == 2){
+                                  // Check if gameTimer is true
+                                  let timeEnd = new Date(data.checkIfUnlocked[0].time_end);
+
+                                  if(timeEnd - new Date() > 0){
+                                    console.log("gameTimer is still running");
+                                    userIsNearby = true;
+                                  }else{
+                                    calculateDistance();
+                                    console.log("gameTimer is not running");
+                                  }
+                                }else{
+                                  calculateDistance();
+                                }
+                            }
+                          }
+                      }
+
                     }else{
-                      lat1 = data.checkIfUnlocked[0].lat;
-                      lng1 = data.checkIfUnlocked[0].lng;
-                      calculateDistance();
+                      console.error('error in data');
                     }
-                  }
-              }
+                }
 
-            }else{
-              console.error('error in data');
-            }
+              });
         }
       });
 });
@@ -125,6 +163,7 @@ function checkDistance(d){
 
   if(maxDistPOI(pType) - d > 0){
     userIsNearby = true;
+    console.log("User is close enough to POI");
   }else{
     userIsNearby = false;
     console.error('User is too far from the POI');

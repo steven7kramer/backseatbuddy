@@ -95,7 +95,12 @@ if (!isset($result['error'])) {
         case 'checkIfUnlocked':
             if (connect()) {
                 checkIfUnlocked();
-                //$result['checkIfUnlocked'] = $GLOBALS['checkIfUnlocked'];
+                $result['checkIfUnlocked'] = $GLOBALS['checkIfUnlocked'];
+            }
+            break;
+        case 'findpID':
+            if (connect()) {
+                findpID();
             }
             break;
         case 'addCoins':
@@ -554,8 +559,13 @@ function checkThirtyMinutes() {
 }
 function checkIfUnlocked(){
   $table1 = "PointsOfInterest";
+  $table2 = "HasUnlocked";
 
-  $query = sprintf("SELECT lng, lat FROM %s WHERE pIcon = %d AND contentID = %d", $table1, $_POST['pType'], $_POST['contentID']);
+  if($_POST['pType'] == 2){
+    $query = sprintf("SELECT lng, lat, time_end FROM %s NATURAL JOIN %s WHERE pIcon = %d AND pCategory = '%s' AND contentID = %d AND pID = %d AND uID = %d", $table1, $table2, $_POST['pType'], $_POST['pCategory'], $_POST['contentID'], $_POST['pID'], $_SESSION['uID']);
+  }else{
+    $query = sprintf("SELECT lng, lat FROM %s WHERE pIcon = %d AND contentID = %d", $table1, $_POST['pType'], $_POST['contentID']);
+  }
   $result = mysqli_query($GLOBALS['link'], $query);
 
   if (!$result) {
@@ -569,6 +579,21 @@ function checkIfUnlocked(){
   }
 
   mysqli_free_result($result);
+}
+
+function findpID(){
+  $table1 = "PointsOfInterest";
+
+  $query = sprintf("SELECT pID FROM %s WHERE pIcon = %d AND pCategory = '%s' AND contentID = %s", $table1, $_POST['pType'], $_POST['pCategory'], $_POST['contentID']);
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  $GLOBALS["result"]["pID"] = $result->fetch_assoc()['pID'];
 }
 
 function addCoins(){

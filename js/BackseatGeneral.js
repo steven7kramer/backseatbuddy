@@ -1,13 +1,13 @@
 var userCoins;
 var userName;
 var maxDistPOI = function(pIcon){
-  switch(pIcon) {
+  /*switch(pIcon) {
     case '1': return 1; break;
     case '2': return 10; break;
     case '4': return 7; break;
     default: return 5;
-  };
-  //return 1000; //for development
+  };*/
+  return 1000; //for development
 }
 
 jQuery(document).ready(function(){
