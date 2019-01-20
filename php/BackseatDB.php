@@ -318,16 +318,33 @@ function queryHighscores() {
 }
 
 function queryAddToDatabase() {
+  $table = 'PointsOfInterest';
+  $contentID = 0;
 
-    $query = sprintf("INSERT INTO PointsOfInterest (pID, lng, lat, pTitle, pDescr, pCategory, pIcon, pImage)
-              VALUES (NULL, '%f', '%f', '%s', '%s', '%s', '%s', '%s')",
+  if($_POST['pIcon'] != 0 || $_POST['pIcon'] != 1){
+    $query1 = sprintf("SELECT MAX(contentID) FROM %s WHERE pIcon = %s AND pCategory = '%s'", $table, $_POST['pIcon'], $_POST['pCategory']);
+  }
+
+  $result1 = mysqli_query($GLOBALS['link'], $query1);
+
+  if (!$result1) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query1;
+      die($message);
+  }else{
+      $contentID = $result1 -> fetch_assoc()['MAX(contentID)'];
+      $contentID = $contentID + 1;
+  }
+
+    $query2 = sprintf("INSERT INTO PointsOfInterest (pID, lng, lat, pTitle, pDescr, pCategory, pIcon, pImage, contentID)
+              VALUES (NULL, '%f', '%f', '%s', '%s', '%s', '%s', '%s', $contentID)",
               $_POST['lng'], $_POST['lat'], $_POST['pTitle'], $_POST['pDescr'], $_POST['pCategory'], $_POST['pIcon'], $_POST['pImage']);
 
-    $result = mysqli_query($GLOBALS['link'], $query);
+    $result2 = mysqli_query($GLOBALS['link'], $query2);
 
-    if (!$result) {
+    if (!$result2) {
         $message  = 'Invalid query: ' . mysqli_error() . "\n";
-        $message .= 'Whole query: ' . $query;
+        $message .= 'Whole query: ' . $query2;
         die($message);
     }
 }

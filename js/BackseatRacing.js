@@ -46,6 +46,7 @@ if(contentID == 0){
 // Check if user is close enough in-game
 jQuery(document).ready(function(){
   jQuery('#closeEnough').hide();
+  firstLap = true;
   var abortMessage = document.getElementById('notCloseEnough');
 
     // first, check if users is close enough to the POI
@@ -211,7 +212,6 @@ function frame () {
 		wipeCanvas();
 		displayText('Laden...', 200, 100);
 		setTimeout(frame, 500);
-		firstLap = true;
 		return;
 	}
 
@@ -577,12 +577,11 @@ function displayText (text, x, y, fontSize) {
 	c.textAlign = "center";
 	c.fillStyle = '#1d71b8';
 	c.strokeStyle = '#2d2e83';
-	c.globalAlpha = 0.7;
+	c.globalAlpha = 1;
 	var x0 = Math.round(cNode.width / 2 - x / 2);
 	var y0 = Math.round(cNode.height / 2 - y / 2);
 	c.fillRect(x0, y0, x, y - Math.round(fontSize / 2));
 	c.strokeRect(x0, y0, x, y - Math.round(fontSize / 2));
-	c.globalAlpha = 1;
 
 	c.font = fontSize + "px Arial";
 	c.fillStyle = '#FFF';
@@ -856,7 +855,7 @@ function getHighscoresFromDB(moment) {
 }
 
 function showLastScore(score, lastHighscorePlace){
-  jQuery('.lastScore').text(score);
+  jQuery('.lastScore').text((score/ 100).toFixed(2));
   jQuery('.lastHighScore').text(lastHighscorePlace);
   if(lastHighscorePlace < 4){
     $('.lastHighScore').prepend('<img id="trophyImg" src="../../images/game/hs-no' + lastHighscorePlace + '.png" style="width: 35px;"/>');
