@@ -1,14 +1,5 @@
 var userCoins;
 var userName;
-var maxDistPOI = function(pIcon){
-  /*switch(pIcon) {
-    case '1': return 1; break;
-    case '2': return 10; break;
-    case '4': return 7; break;
-    default: return 5;
-  };*/
-  return 1000; //for development
-}
 
 jQuery(document).ready(function(){
 
@@ -18,13 +9,13 @@ jQuery(document).ready(function(){
 
     jQuery.ajax({
         type: "POST",
-        url: "../../php/BackseatDB.php",
+        url: "/prototype/php/BackseatDB.php",
         datatype: 'json',
         data: {functionname: 'coinDisplay'},
 
         success: function(obj, textstatus) {
             if (!('error' in obj)) {
-                coinDisplay.innerHTML = '<a href="/pages/dashboard.php"><img src="/images/other/bsbCoin.png" /><div id="coins">' + obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</div><script>updateCoins(true);</script></a>';
+                coinDisplay.innerHTML = '<a href="/prototype/pages/dashboard.php"><img src="/prototype/images/other/bsbCoin.png" /><div id="coins">' + obj.coins.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</div><script>updateCoins(true);</script></a>';
             } else {
                 console.error("Failed to add Coins to display" );
             }
@@ -38,7 +29,7 @@ jQuery(document).ready(function(){
 function updateCoins(moment){
     jQuery.ajax({
         type: "POST",
-        url: "../../php/BackseatDB.php",
+        url: "/prototype/php/BackseatDB.php",
         datatype: 'json',
         data: {functionname: 'coinDisplay'},
 
@@ -61,7 +52,7 @@ function placeUsername(){
   //place username and email in the designated placement divs
   jQuery.ajax({
       type: "POST",
-      url: "../../php/BackseatDB.php",
+      url: "/prototype/php/BackseatDB.php",
       datatype: 'json',
       data: {functionname: 'usernameEmail'},
 

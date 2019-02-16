@@ -1,7 +1,7 @@
 // function to open the menu
 function openNav() {
-    var width = $( document ).width();
-    var height = $( document ).height();
+    var width = screen.width;
+    var height = window.innerHeight;
 
     $("#toggleBtnMenu").toggleClass('active');
 

@@ -2,7 +2,7 @@
 session_start();
 
 if( isset($_SESSION["uID"])){
-    header("location: https://caswognum.nl");
+    header("location: https://backseat-buddy.com/prototype");
     exit();
 }
 ?>
@@ -71,7 +71,7 @@ if( isset($_SESSION["uID"])){
                     if(data.tutorialDone == 0){
                         jQuery.ajax({
                             type: "POST",
-                            url: "../../php/BackseatDB.php",
+                            url: "../php/BackseatDB.php",
                             datatype: 'json',
                             data: {functionname: 'tutorialDone'},
 

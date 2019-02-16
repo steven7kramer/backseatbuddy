@@ -1,6 +1,6 @@
 var dbReady;
 
-getScript('/js/BackseatGeneral.js', function(){
+getScript('/prototype/js/BackseatGeneral.js', function(){
   var userName = userName;
 });
 
@@ -56,7 +56,7 @@ function fillCarPathArray(carArray){
 
   for (let i = 0; i < carArray.length; i++) {
     $.ajax({
-      url: '/lib/carTypes/car' + carArray[i].type + '.txt', // file with the svg path of the car
+      url: '/prototype/lib/carTypes/car' + carArray[i].type + '.txt', // file with the svg path of the car
       dataType: 'text', // type of file (text, json, xml, etc)
       success: function(data) { // callback for successful completion
         var carPath = data;
@@ -99,7 +99,7 @@ function displayCars(carArray, carPathArray){
             car += '</div>'
         }else{
             car += '<div id="productText">'
-            car += ' <a onclick="askBuyProduct(' + carArray[i].carID + ', ' + carArray[i].costs + ', ' + carMoment + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + carCosts + ' </h3></a> '
+            car += ' <a onclick="askBuyProduct(' + carArray[i].carID + ', ' + carArray[i].costs + ', ' + carMoment + ')"><h3 class="buy"> Koop <img src="/prototype/images/other/bsbCoin.png" width="20px"/> ' + carCosts + ' </h3></a> '
             car += '</div>'
         }
 
@@ -168,7 +168,7 @@ function displayAvatars(avatarArray){
             avatar += '</div>'
         }else{
             avatar += '<div id="productText">'
-            avatar += ' <a onclick="askBuyProduct(' + avatarArray[i].aID + ', ' + avatarArray[i].costs + ', ' + avatarMoment + ')"><h3 class="buy"> Koop <img src="/images/other/bsbCoin.png" width="20px"/> ' + avatarCosts + ' </h3></a> '
+            avatar += ' <a onclick="askBuyProduct(' + avatarArray[i].aID + ', ' + avatarArray[i].costs + ', ' + avatarMoment + ')"><h3 class="buy"> Koop <img src="/prototype/images/other/bsbCoin.png" width="20px"/> ' + avatarCosts + ' </h3></a> '
             avatar += '</div>'
         }
 
@@ -219,7 +219,7 @@ function constructAJAXRequest(data, phpFile) {
 
     var response = {
         type: "POST",
-        url: "../../php/" + phpFile,
+        url: "/prototype/php/" + phpFile,
         datatype: 'json',
         data: data,
 
@@ -261,7 +261,7 @@ function closeAskScreen(){
 
 function costCheck(productID, costs, moment){
   //check for sufficient funds
-  getScript('/js/BackseatGeneral.js', function(){
+  getScript('/prototype/js/BackseatGeneral.js', function(){
     if(userCoins >= costs){
       if(moment == car){
         buyCarFromDB(productID, costs);
@@ -345,10 +345,18 @@ function getScript(url, callback) {
 
 function editUsername(){
   var editUsernameHTML = '<h3> Nieuwe gebruikersnaam </h3>'
-  editUsernameHTML += '<input id="username" type="text" name="username" value="' + userName + '"><br>';
+  editUsernameHTML += '<input id="username" type="text" name="username" value="' + userName + '" onkeypress="return alpha(event)" maxlength="20"><br>';
   editUsernameHTML += '<input type="hidden" id="functionname" name="functionname" value="editUsername">';
   editUsernameHTML += '<input type="submit" value="Opslaan">';
   $('.editUsernameIcon').hide();
   $('.usernamePlace').text('');
   $('.usernamePlace').append(editUsernameHTML);
+}
+
+// The alpha function is called on KeyPress in the upper function.
+// This fucntion is used to sanitize for special characters
+function alpha(e) {
+    var k;
+    document.all ? k = e.keyCode : k = e.which;
+    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
 }

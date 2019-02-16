@@ -50,7 +50,7 @@ jQuery(document).ready(function(){
   var abortMessage = document.getElementById('notCloseEnough');
 
     // first, check if users is close enough to the POI
-    $.getScript('/js/BackseatGeneral.js', function(){
+    $.getScript('../../js/BackseatGeneral.js', function(){
       abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
       waitForIt();
       function waitForIt(){
@@ -63,7 +63,7 @@ jQuery(document).ready(function(){
                 init();
               }else{
                 abortMessage.innerHTML = 'Je bent niet dichtbij genoeg om deze minigame te spelen!';
-                abortMessage.innerHTML += '<div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i> Terug naar de map </a> </div>';
+                abortMessage.innerHTML += '<div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i> Terug naar de map </a> </div>';
               }
           }
       }
@@ -177,7 +177,7 @@ function Car (x, y, alfa, color, maxVelocity, radius) {
  */
 function Track (name, filename, width, height, x, y, alfa, teleporter, checkpoints) {
 	this.name = name;
-	filename = '/lib/racing-game/tracks/' + filename;
+	filename = '../../lib/racing-game/tracks/' + filename;
 	this.filename = filename + '.png';
 	this.filenameHidden = filename + '_h.png';
 	this.w = width;		// Track size
@@ -561,14 +561,6 @@ function onTheRoad (x, y) {
 }
 
 /*
- * Event handler for selecting tracks
-
-function selectTrack () {
-	var id = document.getElementsByName('selectTrack')[0].value;
-	loadTrack(id);
-}
-*/
-/*
  * Display text in a box
  */
 function displayText (text, x, y, fontSize) {
@@ -828,7 +820,7 @@ function getHighscoresFromDB(moment) {
                       if (index + 1 > 3) {
                           var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
                       } else {
-                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
+                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
                       }
                       jQuery('#scoresTabel').append(HTMLString);
                   });
@@ -888,7 +880,7 @@ function saveCoins(lastHighscorePlace){
 		        success: function(obj, textstatus) {
 		            if (!('error' in obj)) {
 		                console.log("Saved " + coinReward + " coins in the database" );
-                    $.getScript("/js/BackseatGeneral.js",function(){
+                    $.getScript("../../js/BackseatGeneral.js",function(){
                       updateCoins();
                       animateCoinsWon(coinReward);
                     });

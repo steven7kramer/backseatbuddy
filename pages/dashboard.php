@@ -111,7 +111,7 @@
             <div id="buyCheckBG">
               <div id="buyCheck">
                 <h2> Weet je het zeker? </h2>
-                <img src="/images/other/bsbCoin.png" width="30px"/> <div id="price"></div>
+                <img src="../images/other/bsbCoin.png" width="30px"/> <div id="price"></div>
 
                 <div id="ynBtns">
                 </div>

@@ -24,7 +24,7 @@ jQuery(document).ready(function(){
   var abortMessage = document.getElementById('abortMessage');
 
     // first, check if users is close enough to the POI
-    $.getScript('/js/BackseatGeneral.js', function(){
+    $.getScript('../../js/BackseatGeneral.js', function(){
       abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
       waitForIt();
       function waitForIt(){
@@ -56,6 +56,19 @@ var firstSwipe = true;
 var currentWindow = '';
 var score;
 var savedHighscore;
+
+// 1. Import the functions for prevent scrolling
+define(function (require) {
+    const bodyScrollLock = require('../../lib/bodyScrollLockMaster/lib/bodyScrollLock.js');
+
+    const disableBodyScroll = bodyScrollLock.disableBodyScroll;
+    const enableBodyScroll = bodyScrollLock.enableBodyScroll;
+
+    // 2. Get a target element for stopping the scrolling
+    const targetElement = document.querySelector("body");
+});
+
+
 
 function init(){
   jQuery('#abortGameContainer').show();
@@ -91,8 +104,8 @@ function init(){
 function startGame(data) {
     tutorialAnimation();
     myGameArea.start();
-    windMillHead = new component(477, 447, "../../../images/game/windmill_head.png", window.innerWidth / 2, 300, true);
-    windMillPost = new component(400, 400, "../../../images/game/windmill_post.png", (window.innerWidth / 2) - 5, 480, false);
+    windMillHead = new component(477, 447, "../../images/game/windmill_head.png", window.innerWidth / 2, 300, true);
+    windMillPost = new component(400, 400, "../../images/game/windmill_post.png", (window.innerWidth / 2) - 5, 480, false);
 
     jQuery('#gameCanvas').swipedown(function(e, touch) {
         var swipeSpeed = Math.min(5, touch.yAmount / touch.duration); // Gives speed in pixels/millisecond
@@ -113,6 +126,9 @@ function startGame(data) {
         gameIsActive = true;
         tutorialAnimation();
         startAngle = windMillHead.angle;
+
+        // Disable scrolling
+        disableBodyScroll(targetElement);
 
         countDownTimer();
         gameTimerVar = setTimeout(function() {
@@ -236,7 +252,7 @@ function saveCoins(lastHighscorePlace){
 		        success: function(obj, textstatus) {
 		            if (!('error' in obj)) {
 		                console.log("Saved " + coinReward + " coins in the database" );
-                    $.getScript("/js/BackseatGeneral.js",function(){
+                    $.getScript("../../js/BackseatGeneral.js",function(){
                       updateCoins();
                       animateCoinsWon(coinReward);
                     });
@@ -293,7 +309,7 @@ function getHighscoresFromDB(moment) {
                       if (index + 1 > 3) {
                           var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uUsername + "</td><td>" + value.score + "</td></tr>";
                       } else {
-                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + value.score + "</td></tr>";
+                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + value.score + "</td></tr>";
                       }
                       jQuery('#scoresTabel').append(HTMLString);
                   });
@@ -366,6 +382,9 @@ function showLastScore(score, lastHighscorePlace){
 }
 
 function exitGame(moment){
+  // 4. ...in some event handler after hiding the target element...
+  enableBodyScroll(targetElement);
+
   if(moment == 'after'){
     jQuery('.outGame').fadeIn();
 

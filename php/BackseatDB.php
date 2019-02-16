@@ -230,10 +230,10 @@ echo json_encode($result);
 
 function connect() {
 
-    $servername = "db.caswognum.nl";
-    $username = "md332540db401549";
-    $dbname = "md332540db401549";
-    $password = "CASdb001";
+    $servername = "localhost";
+    $username = "u45503p41072_backseatbuddy";
+    $dbname = "u45503p41072_bsb";
+    $password = "S3pY3Y7O4ZMy";
 
     $GLOBALS['link'] = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -322,10 +322,13 @@ function queryAddToDatabase() {
   $contentID = 0;
 
   if($_POST['pIcon'] != 0 || $_POST['pIcon'] != 1){
-    $query1 = sprintf("SELECT MAX(contentID) FROM %s WHERE pIcon = %s AND pCategory = '%s'", $table, $_POST['pIcon'], $_POST['pCategory']);
+    if($_POST['pIcon'] != 2){
+      $query1 = sprintf("SELECT MAX(contentID) FROM %s WHERE pIcon = %s", $table, $_POST['pIcon']);
+    }else{
+      $query1 = sprintf("SELECT MAX(contentID) FROM %s WHERE pIcon = %s AND pCategory = '%s'", $table, $_POST['pIcon'], $_POST['pCategory']);
+    }
+    $result1 = mysqli_query($GLOBALS['link'], $query1);
   }
-
-  $result1 = mysqli_query($GLOBALS['link'], $query1);
 
   if (!$result1) {
       $message  = 'Invalid query: ' . mysqli_error() . "\n";
@@ -414,10 +417,11 @@ function addUserToDB() {
     }
 
     $password = password_hash($_POST["uPassword"], PASSWORD_DEFAULT);
+    $timestamp = date("Y-m-d H:i:s");
 
-    $query = sprintf("INSERT INTO Users (uID, uEmail, uUsername, uPassword)
-              VALUES (NULL, '%s', '%s', '%s')",
-              $email, $username, $password);
+    $query = sprintf("INSERT INTO Users (uID, uEmail, uUsername, uPassword, date)
+              VALUES (NULL, '%s', '%s', '%s', '%s')",
+              $email, $username, $password, $timestamp = date("Y-m-d H:i:s"));
 
     $result = mysqli_query($GLOBALS['link'], $query);
 
@@ -601,7 +605,11 @@ function checkIfUnlocked(){
 function findpID(){
   $table1 = "PointsOfInterest";
 
-  $query = sprintf("SELECT pID FROM %s WHERE pIcon = %d AND pCategory = '%s' AND contentID = %s", $table1, $_POST['pType'], $_POST['pCategory'], $_POST['contentID']);
+  if($_POST['pType'] == 2){
+    $query = sprintf("SELECT pID FROM %s WHERE pIcon = %d AND pCategory = '%s' AND contentID = %s", $table1, $_POST['pType'], $_POST['pCategory'], $_POST['contentID']);
+  }else{
+    $query = sprintf("SELECT pID FROM %s WHERE pIcon = %d AND contentID = %s", $table1, $_POST['pType'], $_POST['contentID']);
+  }
   $result = mysqli_query($GLOBALS['link'], $query);
 
   if (!$result) {
@@ -1073,10 +1081,11 @@ function overlayCheck(){
 }
 
 function giveFeedback() {
+    $timestamp = date("Y-m-d H:i:s");
 
-    $query = sprintf("INSERT INTO Feedback (fID, uID, cijfer, goed, kanbeter)
-              VALUES (DEFAULT, %s, %s, '%s', '%s')",
-              $_SESSION['uID'], $_POST['cijfer'], $_POST['goed'], $_POST['kanbeter']);
+    $query = sprintf("INSERT INTO Feedback (fID, uID, cijfer, goed, kanbeter, date)
+              VALUES (DEFAULT, %s, %s, '%s', '%s', '%s')",
+              $_SESSION['uID'], $_POST['cijfer'], $_POST['goed'], $_POST['kanbeter'], $timestamp);
 
     $result = mysqli_query($GLOBALS['link'], $query);
 

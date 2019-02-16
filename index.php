@@ -11,7 +11,10 @@ For the update logs, see the end of this document
 
 -->
 
-<?php include("pages/includes/session.php"); ?>
+<?php
+  include("pages/includes/session.php");
+  $session_admin=(isset($_SESSION['admin']))?$_SESSION['admin']:'';
+?>
 
 <html lang="nl">
     <head>
@@ -27,13 +30,19 @@ For the update logs, see the end of this document
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
-        <script src="../lib/SVG/svg.min.js"></script>
+        <script src="lib/SVG/svg.min.js"></script>
+
+        <!-- Admin Session -->
+        <script type="text/javascript">
+          var adminSession ='<?php echo $session_admin;?>';
+        </script>
 
         <!-- Javascript -->
         <script src="js/BackseatGPS.js"></script>
         <script src="js/BackseatNAV.js"></script>
         <script src="js/BackseatNotifications.js"></script>
         <script src="js/BackseatGeneral.js"></script>
+        <script src="js/BackseatMaxDistance.js"></script>
         <script src="js/Avatar/BackseatAvatar.js"></script>
         <script src="js/Avatar/BackseatPainter.js"></script>
 
@@ -74,13 +83,13 @@ For the update logs, see the end of this document
     	</div>
       <div id="overlayNote">
         <a href="javascript:void(0)" class="closebutton" onclick="closeOverlay()">&times;</a>
-        <img src="/images/other/dashboardNote.png" />
+        <img src="/prototype/images/other/dashboardNote.png" />
         <p> Wist je dat je via het dashboard nieuwe auto's en brillen kunt kopen? </p>
         <div id="overlayButton"><a onclick="closeOverlay()" href="pages/dashboard.php">Naar het dashboard </a></div>
       </div>
       <!-- Display coins in header -->
       <div id="coinDispContainerInd">
-        <a href="/pages/dashboard.php">
+        <a href="/prototype/pages/dashboard.php">
         <div id="avatarPlaceDiv">
           <script>
               var avatar = new BackseatAvatar(50, "avatarPlaceDiv", "current");
@@ -94,7 +103,7 @@ For the update logs, see the end of this document
                   <script>
                         jQuery.ajax({
                             type: "POST",
-                            url: "../../php/BackseatDB.php",
+                            url: "/prototype/php/BackseatDB.php",
                             datatype: 'json',
                             data: {functionname: 'coinDisplay'},
 
@@ -119,7 +128,7 @@ For the update logs, see the end of this document
         <div id="followMeSection">
             <a id="toggleBtnLocation" href="#" class="toggle_btn">
                 <span>
-                    <img src="images/icons/toggleGPS.png" id="toggleBtnLocationImg" style="width:30px; height:30px;"/>
+                    <img src="/prototype/images/icons/toggleGPS.png" id="toggleBtnLocationImg" style="width:30px; height:30px;"/>
                 </span>
             </a>
         </div>
@@ -131,7 +140,7 @@ For the update logs, see the end of this document
         </div>
 
         <!-- Add the Google Maps API key -->
-        <script src="\lib\MarkerClusters\markerclusterer.js"></script>
+        <script src="/prototype/lib/MarkerClusters/markerclusterer.js"></script> <!-- was '\' ipv '/' -->
         </script>
         <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfW9lpLVdkMcvafwYeh5JL41qDA4gi7ro&callback=initialize">
