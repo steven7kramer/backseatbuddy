@@ -15,10 +15,10 @@ var userIsNearby;
 var zeroLength;
 
 var maxDistPOI = function(pType){
-  $.getScript('/js/BackseatGeneral.js', function(){
-    return maxDistPOI(pType);
+  $.getScript('/prototype/js/BackseatMaxDistance.js', function(){
+    //return maxDistPOI(pType);
   });
-  return;
+  return 10000;
 }
 
 // get data out of the url to determine which POI they openend
@@ -63,7 +63,7 @@ jQuery(document).ready(function(){
 
       jQuery.ajax({
         type: "POST",
-        url: "../../php/BackseatDB.php",
+        url: "/prototype/php/BackseatDB.php",
         datatype: 'json',
         data: {functionname: 'findpID', pType:pType, pCategory:pCategory, contentID:contentID},
 
@@ -73,7 +73,7 @@ jQuery(document).ready(function(){
               // get location of current POI from database
               jQuery.ajax({
                 type: "POST",
-                url: "../../php/BackseatDB.php",
+                url: "/prototype/php/BackseatDB.php",
                 datatype: 'json',
                 data: {functionname: 'checkIfUnlocked', pType:pType, pCategory:pCategory, contentID:contentID, pID:pID},
 
@@ -152,6 +152,7 @@ function calculateDistance(){
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var d = R * c; // Distance in km
 
+  console.log('distance: ' + d);
   checkDistance(d);
 }
 
@@ -164,6 +165,8 @@ function checkDistance(d){
   if(maxDistPOI(pType) - d > 0){
     userIsNearby = true;
     console.log("User is close enough to POI");
+  }else if(maxDistPOI(pType) == undefined){
+    console.error('maxdistance is undefined');
   }else{
     userIsNearby = false;
     console.error('User is too far from the POI');

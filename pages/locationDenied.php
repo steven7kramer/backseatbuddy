@@ -56,7 +56,7 @@
 
             <p> Heb je de stappen doorlopen? Klik dan hieronder om terug naar de hoofdpagina te gaan! </p>
 
-            <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>
+            <div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i>Terug naar de map</a></div>
 
 </div>
 

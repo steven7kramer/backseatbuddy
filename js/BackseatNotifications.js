@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
     if (!sessionStorage.getItem("welcomenotification")) {
         var options = {
             body: "Goed dat je er weer bent!",
-            icon: "../images/sofieCircle.png"
+            icon: "/prototype/images/sofieCircle.png"
         }
 
         var notification = new Notification("Welkom terug!", options);

@@ -20,7 +20,7 @@ var submitButton = document.getElementById('submit');
 
 jQuery(document).ready(function(){
   // first, check if users is close enough to the POI
-  $.getScript('/js/BackseatGeneral.js', function(){
+  $.getScript('../../js/BackseatGeneral.js', function(){
     quizContainer.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
     waitForIt();
     function waitForIt(){
@@ -30,7 +30,7 @@ jQuery(document).ready(function(){
             if(userIsNearby == true || zeroLength == true){
               init();
             }else{
-              quizContainer.innerHTML = 'Je bent niet dichtbij genoeg! Ga terug naar de map en kijk wat er in de buurt is. <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
+              quizContainer.innerHTML = 'Je bent niet dichtbij genoeg! Ga terug naar de map en kijk wat er in de buurt is. <div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
               submitButton.parentNode.removeChild(submitButton);
             }
         }
@@ -48,18 +48,17 @@ function init(){
         data: {functionname: 'quizLoader', qID:contentID},
 
         success: function(data) {
+          console.log(data);
             if (!('error' in data)) {
               if(data.quizQuestion.length != 0){
                 generateQuiz(data, quizContainer, resultsContainer, submitButton);
-                console.log(data);
                 jQuery('#submit').show();
               }else{
-                console.log(data);
                 console.log('data.quizQuestion.length is 0');
-                quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
+                quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
               }
             }else{
-              quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
+              quizContainer.innerHTML = 'Er is iets misgegaan met het inladen van de quiz. Ga terug naar de map en probeer het nog een keer! <div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i>Terug naar de map</a></div>';
             }
         }
     });
@@ -191,7 +190,7 @@ function designResultWindow(data, rightAnswers, totalAnswers){
 
     resultHtml += '<p>' + data.quizQuestion[0].resultText + '</p>';
     resultHtml += '<img class="resultImg" src="../../images/POI/quiz/' + data.quizQuestion[0].resultImage + '">';
-		resultHtml += '<div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div>'
+		resultHtml += '<div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i>Terug naar de map</a></div>'
 
 		resultsContainer.innerHTML = resultHtml;
 }

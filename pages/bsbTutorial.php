@@ -2,7 +2,7 @@
 session_start();
 
 if( isset($_SESSION["uID"]) ){
-    header("location: https://caswognum.nl");
+    header("location: https://backseat-buddy.com/prototype");
     exit();
 }
 ?>

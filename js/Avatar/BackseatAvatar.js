@@ -139,7 +139,7 @@ function constructAJAXRequest(data, phpFile) {
 
     var response = {
         type: "POST",
-        url: "../../php/" + phpFile,
+        url: "/prototype/php/" + phpFile,
         datatype: 'json',
         data: data,
 

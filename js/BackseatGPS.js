@@ -32,7 +32,7 @@ var POS_UPDATE_NUMDELTAS = 100; // ms
 // Set the unlocking distance for each individual pIcon in km
 // 0 and 3, parking and infoPoint,  will stay at the default distance of 5
 var maxDistPOI = function(pIcon){
-  $.getScript('/js/BackseatGeneral.js', function(){
+  $.getScript('js/BackseatMaxDistance.js', function(){
     return maxDistPOI(pIcon);
   });
   return;
@@ -110,7 +110,7 @@ function initializeGoogleMapsAPI() {
 // Function that is called when we can get the position of the user
 function setPosition(position) {
 
-    var iconBase = 'https://www.caswognum.nl/images/markers/';
+    var iconBase = 'https://www.backseat-buddy.com/prototype/images/markers/';
 
     userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
@@ -140,7 +140,7 @@ function setPosition(position) {
 
         jQuery.ajax({
             type: "POST",
-            url: "../php/BackseatDB.php",
+            url: "php/BackseatDB.php",
             datatype: 'json',
             data: {functionname: 'loadCar', moment: 'index'},
 
@@ -310,7 +310,7 @@ function checkProvince() {
                 } else {
                     jQuery.ajax({
                         type: "POST",
-                        url: "../php/BackseatDB.php",
+                        url: "php/BackseatDB.php",
                         datatype: 'json',
                         data: {functionname: 'getCollectibles'},
 
@@ -327,7 +327,7 @@ function checkProvince() {
                                 if (newCollectible) {
                                     jQuery.ajax({
                                         type: "POST",
-                                        url: "../php/BackseatDB.php",
+                                        url: "php/BackseatDB.php",
                                         datatype: 'json',
                                         data: {functionname: 'addCollectible', collectible: province},
 
@@ -409,7 +409,7 @@ function createMarkers(data) {
     var infoBubbles = [];
 
     for (var i = 0; i < data.length; i++) {
-        var path = '../images/markers/pin'+data[i].pIcon+'.png';
+        var path = 'images/markers/pin'+data[i].pIcon+'.png';
         markers[i] = new google.maps.Marker({
               position: {lat: parseFloat(data[i].lat), lng: parseFloat(data[i].lng)},
               map: map,
@@ -434,7 +434,7 @@ function createMarkers(data) {
 
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers,
-         {imagePath: '../lib/MarkerClusters/icons/m'});
+         {imagePath: 'lib/MarkerClusters/icons/m'});
 }
 
 // function to handle an error trying to obtain the route details
@@ -461,7 +461,7 @@ function openInfoWindow(data) {
 
             var width = $( document ).width();
             var height = $( document ).height();
-            var baseURLBanner = "url('../images/banners/";
+            var baseURLBanner = "url('images/banners/";
 
             var imageUrl = baseURLBanner + data.pImage + "')";
 
@@ -585,15 +585,15 @@ function designInfowindowButton(pIcon, gameUnlocked, distanceCheck){
                   $(".gameTimerLeftFill").text(30);
                 }
 
-                jQuery('#pButton').attr('href', '/pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.contentID);
+                jQuery('#pButton').attr('href', 'pages/POI/' + loadLocationArray.pCategory.toLowerCase().split(' ').join('_') + '.php?id=' + loadLocationArray.contentID);
 
                 if(gameUnlocked){
                     $("#gameTimerLeft").show();
                 }
             }else if(pIcon == 3){
-                jQuery('#pButton').attr('href', '/pages/POI/info.php?id=' + loadLocationArray.contentID);
+                jQuery('#pButton').attr('href', 'pages/POI/info.php?id=' + loadLocationArray.contentID);
             }else if(pIcon == 4){
-                jQuery('#pButton').attr('href', '/pages/POI/quiz.php?id=' + loadLocationArray.contentID);
+                jQuery('#pButton').attr('href', 'pages/POI/quiz.php?id=' + loadLocationArray.contentID);
             }
             jQuery('#pButton').html('GA NAAR ' + loadLocationArray.pTitle.toUpperCase() + ' &#8594;');
             jQuery('#pButton').removeClass('not-active');
@@ -698,7 +698,7 @@ jQuery(document).ready(function() {
 function overlayCheck(coins){
   jQuery.ajax({
       type: "POST",
-      url: "../../php/BackseatDB.php",
+      url: "php/BackseatDB.php",
       datatype: 'json',
       data: {functionname: 'overlayCheck', moment: "initiate"},
 
@@ -706,7 +706,7 @@ function overlayCheck(coins){
               if(data.overlayCheck[0].dashDone == 0 && coins > 0){
                     jQuery.ajax({
                         type: "POST",
-                        url: "../../php/BackseatDB.php",
+                        url: "php/BackseatDB.php",
                         datatype: 'json',
                         data: {functionname: 'overlayCheck', moment: "done"},
 

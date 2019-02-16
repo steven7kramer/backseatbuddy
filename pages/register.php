@@ -76,7 +76,7 @@ if( isset($_SESSION["uID"])){
                         if (!('error' in data)) {
 
                             jQuery('#errorRegi').css("display", "none");
-                            jQuery('#successRegi').html("<strong>Woehoe!</strong> Welkom bij Backseat Buddy. Klaar voor de start? <a href='../index.php'>Klik hier!</a>");
+                            jQuery('#successRegi').html("<strong>Woehoe!</strong> Welkom bij Backseat Buddy. Klaar voor de start? <a href='tutorial.php?first_time=true'>Klik hier!</a>");
                             jQuery('#successRegi').css("display", "block");
 
                             // Email verification

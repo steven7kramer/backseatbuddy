@@ -52,23 +52,31 @@ if(!($_SESSION["admin"])) {
                 Type*:
                 <div class="custom-select">
                     <select id="pIcon" name="pIcon" required />
-                        <option value="0">Parkeerplaats</option>
-                        <option value="1">Viewpoint</option>
-                        <option value="2">Game</option>
-                        <option value="3">Info</option>
-                        <option value="4">Quiz</option>
+                        <option value="0">Parkeerplaats (0)</option>
+                        <option value="1">Viewpoint (1)</option>
+                        <option value="2">Game (2)</option>
+                        <option value="3">Info (3)</option>
+                        <option value="4">Quiz (4)</option>
                     </select><br>
                 </div>
                 Title*: <input type="text" id="pTitle" name="pTitle" required /><br>
                 Description*: <input type="text" id="pDescr" name="pDescr" required /><br>
-                <div id="explainBoxOuter"><u>Lattitude</u>*:
+                <div id="explainBoxOuter"><u>Latitude</u>*:
                   <div id="explainBox">
                     Eenvoudig via <a href="http://www.mapcoordinates.net/en" target="_blank">deze website</a>
                   </div>
                 </div> <input type="number" step="any"id="lat" name="lat" required /><br>
                 Longitude*: <input type="number" step="any" id="lng" name="lng" required /><br>
-                Category: <input type="text" id="pCategory" name="pCategory"><br>
-                Image: <input type="text" id="pImage" name="pImage" value="default.jpg"><br>
+                <div id="explainBoxOuter"><u>Category</u>*:
+                  <div id="explainBox">
+                     bij game: 'windmolens' of 'racing'
+                  </div>
+                </div> <input type="text" id="pCategory" name="pCategory"><br>
+                <div id="explainBoxOuter"><u>Image</u>*:
+                  <div id="explainBox">
+                     'windmolens.jpg' bij windmolens.
+                  </div>
+                </div> <input type="text" id="pImage" name="pImage" value="default.jpg"><br>
                 <input type="hidden" id="functionname" name="functionname" value="addToDatabase">
                 <input type="submit" value="Submit">
 

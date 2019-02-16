@@ -46,10 +46,11 @@ if(contentID == 0){
 // Check if user is close enough in-game
 jQuery(document).ready(function(){
   jQuery('#closeEnough').hide();
+  firstLap = true;
   var abortMessage = document.getElementById('notCloseEnough');
 
     // first, check if users is close enough to the POI
-    $.getScript('/js/BackseatGeneral.js', function(){
+    $.getScript('../../js/BackseatGeneral.js', function(){
       abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
       waitForIt();
       function waitForIt(){
@@ -62,7 +63,7 @@ jQuery(document).ready(function(){
                 init();
               }else{
                 abortMessage.innerHTML = 'Je bent niet dichtbij genoeg om deze minigame te spelen!';
-                abortMessage.innerHTML += '<div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i> Terug naar de map </a> </div>';
+                abortMessage.innerHTML += '<div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i> Terug naar de map </a> </div>';
               }
           }
       }
@@ -176,7 +177,7 @@ function Car (x, y, alfa, color, maxVelocity, radius) {
  */
 function Track (name, filename, width, height, x, y, alfa, teleporter, checkpoints) {
 	this.name = name;
-	filename = '/lib/racing-game/tracks/' + filename;
+	filename = '../../lib/racing-game/tracks/' + filename;
 	this.filename = filename + '.png';
 	this.filenameHidden = filename + '_h.png';
 	this.w = width;		// Track size
@@ -211,7 +212,6 @@ function frame () {
 		wipeCanvas();
 		displayText('Laden...', 200, 100);
 		setTimeout(frame, 500);
-		firstLap = true;
 		return;
 	}
 
@@ -561,14 +561,6 @@ function onTheRoad (x, y) {
 }
 
 /*
- * Event handler for selecting tracks
-
-function selectTrack () {
-	var id = document.getElementsByName('selectTrack')[0].value;
-	loadTrack(id);
-}
-*/
-/*
  * Display text in a box
  */
 function displayText (text, x, y, fontSize) {
@@ -577,12 +569,11 @@ function displayText (text, x, y, fontSize) {
 	c.textAlign = "center";
 	c.fillStyle = '#1d71b8';
 	c.strokeStyle = '#2d2e83';
-	c.globalAlpha = 0.7;
+	c.globalAlpha = 1;
 	var x0 = Math.round(cNode.width / 2 - x / 2);
 	var y0 = Math.round(cNode.height / 2 - y / 2);
 	c.fillRect(x0, y0, x, y - Math.round(fontSize / 2));
 	c.strokeRect(x0, y0, x, y - Math.round(fontSize / 2));
-	c.globalAlpha = 1;
 
 	c.font = fontSize + "px Arial";
 	c.fillStyle = '#FFF';
@@ -829,7 +820,7 @@ function getHighscoresFromDB(moment) {
                       if (index + 1 > 3) {
                           var HTMLString =  "<tr><td class='cellcentered'>" + (index + 1) + "</td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
                       } else {
-                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
+                          var HTMLString =  "<tr><td class='cellcentered'><img src='../../images/game/hs-no" + (index + 1) + ".png' style='width:35px;'/></td><td>" + value.uUsername + "</td><td>" + dbScore + "</td></tr>";
                       }
                       jQuery('#scoresTabel').append(HTMLString);
                   });
@@ -856,7 +847,7 @@ function getHighscoresFromDB(moment) {
 }
 
 function showLastScore(score, lastHighscorePlace){
-  jQuery('.lastScore').text(score);
+  jQuery('.lastScore').text((score/ 100).toFixed(2));
   jQuery('.lastHighScore').text(lastHighscorePlace);
   if(lastHighscorePlace < 4){
     $('.lastHighScore').prepend('<img id="trophyImg" src="../../images/game/hs-no' + lastHighscorePlace + '.png" style="width: 35px;"/>');
@@ -889,7 +880,7 @@ function saveCoins(lastHighscorePlace){
 		        success: function(obj, textstatus) {
 		            if (!('error' in obj)) {
 		                console.log("Saved " + coinReward + " coins in the database" );
-                    $.getScript("/js/BackseatGeneral.js",function(){
+                    $.getScript("../../js/BackseatGeneral.js",function(){
                       updateCoins();
                       animateCoinsWon(coinReward);
                     });

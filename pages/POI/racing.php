@@ -1,4 +1,7 @@
-<?php include("../includes/session.php") ?>
+<?php
+  include("pages/includes/session.php");
+  $session_admin=(isset($_SESSION['admin']))?$_SESSION['admin']:'';
+?>
 <?php $filename = basename(__FILE__, '.php'); ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -10,8 +13,8 @@
 	<title>Backseat Buddy - Prototype | Game</title>
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="/css/bsb_style.css">
-	<link rel="stylesheet" href="/css/racing.css">
+	<link rel="stylesheet" href="../../css/bsb_style.css">
+	<link rel="stylesheet" href="../../css/racing.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -19,10 +22,16 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>function keyHandler () { }</script>
 
+  <!-- Admin Session -->
+  <script type="text/javascript">
+    var adminSession ='<?php echo $session_admin;?>';
+  </script>
+
 	<!-- Javascript - Racing script is located at the bottom of the page -->
-	<script src="/js/BackseatGeneral.js"></script>
-	<script src="/js/BackseatCheck.js"></script>
-	<script src="/js/BackseatNAV.js"></script>
+	<script src="../../js/BackseatGeneral.js"></script>
+  <script src="../../js/BackseatMaxDistance.js"></script>
+	<script src="../../js/BackseatCheck.js"></script>
+	<script src="../../js/BackseatNAV.js"></script>
 
 	<!-- Google Tag Manager Header -->
 	<?php readfile("../includes/tagmanagerHeader.php") ?>
@@ -108,7 +117,7 @@
             <a onclick="openSideWindow('highscores')">Higscore plek: <b class='lastHighScore boxShadow'></b></a>
           </p>
           <div id="coinsWonContainer">
-            <img src="/images/other/bsbCoin.png" style="width:20px;" />
+            <img src="../../images/other/bsbCoin.png" style="width:20px;" />
             <div id="coinsWon">
             </div>
           </div>
@@ -157,6 +166,6 @@
     })();
 
     </script>
-		<script src='/js/BackseatRacing.js'></script>
+		<script src='../../js/BackseatRacing.js'></script>
 	</body>
 </html>

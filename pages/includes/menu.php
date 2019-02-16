@@ -1,5 +1,5 @@
-<?php $BASE_URL =  'https://caswognum.nl'?>
-<script type="text/javascript" src='/js/BackseatGeneral.js'> </script>
+<?php $BASE_URL =  'https://backseat-buddy.com/prototype'?>
+<script type="text/javascript" src='/prototype/js/BackseatGeneral.js'> </script>
 
 <div id="sidenav" class="sidenav">
 
@@ -46,9 +46,9 @@ if($basename == "index"):
     <!-- Display coins in header -->
 <div id="coinsAndMap">
     <div id="coinDispContainer">
-        <a href="/pages/dashboard.php">
+        <a href="/prototype/pages/dashboard.php">
             <div id="coinBG">
-              <img src="/images/other/bsbCoin.png" id="coinDisplayImage"/>
+              <img src="/prototype/images/other/bsbCoin.png" id="coinDisplayImage"/>
               <span class="coinAmount">
                 <div id="coinPlaceDiv"></div>
                 <script>updateCoins("firstTime");</script>

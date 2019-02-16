@@ -18,7 +18,7 @@ jQuery(document).ready(function(){
   var contentID = getURLParameter('id');
 
   // first, check if users is close enough to the POI
-  $.getScript('/js/BackseatGeneral.js', function(){
+  $.getScript('../../js/BackseatGeneral.js', function(){
 
     infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i></div></div>';
     waitForIt();
@@ -29,7 +29,7 @@ jQuery(document).ready(function(){
             if(userIsNearby == true || zeroLength == true){
               init();
             }else{
-              infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Je bent niet dichtbij genoeg om deze minigame te spelen! </div> <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div></div></div>';
+              infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Je bent niet dichtbij genoeg om deze minigame te spelen! </div> <div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i>Terug naar de map</a></div></div></div>';
               abortGame();
             }
         }
@@ -48,7 +48,7 @@ function init(){
       success: function(data) {
           if (!('error' in data)) {
             if(data.infoPoints.length == 0){
-              infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Er is iets misgegaan met het inladen van de inhoud. Ga terug naar de map en probeer het nog een keer!</div> <div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i>Terug naar de map</a></div></div>';
+              infoContainer.innerHTML = '<div id="infoErrorCont"><div id="infoError">Er is iets misgegaan met het inladen van de inhoud. Ga terug naar de map en probeer het nog een keer!</div> <div id="backToMap"><a href="https://backseat-buddy.com/prototype"><i class="fa fa-map-o"></i>Terug naar de map</a></div></div>';
             }else{
               console.log(data);
               showInfo(data);
