@@ -83,7 +83,8 @@ if (!isset($result['error'])) {
             break;
         case 'checkThirtyMinutes':
             if (connect()) {
-                $result['gameUnlocked'] = checkThirtyMinutes();
+              checkThirtyMinutes();
+              $result['gameUnlocked'] = checkThirtyMinutes();
             }
             break;
         case 'addThirtyMinutes':
@@ -95,6 +96,11 @@ if (!isset($result['error'])) {
             if (connect()) {
                 checkIfUnlocked();
                 $result['checkIfUnlocked'] = $GLOBALS['checkIfUnlocked'];
+            }
+            break;
+        case 'findpID':
+            if (connect()) {
+                findpID();
             }
             break;
         case 'addCoins':
@@ -526,9 +532,9 @@ function addThirtyMinutes() {
 }
 
 function checkThirtyMinutes() {
-    $table1 = "HasUnlocked HU";
+    $table = "HasUnlocked";
 
-    $query = sprintf("SELECT * FROM %s WHERE HU.uID = %d AND HU.pID = %d", $table1, $_SESSION['uID'], $_POST['pID']);
+    $query = sprintf("SELECT time_end FROM %s WHERE uID = %d AND pID = %d", $table, $_SESSION['uID'], $_POST['pID']);
     $result = mysqli_query($GLOBALS['link'], $query);
 
     if (!$result) {
@@ -536,6 +542,8 @@ function checkThirtyMinutes() {
         $message .= 'Whole query: ' . $query;
         die($message);
     }
+
+    $GLOBALS["result"]["time_end"] = $result->fetch_assoc()['time_end'];
 
     $time_end = $result -> fetch_assoc()['time_end'];
 
@@ -548,12 +556,16 @@ function checkThirtyMinutes() {
     } else {
         return true;
     }
-
 }
 function checkIfUnlocked(){
   $table1 = "PointsOfInterest";
+  $table2 = "HasUnlocked";
 
-  $query = sprintf("SELECT lng, lat FROM %s WHERE pIcon = %d AND contentID = %d", $table1, $_POST['pType'], $_POST['contentID']);
+  if($_POST['pType'] == 2){
+    $query = sprintf("SELECT lng, lat, time_end FROM %s NATURAL JOIN %s WHERE pIcon = %d AND pCategory = '%s' AND contentID = %d AND pID = %d AND uID = %d", $table1, $table2, $_POST['pType'], $_POST['pCategory'], $_POST['contentID'], $_POST['pID'], $_SESSION['uID']);
+  }else{
+    $query = sprintf("SELECT lng, lat FROM %s WHERE pIcon = %d AND contentID = %d", $table1, $_POST['pType'], $_POST['contentID']);
+  }
   $result = mysqli_query($GLOBALS['link'], $query);
 
   if (!$result) {
@@ -567,6 +579,21 @@ function checkIfUnlocked(){
   }
 
   mysqli_free_result($result);
+}
+
+function findpID(){
+  $table1 = "PointsOfInterest";
+
+  $query = sprintf("SELECT pID FROM %s WHERE pIcon = %d AND pCategory = '%s' AND contentID = %s", $table1, $_POST['pType'], $_POST['pCategory'], $_POST['contentID']);
+  $result = mysqli_query($GLOBALS['link'], $query);
+
+  if (!$result) {
+      $message  = 'Invalid query: ' . mysqli_error() . "\n";
+      $message .= 'Whole query: ' . $query;
+      die($message);
+  }
+
+  $GLOBALS["result"]["pID"] = $result->fetch_assoc()['pID'];
 }
 
 function addCoins(){

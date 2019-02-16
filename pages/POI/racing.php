@@ -51,12 +51,15 @@
 			</div>
 	</div>
 
-	<!-- Start Game Content -->
-	<div id="notLandscape">
-		Voor dit spel moet je je scherm een kwartslag draaien! <br />
-		<i class="fas fa-mobile-alt" style="font-size:150px; transform: rotate(270deg); margin-top:20px;"></i>
-	</div>
-	<div id="landscape">
+  <!-- all-including container for checking if user is close enough -->
+  <div id="notCloseEnough" class="notAvailable"></div>
+  <div id="closeEnough">
+  	<!-- Start Game Content -->
+  	<div id="notLandscape">
+  		Voor dit spel moet je je scherm een kwartslag draaien! <br />
+  		<i class="fas fa-mobile-alt" style="font-size:150px; transform: rotate(270deg); margin-top:20px;"></i>
+  	</div>
+  	<div id="landscape">
 
 				<div id="touchSteeringContainer">
 					<div id="touchLeft" class="inline"> <div class="steeringText b "> Stuur <br /> links </div> </div>
@@ -114,6 +117,7 @@
 		<div class="hidden"><img id="track"><img id="hiddenTrack"><canvas id="hiddenCanvas" width="750" height="500"></canvas></div>
 
 	</div>
+</div> <!-- closing of notCloseEnough div -->
 
 		<script>
     (function() {

@@ -39,19 +39,47 @@ function getURLParameter(sParam)
 var contentID = getURLParameter('id');
 if(contentID == 0){
   speed = 10;
-}else if(contentID == 1){
+}else /*if(contentID == 1)*/{
   speed = 4;
 }
 
+// Check if user is close enough in-game
+jQuery(document).ready(function(){
+  jQuery('#closeEnough').hide();
+  var abortMessage = document.getElementById('notCloseEnough');
+
+    // first, check if users is close enough to the POI
+    $.getScript('/js/BackseatGeneral.js', function(){
+      abortMessage.innerHTML = 'Even geduld! We controleren of je in de buurt bent! <i class="fa fa-spinner fa-spin"></i>';
+      waitForIt();
+      function waitForIt(){
+          if (userIsNearby == undefined && zeroLength == undefined) {
+                setTimeout(function(){waitForIt()},100);
+          } else {
+              if(userIsNearby == true || zeroLength == true){
+                jQuery('#closeEnough').show();
+                jQuery('#notCloseEnough').hide();
+                init();
+              }else{
+                abortMessage.innerHTML = 'Je bent niet dichtbij genoeg om deze minigame te spelen!';
+                abortMessage.innerHTML += '<div id="backToMap"><a href="https://caswognum.nl/"><i class="fa fa-map-o"></i> Terug naar de map </a> </div>';
+              }
+          }
+      }
+    });
+});
+
 /* Touch Steering */
 
-$(document).ready(function(){
-	// Device orientation motion event listener for accelerating
+function init(){
+  // Device orientation motion event listener for accelerating
 	if (window.DeviceOrientationEvent) {
 		window.addEventListener('deviceorientation', deviceOrientationHandler, false);
 		console.log("Orientation is supported in this browser!");
 	}
-});
+
+  frame();
+}
 
 
 /*
@@ -697,8 +725,6 @@ setInterval(function () {
 		console.log(car.x + ' ' + car.y + ' ' + onTheRoad(car.x, car.y) + ' ' + car.collision());
 	}
 }, 1000);
-
-frame();
 
 function openSideWindow(toLoad) {
     if (windowOpen && currentWindow==toLoad) {
